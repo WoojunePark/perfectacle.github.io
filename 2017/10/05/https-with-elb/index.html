@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="ELB가 요청 분산 및 오토 스케일링을 위한 것도 있지만 SSL 암호화 지원도 해줘서인스턴스에 SSL 인증서를 물리면 인스턴스에서 암/복호화 등등의 리소스 낭비가 이뤄지지만 ELB에 물리면 ELB에서 다 처리되기 때문에서버 입장에서는 부담이 더 줄어들게 된다.하지만 역시 공짜는 아니니 Elastic Load Balancing 요금 파트를 참조하자.돈이">
+<meta name="keywords" content="AWS,HTTPS,ELB,CertificateManager,EC2,Route53,Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(ELB) HTTPS 서버를 열어보자">
+<meta property="og:url" content="https://perfectacle.github.io/2017/10/05/https-with-elb/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="ELB가 요청 분산 및 오토 스케일링을 위한 것도 있지만 SSL 암호화 지원도 해줘서인스턴스에 SSL 인증서를 물리면 인스턴스에서 암/복호화 등등의 리소스 낭비가 이뤄지지만 ELB에 물리면 ELB에서 다 처리되기 때문에서버 입장에서는 부담이 더 줄어들게 된다.하지만 역시 공짜는 아니니 Elastic Load Balancing 요금 파트를 참조하자.돈이">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://perfectacle.github.io/images/https-with-elb/thumb.png">
+<meta property="og:updated_time" content="2019-08-22T04:55:48.517Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(ELB) HTTPS 서버를 열어보자">
+<meta name="twitter:description" content="ELB가 요청 분산 및 오토 스케일링을 위한 것도 있지만 SSL 암호화 지원도 해줘서인스턴스에 SSL 인증서를 물리면 인스턴스에서 암/복호화 등등의 리소스 낭비가 이뤄지지만 ELB에 물리면 ELB에서 다 처리되기 때문에서버 입장에서는 부담이 더 줄어들게 된다.하지만 역시 공짜는 아니니 Elastic Load Balancing 요금 파트를 참조하자.돈이">
+<meta name="twitter:image" content="https://perfectacle.github.io/images/https-with-elb/thumb.png">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2017/10/05/https-with-elb/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>(ELB) HTTPS 서버를 열어보자 | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script pjax="">
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/10/05/https-with-elb/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">(ELB) HTTPS 서버를 열어보자
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2017-10-05 17:50:29" itemprop="dateCreated datePublished" datetime="2017-10-05T17:50:29+09:00">2017-10-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 13:55:48" itemprop="dateModified" datetime="2019-08-22T13:55:48+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Middle-end/" itemprop="url" rel="index"><span itemprop="name">Middle-end</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Middle-end/DevOps/" itemprop="url" rel="index"><span itemprop="name">DevOps</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/10/05/https-with-elb/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/05/https-with-elb/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/AWS/" rel="tag"># AWS</a>
+              
+                <a href="/tags/HTTPS/" rel="tag"># HTTPS</a>
+              
+                <a href="/tags/ELB/" rel="tag"># ELB</a>
+              
+                <a href="/tags/CertificateManager/" rel="tag"># CertificateManager</a>
+              
+                <a href="/tags/EC2/" rel="tag"># EC2</a>
+              
+                <a href="/tags/Route53/" rel="tag"># Route53</a>
+              
+                <a href="/tags/Nginx/" rel="tag"># Nginx</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/https-with-elb/thumb.png" alt="요청을 분산해주는 Load Balancer">  </p><p>ELB가 요청 분산 및 오토 스케일링을 위한 것도 있지만 SSL 암호화 지원도 해줘서<br>인스턴스에 SSL 인증서를 물리면 인스턴스에서 암/복호화 등등의 리소스 낭비가 이뤄지지만 ELB에 물리면 ELB에서 다 처리되기 때문에<br>서버 입장에서는 부담이 더 줄어들게 된다.<br>하지만 역시 공짜는 아니니 <a href="https://aws.amazon.com/ko/elasticloadbalancing/pricing/" rel="external nofollow noopener noreferrer" target="_blank">Elastic Load Balancing 요금</a> 파트를 참조하자.<br>돈이 없거나(ㅜㅜ) 공부 목적이 있는 사람은 직접 <a href="/2017/10/05/letsencrypt-with-certbot-feat-aws/">EC2 인스턴스(서버)에 HTTPS 서버 열기</a>를 참고하자.  </p><a id="more"></a>
+
+<h2 id="Certificate-Manager-SSL-인증서"><a href="#Certificate-Manager-SSL-인증서" class="headerlink" title="Certificate Manager(SSL 인증서)"></a>Certificate Manager(SSL 인증서)</h2><p>L4를 생성하기 전에 HTTPS 프로토콜을 위한 SSL 인증서를 만들어야한다.<br><a href="https://aws.amazon.com/ko/blogs/korea/new-aws-certificate-manager-deploy-ssltls-based-apps-on-aws/" rel="external nofollow noopener noreferrer" target="_blank">공짜라고 하니</a> 걱정하지말고 만들자.  </p>
+<ol>
+<li>Certificate Manager 서비스로 이동한다.  </li>
+<li>상단에 있는 인증서 요청 클릭  </li>
+<li>도메인 이름 입력(유효한 도메인인지 체크하지 않으므로 일단 원하는 도메인 입력)  </li>
+<li>검토 및 요청 클릭 후 확인 및 요청 클릭 후 계속 클릭.  </li>
+<li>인증서 검증 보류 상태인데 관리자 이메일로 인증서를 유효하게 만들 수 있는 이메일이 갔을 것이고, 그 이메일을 확인해서 인증서를 확인시켜주자.    </li>
+<li>상태가 발급완료로 뜨면 끝.</li>
+</ol>
+<p>쫀쫀(?)하게도 다운로드는 지원하지 않는다.<br>AWS 내에서만 쓸 수 있는데 SSL 인증서를 요구하는 서비스들이 대부분 유료기 때문에 노림수로 만든 거 같다.</p>
+<h2 id="ELB-L4-Load-Balancer"><a href="#ELB-L4-Load-Balancer" class="headerlink" title="ELB (L4, Load Balancer)"></a>ELB (L4, Load Balancer)</h2><p>L4로 요청을 보내면 로드 밸런싱 전략에 맞게 각각의 요청을 각 인스턴스에 맞게 분배시켜주는 역할을 한다.<br>L4는 Layer 4, OSI 7계층의 4계층인 Transport Layer를 뜻하는 것 같다.  </p>
+<ol>
+<li>EC2 서비스로 이동한다.  </li>
+<li>좌측 메뉴 중에 LOAD BALANCING - Load Balancers 메뉴로 이동한다.  </li>
+<li>Create Load Balancer 버튼을 클릭하자.  </li>
+<li>세 가지가 나오는데 우리는 Application Load Balancer를 Create하면 된다.<br>잘은 모르겠지만, Network Load Balancer는 대용량 처리를 위한 것 같고,<br>Classic Load Balancer는 과거 방식(물리적인 서버를 구성해서 해당 서버를 로드 밸런서로 활용, 아마도 트래픽을 감당 못해서 그렇게 한 듯?)인데<br>현재는 소프트웨어(nginx 같은 웹서버 등등)로 처리할 수 있을 정도로 많은 발전이 이뤄진 것 같다.  </li>
+<li>Name은 L4를 식별하기 위한 이름,<br>Scheme에서 internet-facing은 외부에서도 접근 가능한 것이고, internal은 내부에서만 사용하는 것인데 우리는 외부 접속을 위해서도 쓰므로 internet-facing을 선택.<br>IP address type은 IPv4로도 충분하니 내비두자.  </li>
+<li>리스너 프로토콜은 보안을 위해 HTTP는 HTTPS로 리다이렉트를 위해 내비두고,<br>Add Listener를 클릭해서 HTTPS(443 포트)도 추가해주.  </li>
+<li>Availability Zones에서 VPC(IDC 같은 역할)<br>어느 IDC에 존재하는 인스턴스를 이용할지 모르므로(확장성 고려?) Availability Zone을 모두 체크하고 Next!  </li>
+<li>Certificate type &gt; Choose a certificate from ACM (recommended)를 선택하고(기본적으로 선택돼있긴 하지만…) SSL 인증서를 선택하고 Next!  </li>
+<li>Security Group을 선택하고 Next!  </li>
+<li>New Target Group으로 내비두고 이름 설정하고, Protocol은 HTTP로 target type은 instance로 하고 Next!<br>실제 인스턴스에는 HTTPS를 위한 SSL 인증서를 물려놓은 게 아니므로 HTTP로 선택해야한다.  </li>
+<li>인스턴스 선택하고 80번 포트로 Add to registered 버튼 클릭으로 추가하고 Next하고 Create로 마무리 하자.</li>
+<li>다시 로드 밸런서 서비스로 이동해서 해당 로드밸런서의 DNS Name을 카피해두자.</li>
+</ol>
+<h2 id="Route-53-도메인-등록"><a href="#Route-53-도메인-등록" class="headerlink" title="Route 53 (도메인 등록)"></a>Route 53 (도메인 등록)</h2><p>DNS용으로 사용하는 TCP/UDP 포트로 53번 포트를 사용하는데 그것에 유래해서 Route 53이란 이름을 지은 것 같다.  </p>
+<ol>
+<li>Route 53 서비스로 이동하자.  </li>
+<li>Hosted zones로 이동해서 원하는 도메인 네임이 없으면 새로 생성하고, 도메인 네임을 클릭해서 들어가자.</li>
+<li>Name에 서브 도메인을 입력하고, Alias를 Yes로 체크한 후에 ELB의 DNS Name을 입력하고 Create를 클릭하면 된다. </li>
+</ol>
+<h2 id="웹서버-설정"><a href="#웹서버-설정" class="headerlink" title="웹서버 설정"></a>웹서버 설정</h2><p>여기서는 nginx를 사용하지만 다른 서버도 비슷할 것으로 예상된다.  </p>
+<ol>
+<li>터미널을 이용해서 ELB에 물려놓은 EC2 인스턴스로 접속을 한다.  </li>
+<li>nginx 서버에서 다음와 같이 설정을 해주어야한다.<br>기본적인 설정 파일은 /etc/nginx/conf.d/virtual.conf에 있다.  </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  ~.;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ELB stores the protocol used between the client</span></span><br><span class="line">    <span class="comment"># and the load balancer in the X-Forwarded-Proto request header.</span></span><br><span class="line">    <span class="comment"># Check for 'https' and redirect if not</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$http_x_forwarded_proto</span> != <span class="string">'https'</span>) &#123;</span><br><span class="line">        rewrite ^ https://<span class="variable">$host</span><span class="variable">$request_uri</span>? permanent;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        proxy_set_header HOST <span class="variable">$http_host</span>;</span><br><span class="line">        proxy_set_header X-NginX-Proxy <span class="literal">true</span>;</span><br><span class="line">        proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line"></span><br><span class="line">        proxy_pass http://127.0.0.1:8080;</span><br><span class="line">        proxy_redirect off;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 브라우저로 접속해서 http to https 및 SSL 인증서가 제대로 적용됐는지 확인해보면 된다.  </p>
+<h2 id="마무리"><a href="#마무리" class="headerlink" title="마무리"></a>마무리</h2><p>끝이다.<br>혹시 공부 목적이거나 과금이 부담된다면 <a href="/2017/10/05/letsencrypt-with-certbot-feat-aws/">EC2 인스턴스(서버)에 HTTPS 서버 열기</a>를 참고하자.</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2017/10/05/letsencrypt-with-certbot-feat-aws/" rel="next" title="(Certbot) 공짜로 HTTPS 서버를 열어보자. (feat. AWS)">
+                  <i class="fa fa-chevron-left"></i> (Certbot) 공짜로 HTTPS 서버를 열어보자. (feat. AWS)
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/10/16/http-status-code-307-vs-308/" rel="prev" title="(HTTP) 상태 코드 - 307 vs 308">
+                  (HTTP) 상태 코드 - 307 vs 308 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc">
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Certificate-Manager-SSL-인증서"><span class="nav-number">1.</span> <span class="nav-text">Certificate Manager(SSL 인증서)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ELB-L4-Load-Balancer"><span class="nav-number">2.</span> <span class="nav-text">ELB (L4, Load Balancer)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Route-53-도메인-등록"><span class="nav-number">3.</span> <span class="nav-text">Route 53 (도메인 등록)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#웹서버-설정"><span class="nav-number">4.</span> <span class="nav-text">웹서버 설정</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#마무리"><span class="nav-number">5.</span> <span class="nav-text">마무리</span></a></li></ol></div>
+          </div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">227</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2017/10/05/https-with-elb/";
+    this.page.identifier = "2017/10/05/https-with-elb/";
+    this.page.title = '(ELB) HTTPS 서버를 열어보자';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+    </div>
+    <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    $(element).parent().append($(element).remove());
+  });
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+</body>
+</html>

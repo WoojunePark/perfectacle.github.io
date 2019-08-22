@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="숫자가 0~100까지 순서대로 변하는 예제를 만들어볼 것이다.일단 예제 파일에 쓰일 index.html을 하나 만들어보자.  123456789101112&amp;lt;!DOCTYPE html&amp;gt;&amp;lt;html lang=&quot;ko&quot;&amp;gt;&amp;lt;head&amp;gt;  &amp;lt;meta charset=&quot;UTF-8&quot;/&amp;gt;  &amp;lt;title&amp;gt;Title&amp;lt;/titl">
+<meta name="keywords" content="JS,ES,ES6,ES2015,promise,async,await,ES6+,callback">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(JS) 숫자가 증가하는 애니메이션 구현하기">
+<meta property="og:url" content="https://perfectacle.github.io/2017/05/03/js-async-number-animation/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="숫자가 0~100까지 순서대로 변하는 예제를 만들어볼 것이다.일단 예제 파일에 쓰일 index.html을 하나 만들어보자.  123456789101112&amp;lt;!DOCTYPE html&amp;gt;&amp;lt;html lang=&quot;ko&quot;&amp;gt;&amp;lt;head&amp;gt;  &amp;lt;meta charset=&quot;UTF-8&quot;/&amp;gt;  &amp;lt;title&amp;gt;Title&amp;lt;/titl">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://perfectacle.github.io/images/js-async-number-animation/thumb.png">
+<meta property="og:updated_time" content="2019-08-22T05:34:24.605Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(JS) 숫자가 증가하는 애니메이션 구현하기">
+<meta name="twitter:description" content="숫자가 0~100까지 순서대로 변하는 예제를 만들어볼 것이다.일단 예제 파일에 쓰일 index.html을 하나 만들어보자.  123456789101112&amp;lt;!DOCTYPE html&amp;gt;&amp;lt;html lang=&quot;ko&quot;&amp;gt;&amp;lt;head&amp;gt;  &amp;lt;meta charset=&quot;UTF-8&quot;/&amp;gt;  &amp;lt;title&amp;gt;Title&amp;lt;/titl">
+<meta name="twitter:image" content="https://perfectacle.github.io/images/js-async-number-animation/thumb.png">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2017/05/03/js-async-number-animation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>(JS) 숫자가 증가하는 애니메이션 구현하기 | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script pjax="">
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/05/03/js-async-number-animation/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">(JS) 숫자가 증가하는 애니메이션 구현하기
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2017-05-03 09:39:29" itemprop="dateCreated datePublished" datetime="2017-05-03T09:39:29+09:00">2017-05-03</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 14:34:24" itemprop="dateModified" datetime="2019-08-22T14:34:24+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/ECMAScript/" itemprop="url" rel="index"><span itemprop="name">ECMAScript</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/05/03/js-async-number-animation/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/05/03/js-async-number-animation/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/JS/" rel="tag"># JS</a>
+              
+                <a href="/tags/ES/" rel="tag"># ES</a>
+              
+                <a href="/tags/ES6/" rel="tag"># ES6</a>
+              
+                <a href="/tags/ES2015/" rel="tag"># ES2015</a>
+              
+                <a href="/tags/promise/" rel="tag"># promise</a>
+              
+                <a href="/tags/async/" rel="tag"># async</a>
+              
+                <a href="/tags/await/" rel="tag"># await</a>
+              
+                <a href="/tags/ES6/" rel="tag"># ES6+</a>
+              
+                <a href="/tags/callback/" rel="tag"># callback</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/js-async-number-animation/thumb.png" alt=""></p><p>숫자가 0~100까지 순서대로 변하는 예제를 만들어볼 것이다.<br>일단 예제 파일에 쓰일 index.html을 하나 만들어보자.  </p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"ko"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"root"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"./index.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p>이제 index.js 파일을 만들자.<br>1<del>10까지 출력이니 반복문을 쓰면 될 것 같다.<br>아래와 같이 콘솔창에 찍어보면 1</del>10까지 아주 잘 나온다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>; i&lt;<span class="number">11</span>; i++) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 실제 DOM에다 렌더링 시켜보자.<br><a href="https://codesandbox.io/s/qj5lKYMvr" rel="external nofollow noopener noreferrer" target="_blank">예제 보기</a></p>
+<p>숫자를 보여줄 때 그냥 보여주기만 하면 재미 없죠?<br>한 번 쯤은 0~100까지 숫자가 순차적으로 올라가면서 보여주면<br>더 역동적일 것 같다고 생각해보신 적들 있을 겁니다.<br>저도 같은 생각을 해보며 글을 작성해보았습니다.<br>콜백 함수, Promise, Async</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> domRoot = <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>);</span><br><span class="line">domRoot.innerText = <span class="number">0</span>; <span class="comment">// 0으로 초기값 설정.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>; i&lt;<span class="number">11</span>; i++) &#123;</span><br><span class="line">  domRoot.innerText = i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>결과를 확인하면 너무 한 순간에 값이 바뀌어서 눈으로 확인이 불가능할 정도다.<br>그렇다면 setTimeout으로 딜레이를 걸어보자!<br><a href="https://codesandbox.io/s/LgV53Wo5w" rel="external nofollow noopener noreferrer" target="_blank">예제 보기</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> domRoot = <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>);</span><br><span class="line">domRoot.innerText = <span class="number">0</span>; <span class="comment">// 0으로 초기값 설정.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>; i&lt;<span class="number">11</span>; i++) &#123;</span><br><span class="line">  <span class="comment">// ES5까지는 함수 단위의 스코프여서 아래와 같이 하면 함수를 실행하는 시점은</span></span><br><span class="line">  <span class="comment">// 반복문이 끝난 시점이라 i에는 10이 10번 들어가게 된다.</span></span><br><span class="line">  <span class="comment">//setTimeout(function() &#123;</span></span><br><span class="line">  <span class="comment">//  domRoot.innerText = i;</span></span><br><span class="line">  <span class="comment">//&#125;);</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// ES5까지는 함수 단위의 스코프라 즉시 실행함수를 통해 변수의 스코프를 가두었다.  </span></span><br><span class="line">  <span class="comment">// 즉시 실행 함수의 내부에 있는 함수를 실행하는 시점은 역시 반복문이 끝난 시점이다.  </span></span><br><span class="line">  <span class="comment">// 하지만 즉시 실행 함수를 통해 변수를 가둬두었으므로 클로저를 통해 해당 변수에 들어간 값을 렌더링한다.</span></span><br><span class="line">  (<span class="function"><span class="keyword">function</span>(<span class="params">i</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      domRoot.innerText = i;</span><br><span class="line">    &#125;, <span class="number">100</span>)</span><br><span class="line">  &#125;(i));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>하지만 위의 결과도 우리가 원하던 결과가 아니다.<br>100ms 동안은 가만히 있지만 그 이후에 함수가 물밀듯 실행한다.<br>setTimeout 함수는 동기식으로 동작하는 게 아니라 비동기 식으로 동작하기 때문이다.<br>이를 위해서 우리에겐 콜백 함수란 게 존재한다!<br><a href="https://codesandbox.io/s/oQvLXL26K" rel="external nofollow noopener noreferrer" target="_blank">예제 보기</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 콜백 함수를 익명 함수로 일일이 작성하기 귀찮으니 따로 빼주자.</span></span><br><span class="line"><span class="comment">// 돔에 숫자를 렌더링하는 함수이다.</span></span><br><span class="line"><span class="keyword">var</span> changeNum = <span class="function"><span class="keyword">function</span>(<span class="params">dom, num</span>) </span>&#123;</span><br><span class="line">  dom.innerText = num;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> MS = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">var</span> domRoot = <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>);</span><br><span class="line">domRoot.innerText = <span class="number">0</span>; <span class="comment">// 0으로 초기값 설정.</span></span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  changeNum(domRoot, <span class="number">1</span>);</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    changeNum(domRoot, <span class="number">2</span>);</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      changeNum(domRoot, <span class="number">3</span>);</span><br><span class="line">      setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        changeNum(domRoot, <span class="number">4</span>);</span><br><span class="line">        setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">          changeNum(domRoot, <span class="number">5</span>);</span><br><span class="line">          setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            changeNum(domRoot, <span class="number">6</span>);</span><br><span class="line">            setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">              changeNum(domRoot, <span class="number">7</span>);</span><br><span class="line">              setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                changeNum(domRoot, <span class="number">8</span>);</span><br><span class="line">                setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                  changeNum(domRoot, <span class="number">9</span>);</span><br><span class="line">                  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                    changeNum(domRoot, <span class="number">10</span>);</span><br><span class="line">                  &#125;, MS)</span><br><span class="line">                &#125;, MS)</span><br><span class="line">              &#125;, MS)</span><br><span class="line">            &#125;, MS)</span><br><span class="line">          &#125;, MS)</span><br><span class="line">        &#125;, MS)</span><br><span class="line">      &#125;, MS)</span><br><span class="line">    &#125;, MS)</span><br><span class="line">  &#125;, MS)</span><br><span class="line">&#125;, MS);</span><br></pre></td></tr></table></figure>
+
+<p>코드가 보기 좋은가?<br>이를 위한 대안으로 ES2015에 나온 Promise를 써보자.<br><a href="https://codesandbox.io/s/KZ8QP37Zn" rel="external nofollow noopener noreferrer" target="_blank">예제 보기</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// promise 함수는 콜백 함수를 매개변수로 받아서 Promise 객체를 반환한다.  </span></span><br><span class="line"><span class="comment">// 그 Promise 객체는 매개변수로 받은 콜백 함수를 실행한다.</span></span><br><span class="line"><span class="keyword">const</span> promise = <span class="function"><span class="params">cb</span> =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 요 res 위치에 앞으로 실행할 콜백 함수가 들어온다고 생각하면 된다.</span></span><br><span class="line">  cb(res);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 콜백 함수를 익명 함수로 일일이 작성하기 귀찮으니 따로 빼주자.</span></span><br><span class="line"><span class="comment">// 돔에 숫자를 렌더링하는 함수이다.</span></span><br><span class="line"><span class="keyword">const</span> changeNum = <span class="function">(<span class="params">dom, num</span>) =&gt;</span> dom.innerText = num;</span><br><span class="line"></span><br><span class="line"><span class="comment">// promise 함수에 전달할 콜백 함수.</span></span><br><span class="line"><span class="comment">// 비동기 함수인 setTimeout을 동기식으로 실행시켜주게 바꾼 코드이다.</span></span><br><span class="line"><span class="keyword">const</span> syncSetTimeout = <span class="function">(<span class="params">cb, ms, promiseCb</span>) =&gt;</span> setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  cb();</span><br><span class="line">  <span class="comment">// 함수 마지막에 이 콜백 함수는 위에 promise 함수의 cb(res) 요 부분이 실행되는 거라고 보면 된다.</span></span><br><span class="line">  promiseCb();</span><br><span class="line">&#125;, ms);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> MS = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">const</span> domRoot = <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>);</span><br><span class="line">domRoot.innerText = <span class="number">0</span>; <span class="comment">// 0으로 초기값 설정.</span></span><br><span class="line"></span><br><span class="line">promise( <span class="comment">// promise 함수의 콜백으로 (동기식으로 바꾼) 비동기 함수가 들어가게 된다.</span></span><br><span class="line">  syncSetTimeout.bind(<span class="literal">null</span>, <span class="comment">// 매개변수로 콜백 함수를 넘겨줘야하기에 bind 함수 사용.</span></span><br><span class="line">    <span class="comment">// 콜백함수로 dom에 숫자를 렌더링하는 changeNum 함수 실행</span></span><br><span class="line">    changeNum.bind(<span class="literal">null</span>, domRoot, <span class="number">1</span>),</span><br><span class="line">  MS)</span><br><span class="line">)</span><br><span class="line"><span class="comment">// 요 then을 타고 cb(res) 요 안으로 계속해서 함수를 침투시킨다고 생각하면 된다.</span></span><br><span class="line"><span class="comment">// 그렇게 침투시켜서 콜백 함수 피라미드와 같은 효과를 내는 거다.</span></span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> promise(syncSetTimeout.bind(<span class="literal">null</span>, changeNum.bind(<span class="literal">null</span>, domRoot, <span class="number">2</span>), MS)))</span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> promise(syncSetTimeout.bind(<span class="literal">null</span>, changeNum.bind(<span class="literal">null</span>, domRoot, <span class="number">3</span>), MS)))</span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> promise(syncSetTimeout.bind(<span class="literal">null</span>, changeNum.bind(<span class="literal">null</span>, domRoot, <span class="number">4</span>), MS)))</span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> promise(syncSetTimeout.bind(<span class="literal">null</span>, changeNum.bind(<span class="literal">null</span>, domRoot, <span class="number">5</span>), MS)))</span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> promise(syncSetTimeout.bind(<span class="literal">null</span>, changeNum.bind(<span class="literal">null</span>, domRoot, <span class="number">6</span>), MS)))</span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> promise(syncSetTimeout.bind(<span class="literal">null</span>, changeNum.bind(<span class="literal">null</span>, domRoot, <span class="number">7</span>), MS)))</span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> promise(syncSetTimeout.bind(<span class="literal">null</span>, changeNum.bind(<span class="literal">null</span>, domRoot, <span class="number">8</span>), MS)))</span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> promise(syncSetTimeout.bind(<span class="literal">null</span>, changeNum.bind(<span class="literal">null</span>, domRoot, <span class="number">9</span>), MS)))</span><br><span class="line">.then(<span class="function"><span class="params">()</span> =&gt;</span> promise(syncSetTimeout.bind(<span class="literal">null</span>, changeNum.bind(<span class="literal">null</span>, domRoot, <span class="number">10</span>), MS)));</span><br></pre></td></tr></table></figure>
+
+<p>뭐 썩 보기 좋은 건 아니지만 콜백 함수 지옥에 비하면 훨씬 봐주기가 좋아졌다.<br>하지만 숫자를 1~10이 아닌 100까지 표현해야한다면…?<br>저걸 100줄을 쓰고 있어야한다.<br>그럼 이제 남은 방안은 ES2017의 async/await가 있다!<br><a href="https://codesandbox.io/s/jLy5BDqR" rel="external nofollow noopener noreferrer" target="_blank">예제 보기</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// promise 함수는 콜백 함수를 매개변수로 받아서 Promise 객체를 반환한다.  </span></span><br><span class="line"><span class="comment">// 그 Promise 객체는 매개변수로 받은 콜백 함수를 실행한다.</span></span><br><span class="line"><span class="keyword">const</span> promise = <span class="function"><span class="params">cb</span> =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 요 res 위치에 앞으로 실행할 콜백 함수가 들어온다고 생각하면 된다.</span></span><br><span class="line">  cb(res);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 콜백 함수를 익명 함수로 일일이 작성하기 귀찮으니 따로 빼주자.</span></span><br><span class="line"><span class="comment">// 돔에 숫자를 렌더링하는 함수이다.</span></span><br><span class="line"><span class="keyword">const</span> changeNum = <span class="function">(<span class="params">dom, num</span>) =&gt;</span> dom.innerText = num;</span><br><span class="line"></span><br><span class="line"><span class="comment">// promise 함수에 전달할 콜백 함수.</span></span><br><span class="line"><span class="comment">// 비동기 함수인 setTimeout을 동기식으로 실행시켜주게 바꾼 코드이다.</span></span><br><span class="line"><span class="comment">// promiseCb는 promise 함수로부터 전달받은 콜백함수이다.</span></span><br><span class="line"><span class="keyword">const</span> syncSetTimeout = <span class="function">(<span class="params">cb, ms, promiseCb</span>) =&gt;</span> setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  cb();</span><br><span class="line">  <span class="comment">// 함수 마지막에 이 콜백 함수는 위에 promise 함수의 cb(res) 요 부분이 실행되는 거라고 보면 된다.</span></span><br><span class="line">  promiseCb();</span><br><span class="line">&#125;, ms);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> MS = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">const</span> domRoot = <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>);</span><br><span class="line">domRoot.innerText = <span class="number">0</span>; <span class="comment">// 0으로 초기값 설정.</span></span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span>() =&gt; &#123; <span class="comment">// async는 함수이기 때문에 실행하려면 즉시 실행 함수를 써야한다.</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">1</span>; i&lt;<span class="number">101</span>;) &#123; <span class="comment">// 반복문을 통해 1~100까지 반복하고 있다.</span></span><br><span class="line">    <span class="comment">// await 함수는 비동기 함수를 동기식으로 실행시키는 데 쓰이는 함수이다.</span></span><br><span class="line">    <span class="comment">// 내가 알기로는 Promise 없이는 죽도 밥도 안되는 것으로 알고 있다.</span></span><br><span class="line">    <span class="keyword">await</span>(</span><br><span class="line">      promise( <span class="comment">// promise 함수의 콜백으로 (동기식으로 바꾼) 비동기 함수가 들어가게 된다.</span></span><br><span class="line">        syncSetTimeout.bind(<span class="literal">null</span>, <span class="comment">// 매개변수로 콜백 함수를 넘겨줘야하기에 bind 함수 사용.</span></span><br><span class="line">          changeNum.bind(<span class="literal">null</span>, domRoot, i++), <span class="comment">// 콜백함수로 dom에 숫자를 렌더링하는 changeNum 함수 실행</span></span><br><span class="line">        MS)</span><br><span class="line">      )</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p>하지만 async/await와 Promise를 학습하는 것은 어느 정도 러닝 커브가 있다.<br>한번 내가 만들어본 async-to-sync 라이브러리를 이용하여 바꿔보자.<br><a href="https://codesandbox.io/s/2RM10B3PJ" rel="external nofollow noopener noreferrer" target="_blank">예제 보기</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 비동기 함수를 동기식으로 실행해주는 async-to-sync 모듈을 로드하자.</span></span><br><span class="line"><span class="keyword">import</span> ats <span class="keyword">from</span> <span class="string">'async-to-sync'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 콜백 함수를 익명 함수로 일일이 작성하기 귀찮으니 따로 빼주자.</span></span><br><span class="line"><span class="comment">// 돔에 숫자를 렌더링하는 함수이다.</span></span><br><span class="line"><span class="keyword">const</span> changeNum = <span class="function">(<span class="params">dom, num</span>) =&gt;</span> dom.innerText = num;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 기본적으로 async-to-sync 모듈은 위 async/await + Promise를 짬뽕한 라이브러리다.</span></span><br><span class="line"><span class="comment">// 비동기 함수를 동기 함수로 바꾸는 방법은 위의 예제와 같다.</span></span><br><span class="line"><span class="comment">// 함수 매개변수에 promise 함수에서 전달받은 promiseCb를 추가하고, 함수 마지막 부분에 그 콜백 함수를 실행시키면 된다.</span></span><br><span class="line"><span class="comment">// promise 함수에 전달할 콜백 함수.</span></span><br><span class="line"><span class="comment">// 비동기 함수인 setTimeout을 동기식으로 실행시켜주게 바꾼 코드이다.</span></span><br><span class="line"><span class="keyword">const</span> syncSetTimeout = <span class="function">(<span class="params">cb, ms, promiseCb</span>) =&gt;</span> setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  cb();</span><br><span class="line">  <span class="comment">// 함수 마지막에 이 콜백 함수는 위에 promise 함수의 cb(res) 요 부분이 실행되는 거라고 보면 된다.</span></span><br><span class="line">  promiseCb();</span><br><span class="line">&#125;, ms);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> arrAsync = []; <span class="comment">// async-to-sync는 비동기 함수들이 담겨있는 배열을 매개변수로 받아서 실행시킨다.</span></span><br><span class="line"><span class="keyword">const</span> MS = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">const</span> domRoot = <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>);</span><br><span class="line">domRoot.innerText = <span class="number">0</span>; <span class="comment">// 0으로 초기값 설정.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">1</span>; i&lt;<span class="number">101</span>;) &#123; <span class="comment">// 반복문을 통해 1~100까지 반복하고 있다.</span></span><br><span class="line">  arrAsync.push( <span class="comment">// 배열에 비동기 함수들을 하나씩 담고 있다.</span></span><br><span class="line">    syncSetTimeout.bind(<span class="literal">null</span>, <span class="comment">// 매개변수로 콜백 함수를 넘겨줘야하기에 bind 함수 사용.</span></span><br><span class="line">      changeNum.bind(<span class="literal">null</span>, domRoot, i++), <span class="comment">// 콜백함수로 dom에 숫자를 렌더링하는 changeNum 함수 실행</span></span><br><span class="line">    MS)</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ats(arrAsync); <span class="comment">// 배열에 담은 비동기 함수들을 한 번에 실행시키고 있다.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="더-쉬운-방법"><a href="#더-쉬운-방법" class="headerlink" title="더 쉬운 방법"></a>더 쉬운 방법</h2><p>역시 구글링을 해보니 더 쉬운 방법이 존재하였다.<br>왜 이런 뻘짓을 했는지…  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> current = <span class="number">0</span>; <span class="comment">// 현재 숫자</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 콜백 함수를 익명 함수로 일일이 작성하기 귀찮으니 따로 빼주자.</span></span><br><span class="line"><span class="comment">// 돔에 숫자를 렌더링하는 함수이다.</span></span><br><span class="line"><span class="comment">// 외부에 있는 변수를 건드리므로 좋지는 않지만 어쩔 수 없다.</span></span><br><span class="line"><span class="keyword">const</span> changeNum = <span class="function">(<span class="params">dom</span>) =&gt;</span> dom.innerText = ++current;</span><br><span class="line"></span><br><span class="line"><span class="comment">// setTimeout 말고 setInterval이 더 간결하다.</span></span><br><span class="line"><span class="keyword">const</span> SetInterval = <span class="function">(<span class="params">cb, ms</span>) =&gt;</span> setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span>(current &gt;= <span class="number">100</span>) <span class="keyword">return</span> clearInterval(SetInterval);</span><br><span class="line">  cb();</span><br><span class="line">&#125;, ms);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> MS = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">const</span> domRoot = <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>);</span><br><span class="line">domRoot.innerText = <span class="number">0</span>; <span class="comment">// 0으로 초기값 설정.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 이 함수를 실행할 때는 current가 1이 되므로 계속해서 1로 고정하게 된다.  </span></span><br><span class="line"><span class="comment">// 그래서 부득이하게 콜백 함수 안에서 외부 변수를 불러오게 했다.</span></span><br><span class="line">SetInterval(changeNum.bind(<span class="literal">null</span>, domRoot), MS);</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2017/05/01/async-to-sync/" rel="next" title="(자작) async-to-sync (자바스크립트 비동기 함수 헬퍼)">
+                  <i class="fa fa-chevron-left"></i> (자작) async-to-sync (자바스크립트 비동기 함수 헬퍼)
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/05/19/js-004-scope/" rel="prev" title="(자알쓰) Scope Part. 2">
+                  (자알쓰) Scope Part. 2 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc">
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#더-쉬운-방법"><span class="nav-number">1.</span> <span class="nav-text">더 쉬운 방법</span></a></li></ol></div>
+          </div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">227</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2017/05/03/js-async-number-animation/";
+    this.page.identifier = "2017/05/03/js-async-number-animation/";
+    this.page.title = '(JS) 숫자가 증가하는 애니메이션 구현하기';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+    </div>
+    <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    $(element).parent().append($(element).remove());
+  });
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+</body>
+</html>

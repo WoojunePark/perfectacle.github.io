@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="남들의 사랑과 관심이 고파서 라이브러리를 CDN 호스팅 업체에 등록하고자 며 칠 간 고생했던 내용을 적어봤다.CDN에 대해서는 구글링하면 많이 나오는데 CDN은 각 지역 별로 서버를 두는 서비스 형식으로 대충 알고있다.국내 무료 호스팅 업체에 그냥 나의 라이브러리를 업로드해도 되지만 일정 기간마다 서비스를 연장하거나 트래픽 등등의 문제가 존재하였다.그리고">
+<meta name="keywords" content="CDN,Hosting">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CDN 무료 호스팅하기">
+<meta property="og:url" content="https://perfectacle.github.io/2016/11/28/CDN-Free-Hosting/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="남들의 사랑과 관심이 고파서 라이브러리를 CDN 호스팅 업체에 등록하고자 며 칠 간 고생했던 내용을 적어봤다.CDN에 대해서는 구글링하면 많이 나오는데 CDN은 각 지역 별로 서버를 두는 서비스 형식으로 대충 알고있다.국내 무료 호스팅 업체에 그냥 나의 라이브러리를 업로드해도 되지만 일정 기간마다 서비스를 연장하거나 트래픽 등등의 문제가 존재하였다.그리고">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/thumb.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/maxcdn.jpg">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/01.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/cdnjs.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/jsdelivr.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/02.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/03.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/04.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/05.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/06.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/07.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/08.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/09.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/10.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/11.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/12.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/13.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/14.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/15.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/16.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/17.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/18.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/19.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/20.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/21.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/22.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/23.png">
+<meta property="og:updated_time" content="2019-08-22T03:50:50.306Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CDN 무료 호스팅하기">
+<meta name="twitter:description" content="남들의 사랑과 관심이 고파서 라이브러리를 CDN 호스팅 업체에 등록하고자 며 칠 간 고생했던 내용을 적어봤다.CDN에 대해서는 구글링하면 많이 나오는데 CDN은 각 지역 별로 서버를 두는 서비스 형식으로 대충 알고있다.국내 무료 호스팅 업체에 그냥 나의 라이브러리를 업로드해도 되지만 일정 기간마다 서비스를 연장하거나 트래픽 등등의 문제가 존재하였다.그리고">
+<meta name="twitter:image" content="https://perfectacle.github.io/images/CDN-Free-Hosting/thumb.png">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2016/11/28/CDN-Free-Hosting/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>CDN 무료 호스팅하기 | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script pjax="">
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2016/11/28/CDN-Free-Hosting/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">CDN 무료 호스팅하기
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2016-11-28 19:54:03" itemprop="dateCreated datePublished" datetime="2016-11-28T19:54:03+09:00">2016-11-28</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 12:50:50" itemprop="dateModified" datetime="2019-08-22T12:50:50+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/기타/" itemprop="url" rel="index"><span itemprop="name">기타</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/기타/등등/" itemprop="url" rel="index"><span itemprop="name">등등</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/11/28/CDN-Free-Hosting/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/11/28/CDN-Free-Hosting/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/CDN/" rel="tag"># CDN</a>
+              
+                <a href="/tags/Hosting/" rel="tag"># Hosting</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/CDN-Free-Hosting/thumb.png" alt=""><br>남들의 사랑과 관심이 고파서 라이브러리를 CDN 호스팅 업체에 등록하고자 며 칠 간 고생했던 내용을 적어봤다.<br>CDN에 대해서는 구글링하면 많이 나오는데 CDN은 각 지역 별로 서버를 두는 서비스 형식으로 대충 알고있다.<br>국내 무료 호스팅 업체에 그냥 나의 라이브러리를 업로드해도 되지만 일정 기간마다 서비스를 연장하거나 트래픽 등등의 문제가 존재하였다.<br>그리고 제이쿼리나 부트스트랩 등등의 프레임워크&amp;라이브러리들이 외국 CDN 호스팅 업체에 등록된 걸 보면 뭔가 동경의 대상이었다.<br>나의 라이브러리도 한 번 그렇게 만들어 보고 싶었다.<br>뭔가 좋아보인다 싶으면 따라하는 게 나의 단점이지만 그래도 해보고 싶었다.</p><a id="more"></a>
+<ol>
+<li><a href="https://www.maxcdn.com/" rel="external nofollow noopener noreferrer" target="_blank">maxCDN</a><br><img src="/images/CDN-Free-Hosting/maxcdn.jpg" alt="maxCDN"><br><img src="/images/CDN-Free-Hosting/01.png" alt="유료인 것 같다... 스킵...">  </li>
+<li><a href="https://cdnjs.com/" rel="external nofollow noopener noreferrer" target="_blank">cdnjs</a><br><img src="/images/CDN-Free-Hosting/cdnjs.png" alt="내 라이브러리는 신생 라이브러리라 스킵...">  </li>
+<li><a href="http://www.jsdelivr.com/" rel="external nofollow noopener noreferrer" target="_blank">jsdelivr</a><br><img src="/images/CDN-Free-Hosting/jsdelivr.png" alt="하지만 구세주는 있었으니 그 이름하여 jsdelivr...!"><br>&nbsp;<br>혼자서 깃헙 문서를 보고 따라할 사람은 아래 링크로 들어가면 된다.<br><a href="https://github.com/jsdelivr/jsdelivr/blob/master/CONTRIBUTING.md" rel="external nofollow noopener noreferrer" target="_blank">https://github.com/jsdelivr/jsdelivr/blob/master/CONTRIBUTING.md</a><br>&nbsp;<br>준비사항: 라이브러리가 올라가 있는 본인의 깃헙 저장소.<br>그리고 그 깃헙 저장소에 태그가 있어야한다.<br>태그가 뭔지 모르는 사람은 아래 링크를 참조하자.<br><a href="http://www.whatwant.com/377" rel="external nofollow noopener noreferrer" target="_blank">http://www.whatwant.com/377</a><br><img src="/images/CDN-Free-Hosting/02.png" alt="태그는 저장소에서 releases 탭으로 오면 볼 수 있다."><br>&nbsp;<br>그 이후에 아래 링크로 접속한다.<br><a href="https://github.com/jsdelivr/jsdelivr/tree/master/files" rel="external nofollow noopener noreferrer" target="_blank">https://github.com/jsdelivr/jsdelivr/tree/master/files</a><br><img src="/images/CDN-Free-Hosting/03.png" alt="Create new file을 클릭하자.">  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">author = &quot;name of lib author&quot;</span><br><span class="line">github = &quot;https://github.com/user_id/repository&quot;</span><br><span class="line">homepage = &quot;없으면 그냥 깃헙 저장소 주소 입력해도 되고, npm 주소 입력해도 됨.&quot;</span><br><span class="line">description = &quot;설명&quot;</span><br><span class="line">mainfile = &quot;lib.min.js&quot;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><img src="/images/CDN-Free-Hosting/04.png" alt="Propose new file을 클릭하자."><br><img src="/images/CDN-Free-Hosting/05.png" alt="나는 patch-3이라는 브랜치로 포크를 떴다."><br><img src="/images/CDN-Free-Hosting/06.png" alt="이제 깃헙 메인페이지로 보면 jsdelivr가 포크 떠진 게 보인다."><br><img src="/images/CDN-Free-Hosting/07.png" alt="포크 뜬 브랜치로 들어간다."><br><img src="/images/CDN-Free-Hosting/08.png" alt="Find file을 누른다."><br><img src="/images/CDN-Free-Hosting/09.png" alt="포크 뜨기 전에 입력했던 라이브러리 이름을 검색하고 클릭한다."><br><img src="/images/CDN-Free-Hosting/10.png" alt="해당 라이브러리의 디렉토리로 와서 Create new file을 클릭하자.">  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 패키지 매니저에는 npm이라고 입력해도 되는 것 같다.</span><br><span class="line">// files에는 호스팅 될 파일을 입력하면 된다.</span><br><span class="line">&#123;</span><br><span class="line">  &quot;packageManager&quot;: &quot;github&quot;,</span><br><span class="line">  &quot;name&quot;: &quot;lib-name&quot;,</span><br><span class="line">  &quot;repo&quot;: &quot;user_id/lib-name&quot;,</span><br><span class="line">  &quot;files&quot;: &#123;</span><br><span class="line">    &quot;include&quot;: [&quot;lib-name.js&quot;, &quot;lib-name.min.js&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/CDN-Free-Hosting/11.png" alt="봇이 자동으로 업데이트하기 위한 파일, Commit new file을 클릭하자."><br><img src="/images/CDN-Free-Hosting/12.png" alt="다시 한 번 Create new file을 클릭하자."><br><img src="/images/CDN-Free-Hosting/13.png" alt="호스팅 하길 원하는 버전의 디렉토리를 만들고 dummy 파일을 만들자. 어차피 삭제할 거다."><br><img src="/images/CDN-Free-Hosting/14.png" alt="해당 버전의 디렉토리로 가서 Upload files를 누르자."><br><img src="/images/CDN-Free-Hosting/15.png" alt="호스팅 하려는 파일을 업로드 하고 Commit changes를 누르자."><br><img src="/images/CDN-Free-Hosting/16.png" alt="dummy 파일을 누르자."><br><img src="/images/CDN-Free-Hosting/17.png" alt="삭제하자."><br><img src="/images/CDN-Free-Hosting/18.png" alt="머지 및 호스팅 요청을 위해 풀리퀘를 날리자."><br><img src="/images/CDN-Free-Hosting/19.png" alt="부연 설명을 블라블라 적어보자."><br><img src="/images/CDN-Free-Hosting/20.png" alt="봇이 풀리퀘(PR)에서 오류를 검출했단다."><br>예제 작성을 위해 한글을 썼더니 ascii 케릭터로만 적으라는 오류를 뿜는다.<br>하단의 Close pull request를 눌러서 취소 시키고, 오류를 수정한 후 다시 풀리퀘를 날리면 된다.<br><img src="/images/CDN-Free-Hosting/21.png" alt="인내와 고통의 시간이 지나면 관리자가 머지를 한다."><br><img src="/images/CDN-Free-Hosting/22.png" alt="마스터 브랜치에서도 내 라이브러리가 추가되었다."><br><img src="/images/CDN-Free-Hosting/23.png" alt="나의 라이브러리가 jsdelivr CDN에 등록되었다."><br>감격의 순간이다 흑흑흑…<br>버전 별로 호스팅이 되어있고, unminify, minify한 js 파일 모두 다 호스팅 되었다.<br>세상 어딘가에 나의 발자취를 남긴 것 같아 굉장히 뿌듯하다.</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/11/27/ES-RegExp-ex/" rel="next" title="(ES) 정규표현식 응용하기">
+                  <i class="fa fa-chevron-left"></i> (ES) 정규표현식 응용하기
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/12/18/JetBrains-License/" rel="prev" title="JetBrains 회사 제품의 라이센스">
+                  JetBrains 회사 제품의 라이센스 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">227</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2016/11/28/CDN-Free-Hosting/";
+    this.page.identifier = "2016/11/28/CDN-Free-Hosting/";
+    this.page.title = 'CDN 무료 호스팅하기';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+    </div>
+    <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    $(element).parent().append($(element).remove());
+  });
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+</body>
+</html>

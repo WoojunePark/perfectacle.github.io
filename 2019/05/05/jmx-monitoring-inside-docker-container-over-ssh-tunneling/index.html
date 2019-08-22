@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="들어가기에 앞서JMX를 모니터링 하려면 VisualVM이나 JDK에 기본적으로 내장돼있는 JConsole을 사용해야한다.로컬에서 JMX 모니터링하기우선 로컬에 어플리케이션을 띄우고 JMX 모니터링하기란 참 쉽다.우선 자바 어플리케이션을 띄워보자.  1java -jar air.jar">
+<meta name="keywords" content="JVM,JMX">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(삽질기) SSH 터널링을 통해 원격지에 존재하는 도커 컨테이너 안의 JMX 모니터링하기">
+<meta property="og:url" content="https://perfectacle.github.io/2019/05/05/jmx-monitoring-inside-docker-container-over-ssh-tunneling/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="들어가기에 앞서JMX를 모니터링 하려면 VisualVM이나 JDK에 기본적으로 내장돼있는 JConsole을 사용해야한다.로컬에서 JMX 모니터링하기우선 로컬에 어플리케이션을 띄우고 JMX 모니터링하기란 참 쉽다.우선 자바 어플리케이션을 띄워보자.  1java -jar air.jar">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/thumb.png">
+<meta property="og:image" content="https://perfectacle.github.io/2019/05/05/jmx-monitoring-inside-docker-container-over-ssh-tunneling/01.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/02.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/03.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/04.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/aws-bastion-host.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/aws-ssh-local-port-forwading.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/02.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/05.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/06.png">
+<meta property="og:updated_time" content="2019-08-22T05:15:57.055Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(삽질기) SSH 터널링을 통해 원격지에 존재하는 도커 컨테이너 안의 JMX 모니터링하기">
+<meta name="twitter:description" content="들어가기에 앞서JMX를 모니터링 하려면 VisualVM이나 JDK에 기본적으로 내장돼있는 JConsole을 사용해야한다.로컬에서 JMX 모니터링하기우선 로컬에 어플리케이션을 띄우고 JMX 모니터링하기란 참 쉽다.우선 자바 어플리케이션을 띄워보자.  1java -jar air.jar">
+<meta name="twitter:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/thumb.png">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2019/05/05/jmx-monitoring-inside-docker-container-over-ssh-tunneling/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>(삽질기) SSH 터널링을 통해 원격지에 존재하는 도커 컨테이너 안의 JMX 모니터링하기 | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script pjax="">
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2019/05/05/jmx-monitoring-inside-docker-container-over-ssh-tunneling/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">(삽질기) SSH 터널링을 통해 원격지에 존재하는 도커 컨테이너 안의 JMX 모니터링하기
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2019-05-05 08:36:13" itemprop="dateCreated datePublished" datetime="2019-05-05T08:36:13+09:00">2019-05-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 14:15:57" itemprop="dateModified" datetime="2019-08-22T14:15:57+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Note/" itemprop="url" rel="index"><span itemprop="name">Note</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Note/삽질/" itemprop="url" rel="index"><span itemprop="name">삽질</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/05/05/jmx-monitoring-inside-docker-container-over-ssh-tunneling/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/05/05/jmx-monitoring-inside-docker-container-over-ssh-tunneling/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/JVM/" rel="tag"># JVM</a>
+              
+                <a href="/tags/JMX/" rel="tag"># JMX</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/thumb.png" alt="네가 알던 로컬호스트가 아냐! (로컬호스트처럼 보이지만 실제론 원격지에 있는 서버에 붙었음을 의미)"></p><h2 id="들어가기에-앞서"><a href="#들어가기에-앞서" class="headerlink" title="들어가기에 앞서"></a>들어가기에 앞서</h2><p>JMX를 모니터링 하려면 <a href="https://visualvm.github.io/" rel="external nofollow noopener noreferrer" target="_blank">VisualVM</a>이나 JDK에 기본적으로 내장돼있는 <a href="http://openjdk.java.net/tools/svc/jconsole/" rel="external nofollow noopener noreferrer" target="_blank">JConsole</a>을 사용해야한다.</p><h2 id="로컬에서-JMX-모니터링하기"><a href="#로컬에서-JMX-모니터링하기" class="headerlink" title="로컬에서 JMX 모니터링하기"></a>로컬에서 JMX 모니터링하기</h2><p>우선 로컬에 어플리케이션을 띄우고 JMX 모니터링하기란 참 쉽다.<br>우선 자바 어플리케이션을 띄워보자.  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar air.jar</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+
+<p><img src="01.png" alt="그리고 모니터링 툴을 보면 바로 해당 어플리케이션이 잡혀있다."></p>
+<h2 id="도커-컨테이너-안의-JMX-모니터링-하기"><a href="#도커-컨테이너-안의-JMX-모니터링-하기" class="headerlink" title="도커 컨테이너 안의 JMX 모니터링 하기"></a>도커 컨테이너 안의 JMX 모니터링 하기</h2><p>우선 도커 이미지 파일부터 만들어야한다.  </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> openjdk:<span class="number">11</span>-jdk-slim</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /root</span></span><br><span class="line"><span class="bash"></span></span><br><span class="line"><span class="bash">COPY build/libs/air.jar .</span></span><br><span class="line"><span class="bash"></span></span><br><span class="line"><span class="bash">CMD (java \</span></span><br><span class="line"><span class="bash">          -Dcom.sun.management.jmxremote \</span></span><br><span class="line"><span class="bash">          -Dcom.sun.management.jmxremote.port=9090 \</span></span><br><span class="line"><span class="bash">          -Dcom.sun.management.jmxremote.authenticate=<span class="literal">false</span> \</span></span><br><span class="line"><span class="bash">          -Dcom.sun.management.jmxremote.ssl=<span class="literal">false</span> \</span></span><br><span class="line"><span class="bash">          -Dcom.sun.management.jmxremote.rmi.port=9090 \</span></span><br><span class="line"><span class="bash">          -Djava.rmi.server.hostname=localhost \</span></span><br><span class="line"><span class="bash">          -jar air.jar)</span></span><br></pre></td></tr></table></figure>
+
+<p>jmxremote.port와 jmxremote.rmi.port를 달리 해도 되는데 그럼 docker container의 port 2개를 host os port 2개랑 바인딩해야한다.<br>그냥 둘을 하나로 통일하면 하나만 바인딩하면 되기 때문에 굳이 두 개로 해야할 필요성을 느끼진 못했다.<br>java.rmi.server.hostname에 로컬의 사설 IP(private ip)를 넣어도 되는데 굳이 귀찮게 그렇게 할 필요성도 느끼지 못했다.<br>또한 SSH Tunneling을 거치게 됐을 때 서버의 사설 IP를 적었을 때는 접속이 불가능했으므로 <strong>무조건 localhost라고 적어주자.</strong> </p>
+<p>해당 이미지를 빌드하고 이제 이미지를 container로 띄워보자.  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># JMX를 모니터링 하는 것이기 때문에 어플리케이션의 포트는 바인딩하지 않았다.</span></span><br><span class="line"><span class="comment"># JMX remote port(9090)와 다른 포트를 Host OS에 매핑하면 모니터링이 불가능하다.</span></span><br><span class="line"><span class="comment"># 9091:9090 이렇게 하면 못 붙는다 무조건 9090:9090(jmx remote port를 다르게 했다면 해당 포트를...)을 바인딩 해야한다.</span></span><br><span class="line"><span class="comment"># 혹시 jmx remote port와 jmx remote rmi port를 다르게 했다면 두 포트를 모두 바인딩 시켜줘야한다.</span></span><br><span class="line"><span class="comment"># jmx remote port가 9090이고 jmx remote rmi port가 9091이라면 -p 9090:9090 -p 9091:9091 이렇게 해줘야한다.</span></span><br><span class="line">docker run -p 9090:9090 air</span><br></pre></td></tr></table></figure>
+
+<p>Host OS에 자바 어플리케이션이 뜬 게 아니라 컨테이너 안에서 뜬 거고, HostOS는 JMX remort port만 바인딩 된 거기 때문에 모니터링 툴을 보면 바로 잡혀있지 않다.<br><img src="/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/02.png" alt="좌측 상단의 해당 버튼을 클릭해주자."><br><img src="/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/03.png" alt="localhost와 jmx remote port를 입력해주고 적당히 보기 쉬운 이름으로 Display name에 채워주고 스크린샷을 따라서 작성한 후에 OK 버튼을 눌러주자."><br>만약 jmx remote port와 jmx remote rmi port를 다르게 했더라도 입력하는 포트는 jmx remote port를 입력해줘야한다.<br><img src="/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/04.png" alt="성공적으로 불러와졌다."><br>아쉽지만 도커 컨테이너로 띄우게 되면 쓰레드 덤프는 떠지지만 힙 덤프는 안 떠진다.<br><strong>혹시 도커 컨테이너로 띄웠을 때도 힙 덤프를 뜨게 하려면 어떻게 해야하는지 댓글에 남겨주시면 정말 감사하겠습니다.</strong></p>
+<h2 id="SSH-Tunneling을-통해-원격지의-JMX-모니터링하기"><a href="#SSH-Tunneling을-통해-원격지의-JMX-모니터링하기" class="headerlink" title="SSH Tunneling을 통해 원격지의 JMX 모니터링하기"></a>SSH Tunneling을 통해 원격지의 JMX 모니터링하기</h2><p>서버를 퍼블릭 존에 두는 건 매우 위험하다. (크래커가 직접 SSH로 붙을 가능성이 존재하거나 각종 공격에 직접적으로 노출되기 때문에…)<br>따라서 프라이빗 존에 둬야하는데 VPN을 쓸 경제적 여력이 안 되는 가난한 환경이나 VPN을 적용하지 않은 환경에서는 매우 귀찮아진다.<br><del>(우리 회사가 가난하다는 게 아니다.)</del><br><img src="/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/aws-bastion-host.png" alt="따라서 퍼블릭 존에 Bastion Host를 두고 해당 Host를 경유해 프라이빗 존에 있는 서버에 접근하게 된다."><br><img src="/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/aws-ssh-local-port-forwading.png" alt="이런 환경에서는 Bastion Host를 거쳐 SSH Tunneling의 일종인 Local Port Forwading을 해야한다."><br>기본적인 명령어는 위 사진에서 보는 바와 같고 명령어의 예시를 들어보겠다.  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># JMX remote port(9090)와 다른 포트를 Localhost에 매핑하면 모니터링이 불가능하다.</span></span><br><span class="line"><span class="comment"># 9091:$&#123;application_server_ip&#125;:9090 이렇게 하면 못 붙는다.</span></span><br><span class="line"><span class="comment"># 무조건 9090:$&#123;application_server_ip&#125;:9090(jmx remote port를 다르게 했다면 해당 포트를...)을 바인딩 해야한다.</span></span><br><span class="line">ssh -N -L 9090:<span class="variable">$&#123;application_server_ip&#125;</span>:9090 -i ~/.ssh/key.pem ec2-user@&#123;bastion_host_ip&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이번에도 역시 Host OS에 자바 어플리케이션이 뜬 게 아니라 원격지의 도커 컨테이너 안에서 뜬 거고, Localhost에는 JMX remort port만 바인딩 된 거기 때문에 모니터링 툴을 보면 바로 잡혀있지 않다.<br><img src="/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/02.png" alt="좌측 상단의 해당 버튼을 클릭해주자."><br><img src="/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/05.png" alt="localhost와 jmx remote port를 입력해주고 적당히 보기 쉬운 이름으로 Display name에 채워주고 스크린샷을 따라서 작성한 후에 OK 버튼을 눌러주자."><br><img src="/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/06.png" alt="정상적으로 접속됐다."></p>
+<p>JMX remote port(9090)와 다른 포트를 매핑하는 바람에 몇 시간을 삽질했는지 모르겠다…<br><strong>혹시 이거보다 더 간단하게 연결하는 방법이 있다면 댓글로 남겨주시면 정말 감사하겠습니다.</strong></p>
+<h2 id="참조-링크"><a href="#참조-링크" class="headerlink" title="참조 링크"></a>참조 링크</h2><ul>
+<li><a href="https://stackoverflow.com/questions/1609961/visualvm-over-ssh" rel="external nofollow noopener noreferrer" target="_blank">VisualVM over ssh</a>  </li>
+<li><a href="https://www.popit.kr/docker-jmx-profiling-tip/" rel="external nofollow noopener noreferrer" target="_blank">Docker 안에 숨어 있는 Web application JMX profiling Tip</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/05/01/hibernate-multiple-bag-fetch-exception/" rel="next" title="(Troubleshooting) Hibernate MultipleBagFetchException 정복하기">
+                  <i class="fa fa-chevron-left"></i> (Troubleshooting) Hibernate MultipleBagFetchException 정복하기
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/05/07/jvm-gc-basic/" rel="prev" title="(JVM) Garbage Collection Basic">
+                  (JVM) Garbage Collection Basic <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc">
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#들어가기에-앞서"><span class="nav-number">1.</span> <span class="nav-text">들어가기에 앞서</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#로컬에서-JMX-모니터링하기"><span class="nav-number">2.</span> <span class="nav-text">로컬에서 JMX 모니터링하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#도커-컨테이너-안의-JMX-모니터링-하기"><span class="nav-number">3.</span> <span class="nav-text">도커 컨테이너 안의 JMX 모니터링 하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH-Tunneling을-통해-원격지의-JMX-모니터링하기"><span class="nav-number">4.</span> <span class="nav-text">SSH Tunneling을 통해 원격지의 JMX 모니터링하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#참조-링크"><span class="nav-number">5.</span> <span class="nav-text">참조 링크</span></a></li></ol></div>
+          </div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">227</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2019/05/05/jmx-monitoring-inside-docker-container-over-ssh-tunneling/";
+    this.page.identifier = "2019/05/05/jmx-monitoring-inside-docker-container-over-ssh-tunneling/";
+    this.page.title = '(삽질기) SSH 터널링을 통해 원격지에 존재하는 도커 컨테이너 안의 JMX 모니터링하기';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+    </div>
+    <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    $(element).parent().append($(element).remove());
+  });
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="들어가기에 앞서 Number.EPSILON이 뭔지 모르는 사람은 해당 링크를 참조하고 오자.   부동소수점이 뭔지 모르는 사람은 해당 링크를 참조하고 오자.   자바스크립트에서 숫자의 자료형은?C나 Java를 접해본 사람이라면 숫자의 자료형은 크게 두 가지로 나눌 수 있을 것이다.">
+<meta name="keywords" content="JS,ES,ES6,ES2015,EPSILON">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(ES6) Number.EPSILON은 왜 2.220446049250313e-16인가?">
+<meta property="og:url" content="https://perfectacle.github.io/2017/08/04/ES6-EPSILON/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="들어가기에 앞서 Number.EPSILON이 뭔지 모르는 사람은 해당 링크를 참조하고 오자.   부동소수점이 뭔지 모르는 사람은 해당 링크를 참조하고 오자.   자바스크립트에서 숫자의 자료형은?C나 Java를 접해본 사람이라면 숫자의 자료형은 크게 두 가지로 나눌 수 있을 것이다.">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://perfectacle.github.io/images/ES6-EPSILON/thumb.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/ES6-EPSILON/IEEE-754-Double-Floating-Point-Format.png">
+<meta property="og:updated_time" content="2019-08-22T04:50:57.984Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(ES6) Number.EPSILON은 왜 2.220446049250313e-16인가?">
+<meta name="twitter:description" content="들어가기에 앞서 Number.EPSILON이 뭔지 모르는 사람은 해당 링크를 참조하고 오자.   부동소수점이 뭔지 모르는 사람은 해당 링크를 참조하고 오자.   자바스크립트에서 숫자의 자료형은?C나 Java를 접해본 사람이라면 숫자의 자료형은 크게 두 가지로 나눌 수 있을 것이다.">
+<meta name="twitter:image" content="https://perfectacle.github.io/images/ES6-EPSILON/thumb.png">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2017/08/04/ES6-EPSILON/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>(ES6) Number.EPSILON은 왜 2.220446049250313e-16인가? | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script pjax="">
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/08/04/ES6-EPSILON/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">(ES6) Number.EPSILON은 왜 2.220446049250313e-16인가?
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2017-08-04 09:25:57" itemprop="dateCreated datePublished" datetime="2017-08-04T09:25:57+09:00">2017-08-04</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 13:50:57" itemprop="dateModified" datetime="2019-08-22T13:50:57+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/ECMAScript/" itemprop="url" rel="index"><span itemprop="name">ECMAScript</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/ECMAScript/ES2015/" itemprop="url" rel="index"><span itemprop="name">ES2015+</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/08/04/ES6-EPSILON/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/08/04/ES6-EPSILON/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/JS/" rel="tag"># JS</a>
+              
+                <a href="/tags/ES/" rel="tag"># ES</a>
+              
+                <a href="/tags/ES6/" rel="tag"># ES6</a>
+              
+                <a href="/tags/ES2015/" rel="tag"># ES2015</a>
+              
+                <a href="/tags/EPSILON/" rel="tag"># EPSILON</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/ES6-EPSILON/thumb.png" alt="">  </p><h2 id="들어가기에-앞서"><a href="#들어가기에-앞서" class="headerlink" title="들어가기에 앞서"></a>들어가기에 앞서</h2><ol>
+<li><a href="/2016/12/24/ES6-Number-object-and-function/#Number-EPSILON">Number.EPSILON</a>이 뭔지 모르는 사람은 해당 링크를 참조하고 오자.  </li>
+<li><a href="http://thrillfighter.tistory.com/349" rel="external nofollow noopener noreferrer" target="_blank">부동소수점</a>이 뭔지 모르는 사람은 해당 링크를 참조하고 오자.  </li>
+</ol><h2 id="자바스크립트에서-숫자의-자료형은"><a href="#자바스크립트에서-숫자의-자료형은" class="headerlink" title="자바스크립트에서 숫자의 자료형은?"></a>자바스크립트에서 숫자의 자료형은?</h2><p>C나 Java를 접해본 사람이라면 숫자의 자료형은 크게 두 가지로 나눌 수 있을 것이다.  </p><a id="more"></a>
+
+
+<ol>
+<li>정수  </li>
+<li>실수</li>
+</ol>
+<p>하지만 자바스크립트에서는 실수 하나 밖에 존재하지 않는다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">0</span> === <span class="number">0.0</span>); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">0</span> === <span class="number">.0</span>); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">.0</span> === <span class="number">0.0</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>또 이 실수는 크게 두 가지로 나눌 수 있을 것이다.  </p>
+<ol>
+<li>float  </li>
+<li>double</li>
+</ol>
+<p>하지만 자바스크립트에서는 이 실수형 중에서도 double 형 하나 밖에 존재하지 않는다.  </p>
+<p>실수를 나타내는 데도 고정 소수점과 부동 소수점이 존재하는데 고정소수점은 직관적인데 반해 표현할 수 있는 범위가 좁아서<br>거의 부동 소수점이 실수를 표현하는데 표준으로 자리잡고 있다.<br>물론 이 부동 소수점도 오차가 존재한다는 단점을 떠안고 있지만…</p>
+<p>이 부동 소수점을 표현하는데도 여러가지 방법이 있는데(아마도…?) 현재 거의 표준으로 자리잡은 것은<br>전기 전자 기술자 협회(IEEE)에서 제정한 <a href="https://ko.wikipedia.org/wiki/IEEE_754" rel="external nofollow noopener noreferrer" target="_blank">IEEE754</a>라는 것이다.  </p>
+<h2 id="double-형이란…"><a href="#double-형이란…" class="headerlink" title="double 형이란…?"></a>double 형이란…?</h2><p>자바스크립트도 이 IEE754를 따라서 숫자(실수, 부동소수점)을 표현하고 있고,<br><a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format" rel="external nofollow noopener noreferrer" target="_blank">Double-precision floating-point format</a>을 따르고 있다.<br><img src="/images/ES6-EPSILON/IEEE-754-Double-Floating-Point-Format.png" alt="">    </p>
+<p>해당 부동소수점 표현 방식은 아래와 같이 세 가지 부분으로 나뉘어진다.  </p>
+<ol>
+<li>부호 비트(sign, 1bit)<br>MSB(most significant bit): 최상위 비트, 즉 제일 왼 쪽에 있는 비트를 뜻하며 0이면 양수, 1이면 음수를 나타낸다.  </li>
+<li>지수부(exponent, 11bit)<br>이진 소수를 정규화 했을 때 나타낼 지수부.<br>지수부는 정수형과 달리 바이어스 표기법을 사용한다.<br>범위는 -2<sup>11-1</sup>-1 ~ 2<sup>11-1</sup>, 즉 -2<sup>1024</sup>-1 ~ 2<sup>1024</sup>이다.<br>해당 범위를 넘어가는 지수부에 한해서는 아마도 오버플로우가 발생해서 예기치 않은 결과를 뿜어내지 않을까 싶다.(NaN, ±Infinity)<br>또한 지수 표기법과 같이 1e1 같은 숫자를 봤을 때 나오는 저 e가 지수부의 exponent를 줄인 것이다.  </li>
+<li>가수부(fraction, 52bit)<br>이진 소수를 정규화 했을 때 나타낼 가수부.<br>부호 없는 정수를 나타내는 방식과 동일하며 0<del>2<sup>52</sup>-1 = 0 ~ 4503599627370495이다.<br>4503599627370495는 십진수 16자리인데 0</del>15자리 수를 모두 커버하고 있으므로 double의 정밀도는 소수점 15자리가 되는 것이다.</li>
+</ol>
+<p>부동 소수점은 먼저 아래와 같은 절차를 거친다.  </p>
+<ol>
+<li>십진 소수를 이진 소수로 바꾼다. (십진 소수 8.25를 이진 소수로 바꾸면 1000.01<sub>(2)</sub>)  </li>
+<li>이진 소수를 정규화한다. (이진 소수를 지수부와 가수부로 나누어서 표현한 방식을 뜻한다.)<br>예를 들어 이진 소수 1000.01<sub>(2)</sub>을 정규화를 거치면 1.000101<sub>(2)</sub> X 10<sup>3</sup><sub>(2)</sub>와 같이 나타나며 1.101e3<sub>(2)</sub>로도 표현이 가능하다.  </li>
+</ol>
+<p>물론 지수부의 범위를 넘어서는 숫자라면 오버플로우가 발생할 것이고 가수부의 범위를 넘어서는 경우에는 <strong>오차</strong>가 발생한다.<br>이 오차는 왜 발생할까?  </p>
+<ol>
+<li>가수부의 범위를 넘어서는(정규화 이후에 소수점 이하가 15자리를 넘어서는 경우) 경우  </li>
+<li>십진수로는 유한 소수인데 이진수로는 무한 소수인 경우  </li>
+<li>1만 해도 이진수로는 표현이 불가능하다. (구해보면 이진수로는 무한 소수)<br>따라서 끝자리가 5로 끝나는 소수가 아니면 유한소수라고 단정지을 수가 없고, 오차가 없다고 말할 수가 없다.  </li>
+</ol>
+<h2 id="왜-Number-EPSILON은-2-220446049250313e-16일까"><a href="#왜-Number-EPSILON은-2-220446049250313e-16일까" class="headerlink" title="왜 Number.EPSILON은 2.220446049250313e-16일까?"></a>왜 Number.EPSILON은 2.220446049250313e-16일까?</h2><p>double 형 부동 소수점 가수부에서 0을 제외하고 가장 작은 숫자는 무엇일까?<br>바로 2<sup>-52</sup>, 0.0000000000000002220446049250313(2.220446049250313e-16)이다.<br>(가수부는 소수점 이하를 표현하는 것이기 때문에 2<sup>52</sup>가 아니다.)<br>그 말은 0 &lt; x &lt; 0.0000000000000002220446049250313, 즉 x는 표현하지 못하는 숫자가 된다.<br>그래서 Number.EPSILON이 2<sup>-52</sup>, 즉 2.220446049250313e-16가 된 것이다.  </p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2017/08/03/Java-study-013day/" rel="next" title="(Java) 자바의 정석 3판 013일차 - Constant Pool">
+                  <i class="fa fa-chevron-left"></i> (Java) 자바의 정석 3판 013일차 - Constant Pool
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/08/04/js-012-debug/" rel="prev" title="(자알쓰) 디버깅">
+                  (자알쓰) 디버깅 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc">
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#들어가기에-앞서"><span class="nav-number">1.</span> <span class="nav-text">들어가기에 앞서</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#자바스크립트에서-숫자의-자료형은"><span class="nav-number">2.</span> <span class="nav-text">자바스크립트에서 숫자의 자료형은?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#double-형이란…"><span class="nav-number">3.</span> <span class="nav-text">double 형이란…?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#왜-Number-EPSILON은-2-220446049250313e-16일까"><span class="nav-number">4.</span> <span class="nav-text">왜 Number.EPSILON은 2.220446049250313e-16일까?</span></a></li></ol></div>
+          </div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">227</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2017/08/04/ES6-EPSILON/";
+    this.page.identifier = "2017/08/04/ES6-EPSILON/";
+    this.page.title = '(ES6) Number.EPSILON은 왜 2.220446049250313e-16인가?';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+    </div>
+    <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    $(element).parent().append($(element).remove());
+  });
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+</body>
+</html>

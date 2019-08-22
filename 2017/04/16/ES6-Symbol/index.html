@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="목차 들어가기에 앞서   원시값(Primitive Value)   객체(Object)     Symbol의 특성   Symbol의 탄생 배경   Symbol의 사용 사례   Symbol 파헤치기 프로퍼티의 은닉화? 들어가기에 앞서Symbol은 새로 생긴 7번 째 자료형이며 원시값(Primitive Value)이다.Symbol에 들어가기 전에 몸풀기로 E">
+<meta name="keywords" content="JS,ES,ES6,ES2015,Symbol">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(ES6) Symbol">
+<meta property="og:url" content="https://perfectacle.github.io/2017/04/16/ES6-Symbol/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="목차 들어가기에 앞서   원시값(Primitive Value)   객체(Object)     Symbol의 특성   Symbol의 탄생 배경   Symbol의 사용 사례   Symbol 파헤치기 프로퍼티의 은닉화? 들어가기에 앞서Symbol은 새로 생긴 7번 째 자료형이며 원시값(Primitive Value)이다.Symbol에 들어가기 전에 몸풀기로 E">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://perfectacle.github.io/images/ES6-Symbol/thumb.png">
+<meta property="og:updated_time" content="2019-08-22T04:50:58.014Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(ES6) Symbol">
+<meta name="twitter:description" content="목차 들어가기에 앞서   원시값(Primitive Value)   객체(Object)     Symbol의 특성   Symbol의 탄생 배경   Symbol의 사용 사례   Symbol 파헤치기 프로퍼티의 은닉화? 들어가기에 앞서Symbol은 새로 생긴 7번 째 자료형이며 원시값(Primitive Value)이다.Symbol에 들어가기 전에 몸풀기로 E">
+<meta name="twitter:image" content="https://perfectacle.github.io/images/ES6-Symbol/thumb.png">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2017/04/16/ES6-Symbol/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>(ES6) Symbol | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script pjax="">
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/04/16/ES6-Symbol/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">(ES6) Symbol
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2017-04-16 15:15:31" itemprop="dateCreated datePublished" datetime="2017-04-16T15:15:31+09:00">2017-04-16</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 13:50:58" itemprop="dateModified" datetime="2019-08-22T13:50:58+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/ECMAScript/" itemprop="url" rel="index"><span itemprop="name">ECMAScript</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/ECMAScript/ES2015/" itemprop="url" rel="index"><span itemprop="name">ES2015+</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/04/16/ES6-Symbol/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/16/ES6-Symbol/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/JS/" rel="tag"># JS</a>
+              
+                <a href="/tags/ES/" rel="tag"># ES</a>
+              
+                <a href="/tags/ES6/" rel="tag"># ES6</a>
+              
+                <a href="/tags/ES2015/" rel="tag"># ES2015</a>
+              
+                <a href="/tags/Symbol/" rel="tag"># Symbol</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/ES6-Symbol/thumb.png" alt="">  </p><h2 id="목차"><a href="#목차" class="headerlink" title="목차"></a>목차</h2><ul>
+<li><a href="#들어가기에-앞서">들어가기에 앞서</a>  <ul>
+<li><a href="#원시값-Primitive-Value">원시값(Primitive Value)</a>  </li>
+<li><a href="#객체-Object">객체(Object)</a>  </li>
+</ul>
+</li>
+<li><a href="#Symbol의-특성">Symbol의 특성</a>  </li>
+<li><a href="#Symbol의-탄생-배경">Symbol의 탄생 배경</a>  </li>
+<li><a href="#Symbol의-사용-사례">Symbol의 사용 사례</a>  </li>
+<li><a href="#Symbol-파헤치기">Symbol 파헤치기</a></li>
+<li><a href="#프로퍼티의-은닉화">프로퍼티의 은닉화?</a></li>
+</ul><h2 id="들어가기에-앞서"><a href="#들어가기에-앞서" class="headerlink" title="들어가기에 앞서"></a>들어가기에 앞서</h2><p>Symbol은 새로 생긴 7번 째 자료형이며 원시값(Primitive Value)이다.<br>Symbol에 들어가기 전에 몸풀기로 ES5의 자료형부터 알아보고 가자.<br>ES5에는 6가지 자료형이 있다.  </p><a id="more"></a>
+
+
+<ul>
+<li>Boolean</li>
+<li>Number</li>
+<li>String</li>
+<li>Null</li>
+<li>Undefined</li>
+<li>Object</li>
+</ul>
+<h3 id="원시값-Primitive-Value"><a href="#원시값-Primitive-Value" class="headerlink" title="원시값(Primitive Value)"></a>원시값(Primitive Value)</h3><p>Object를 제외한 값들은 원시값이다.<br>값이 유한하며, 그리고 값으로서 비교한다.<br>(고 생각했지만 심볼을 보면 틀린 말 같다.<br>심볼을 생각하면 원시값은 <code>프로퍼티를 추가할 수 있느냐 없느냐</code>와 <code>불변값이냐</code>로 나뉘는 것 같다.)<br>다음 값은 모두 참이다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="literal">false</span> === <span class="literal">false</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'asdf'</span> === <span class="string">'asdf'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">null</span> === <span class="literal">null</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">undefined</span> === <span class="literal">undefined</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">1</span> === <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>하지만 다음과 같은 예외(버그)가 존재한다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">0</span> === <span class="number">-0</span>); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">NaN</span> === <span class="literal">NaN</span>); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="literal">null</span>); <span class="comment">// object</span></span><br></pre></td></tr></table></figure>
+
+<p>typeof null을 제외하고 나머지 문제는 아래와 같이 해결할 수 있다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.is(<span class="number">0</span>, <span class="number">-0</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.is(<span class="literal">NaN</span>, <span class="literal">NaN</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">isNaN</span>(<span class="literal">NaN</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Number</span>.isNaN(<span class="literal">NaN</span>)); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>isNaN은 NaN인지 아닌지 구하기 위한 함수이며, ES6 들어서 Number.isNaN()과 Object.is() 메소드가 생겼다.<br>isNaN과 Number.isNaN의 차이는 후자는 타입 검사(number인지 아닌지)까지 한다는 것이다.<br>아래 링크를 통해 예제로 확인해보자.<br><a href="/2016/12/24/ES6-Number-object-and-function/#Number-isNaN">Number.prototype.isNaN()</a>  </p>
+<p>하지만 typeof null을 개선하면 레거시 코드들이 문제가 있는지 아직도 고쳐지지 않았다.<br>아래 링크를 참조해서 누가 번역을 해주면 고마울 것 같다.<br><a href="http://2ality.com/2013/10/typeof-null.html" rel="external nofollow noopener noreferrer" target="_blank">The history of “typeof null”</a></p>
+<p>또한 원시값은 불변값(Immutable Value)이다.<br>아래의 결과가 당연하다고 생각하는 사람은 객체에서는 어떻게 결과가 나타나는지 객체 파트를 보길 바란다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">'strin'</span>;</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line">a += <span class="string">'g'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">// 'string'</span></span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">// 'strin'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="객체-Object"><a href="#객체-Object" class="headerlink" title="객체(Object)"></a>객체(Object)</h3><p>객체는 Boolean, Number, String, Null, Undefined를 제외한 자료형이다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;); <span class="comment">// function</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> []); <span class="comment">// object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> /\d/); <span class="comment">// object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="keyword">new</span> Data()); <span class="comment">// object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> &#123;&#125;); <span class="comment">// object</span></span><br><span class="line"><span class="comment">// ES6에서는 (Weak)Map/Set과 TypedArray까지 객체로 추가되었다.</span></span><br></pre></td></tr></table></figure>
+
+<p>어… Function은 타입이 function인데 Array나 RegExp, Date는 왜 object인지 아는 사람이 있으면 알려주길 바란다.<br>일단 저 위에 있는 놈들은 객체이기 때문에 프로퍼티를 할당할 수 있다.<br>콘솔 창에서 각각 a란 프로퍼티가 붙었는지 보자.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> func = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> arr = [];</span><br><span class="line"><span class="keyword">var</span> regExp = <span class="regexp">/\d/</span>;</span><br><span class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="keyword">var</span> obj = &#123;&#125;;</span><br><span class="line">func.a = <span class="number">1</span>;</span><br><span class="line">arr.a = <span class="number">1</span>;</span><br><span class="line">regExp.a = <span class="number">1</span>;</span><br><span class="line">date.a = <span class="number">1</span>;</span><br><span class="line">obj.a = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.dir(func);</span><br><span class="line"><span class="built_in">console</span>.dir(arr);</span><br><span class="line"><span class="built_in">console</span>.dir(regExp);</span><br><span class="line"><span class="built_in">console</span>.dir(date);</span><br><span class="line"><span class="built_in">console</span>.dir(obj);</span><br></pre></td></tr></table></figure>
+
+<p>또한 객체는 참조 타입인 것 같다.<br>가지고 있는 값으로서 비교하는 게 아니라 저장된 메모리 주소를 참조하여 같은지 비교하는 것 같다.<br>또한 갯수도 무한하다.<br>다음은 모두 거짓을 반환한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125; === <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;);</span><br><span class="line"><span class="built_in">console</span>.log([] === []);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="regexp">/\d/</span> === <span class="regexp">/\d/</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">new</span> <span class="built_in">Date</span>() === <span class="keyword">new</span> <span class="built_in">Date</span>());</span><br><span class="line"><span class="built_in">console</span>.log(&#123;&#125; === &#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>또한 객체는 참조 타입이기 때문에 불변값이 아니다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [];</span><br><span class="line"><span class="keyword">var</span> arr2 = arr;</span><br><span class="line">arr.push(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// arr2에 넣지도 않은 1의 값이 들어가있다.  </span></span><br><span class="line"><span class="comment">// 이는 arr2가 arr의 값을 가져온 게 아니라 메모리 주소를 가져와 참조하고 있기 때문에 발생한다.</span></span><br><span class="line"><span class="built_in">console</span>.log(arr2); <span class="comment">// [1]</span></span><br></pre></td></tr></table></figure>
+
+<p>이런 객체 타입을 불변값으로 만드는 예제는 아래 링크를 참조하자.<br><a href="http://cafe.naver.com/hacosa/184885" rel="external nofollow noopener noreferrer" target="_blank">직접 구현해본 JS 객체, 배열의 깊은 복사하는 방법</a>  </p>
+<h2 id="Symbol의-특성"><a href="#Symbol의-특성" class="headerlink" title="Symbol의 특성"></a>Symbol의 특성</h2><p>여기서는 심볼에 대해 간략하게만 설명하겠다.<br>백날 이론을 봐봤자 왜 써야하며 언제 써야하는지를 모르면 무의미하다고 여기기 때문이다.<br>따라서 간단하게만 특성을 보고 탄생 배경과 사용 사례를 본 이후에 본격적인 설명을 하겠다.<br>Symbol은 새로 생긴 7번 째 자료형이며 원시값(Primitive Value)이다.<br>기존 원시값들은 위에서 보는 바와 같이 값으로서 비교를 했다.<br>하지만 심볼은 원시값임에도 불구하고 객체와 같이 참조하는 메모리의 주소를 가지고 비교하는 것 같다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Symbol</span>(<span class="string">'a'</span>) === <span class="built_in">Symbol</span>(<span class="string">'a'</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p>심볼은 생성할 때마다 독자적인 메모리 공간을 가져서 고유함을 유지한다.<br>그럼에도 불구하고 원시값이란다.<br>내가 아는 원시값은 값으로서 비교하는 것 같았는데 그럼 얘는 왜 원시값이라 부르는 걸까?<br>그건 아마도 심볼이 불변값이며 프로퍼티를 추가(객체의 특성)할 수 없기 때문이 아닐까 싶다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="built_in">Symbol</span>(<span class="string">'a'</span>);</span><br><span class="line">a.a = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.dir(a); <span class="comment">// a 프로퍼티가 안 찍혀서 나온다.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Symbol의-탄생-배경"><a href="#Symbol의-탄생-배경" class="headerlink" title="Symbol의 탄생 배경"></a>Symbol의 탄생 배경</h2><p>이라고 하긴 뭐하고 어떤 문제점 때문에 심볼이란 놈이 생긴 건지 간단하게 다루어보았다.<br>아래와 같은 코드를 보자.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ES5에서 Array인지 아닌지 구분하는 표준화된 방법이 없다.  </span></span><br><span class="line"><span class="comment">// typeof 연산자를 써도 object를 반환하기 때문에 구분해낼 방법이 없다.  </span></span><br><span class="line"><span class="comment">// 따라서 아래와 같이 함수화시켜서 라이브러리로 제작 후에 많은 사람에게 배포했다고 가정해보자.  </span></span><br><span class="line"><span class="comment">// 예제기 때문에 Boolean 대신에 String을 반환하게 했다는 점은 감안해주길 바란다.</span></span><br><span class="line"><span class="built_in">Array</span>.isArray = <span class="function"><span class="keyword">function</span>(<span class="params">arg</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="built_in">Object</span>.prototype.toString.call(arg) === <span class="string">'[object Array]'</span>) ? <span class="string">'Array'</span> : <span class="string">'Not Array'</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>이 라이브러리는 전 세계의 수백만 개발자들이 쓰게 되었고, 많은 사람들이 아래와 같이 코드를 짜기 시작했다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">Array</span>.isArray(arr) === <span class="string">'Array'</span>) <span class="built_in">console</span>.log(<span class="string">'나는 배열이당!'</span>);</span><br><span class="line"><span class="keyword">else</span> <span class="built_in">console</span>.log(<span class="string">'나는 배열이 아니당!'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>하지만 ES6 들어서 위에 우리가 사용한 <a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray" rel="external nofollow noopener noreferrer" target="_blank">Array.isArray</a> 메소드가 표준 메소드로 지정되었다!<br>그리고 그 메소드는 우리가 예측한 문자열들이 아닌 Boolean 값을 반환하는 메소드다!<br>따라서 우리 라이브러리를 사용해서 개발한 사용자들의 코드가 의도한 대로 작동하지 않을 가능성이 있다!<br>하지만 다행히도 위 메소드는 덮어쓰기가 가능하다.<br>그래도 우리 라이브러리를 쓰는 개발자가 ES6의 표준 메소드 작동 방식으로 Array.isArray를 썼다간 낭패를 볼 것이다.   </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyDescriptor(<span class="built_in">Array</span>, <span class="string">'isArray'</span>).writable); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>하지만 모든 프로퍼티가 덮어쓰기가 가능한 게 아니다.<br>아래와 같이 상수(네이밍이 UPPER_SNAKE_CASE로 돼있다.) 프로퍼티도 존재하기 때문이다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyDescriptor(<span class="built_in">Number</span>, <span class="string">'MAX_SAFE_INTEGER'</span>).writable); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Symbol의-사용-사례"><a href="#Symbol의-사용-사례" class="headerlink" title="Symbol의 사용 사례"></a>Symbol의 사용 사례</h2><ul>
+<li>표준 객체의 프로퍼티로 사용<br>위에서 봤 듯이 표준 객체에 혹시 내가 쓴 프로퍼티가 표준 프로퍼티가 되는 불상사(?)가 생긴다면 코드가 의도치 않게 작동할 것이다.<br>물론 매우 드문 일일 것이지만, 코드를 방어적으로 쓰는 습관은 항상 들여야하는 것 같다.<br>위의 Array.isArray를 우리는 심볼을 사용해서 문제를 회피할 것이다.  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isArray = <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>);</span><br><span class="line"><span class="built_in">Array</span>[isArray] = <span class="function"><span class="params">arg</span> =&gt;</span> (</span><br><span class="line">  (<span class="built_in">Object</span>.prototype.toString.call(arg) === <span class="string">'[object Array]'</span>) ? <span class="string">'Array'</span> : <span class="string">'Not Array'</span></span><br><span class="line">);</span><br><span class="line"><span class="comment">// Array.isArray를 지원하는 모던 브라우저(크롬, 파폭의 최신 버전 등등)에서 아래 코드를 확인해보자.</span></span><br><span class="line"><span class="built_in">console</span>.dir(<span class="built_in">Array</span>);</span><br><span class="line"><span class="comment">// 사용은 아래와 같이 하면 된다.</span></span><br><span class="line"><span class="keyword">const</span> arr = &#123;&#125;;</span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">Array</span>[isArray](arr) === <span class="string">'Array'</span>) <span class="built_in">console</span>.log(<span class="string">'나는 배열이당!'</span>);</span><br><span class="line"><span class="keyword">else</span> <span class="built_in">console</span>.log(<span class="string">'나는 배열이 아니당!'</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>이런 식으로 심볼을 사용하게 되면 표준 메소드 때문에 벌벌 떨며 염려할 필요가 사라진다.<br>하지만 위 사례에서도 하나 문제점이 존재한다.<br>바로 전역 공간에 심볼을 노출해야한다는 점이다.<br>우리의 라이브러리가 점점 규모가 커져서 아래와 같이 다양한 타입을 검출한다고 가정해보자.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isArray = <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>);</span><br><span class="line"><span class="keyword">const</span> isRegExp = <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>);</span><br><span class="line"><span class="keyword">const</span> isDate = <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>);</span><br><span class="line"><span class="keyword">const</span> isObject = <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>);</span><br><span class="line"><span class="built_in">Array</span>[isArray] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">RegExp</span>[isRegExp] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">Date</span>[isDate] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">Object</span>[isObject] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>이렇게 전역 공간에 심볼을 일일이 노출시키는 게 마음이 들지 않으므로 네임 스페이스 패턴을 사용해서 모듈을 구현할 수 있다.<br>전역에는 단 하나의 변수인 $SYMBOL만 노출되므로 좀 더 안전하게 코드를 작성할 수 있다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> $SYMBOL = &#123; <span class="comment">// 전역 공간에 노출되므로 그 어떤 이름과도 충돌이 나지 않게 지어야한다.</span></span><br><span class="line">  isArray: <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>),</span><br><span class="line">  isRegExp: <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>),</span><br><span class="line">  isDate: <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>),</span><br><span class="line">  isObject: <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>)</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">Array</span>[$SYMBOL.isArray] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">RegExp</span>[$SYMBOL.isRegExp] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">Date</span>[$SYMBOL.isDate] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">Object</span>[$SYMBOL.isObject] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>좀 더 우아하게 코드를 작성하고 싶은 사람은 ES6의 import/export(를 브라우저에서 미지원하므로 모듈 번들러인 Webpack 등등까지 사용)를 해보자.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// symbol.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> isArray = <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> isRegExp = <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> isDate = <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> isObject = <span class="built_in">Symbol</span>(<span class="string">'isArray'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// lib.js</span></span><br><span class="line"><span class="keyword">import</span> &#123;isArray, isRegExp, isDate, isObject&#125; <span class="keyword">from</span> <span class="string">'./symbol'</span>;</span><br><span class="line"><span class="built_in">Array</span>[isArray] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">RegExp</span>[isRegExp] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">Date</span>[isDate] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">Object</span>[isObject] = <span class="function"><span class="params">arg</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>표준 심볼(Well-known Symbol)로써 사용<br>ES6가 등장하기 전에 사람들의 필요에 의해 생성하거나 개발한 함수들이 많을 것이다.<br>그 중에 공통된 함수들은 기능과 네이밍이 비슷한 경우가 많을 것이다. (내부 로직은 다를지라도)<br>이렇게 많은 사람들이 쓴 함수의 이름 등등을 표준 프로퍼티로 만들고 나면?<br>내부 로직이 다 같지는 않으므로 그 수많은 코드가 깨질 수 있다. (우리 Array.isArray와 마찬가지로 말이다.)<br>따라서 기존 개발자들이 개발한 코드들의 안전성을 보장하고자 표준 프로퍼티를 심볼로 만든 경우가 있다.<br>그 목록은 아래와 같다.  <ul>
+<li>Symbol.iterator(추후 다룰 예정)  </li>
+<li>Symbol.unscopables  </li>
+<li>Symbol.match  </li>
+<li>Symbol.species  </li>
+<li>Symbol.toPrimitive  </li>
+<li>등등…</li>
+</ul>
+</li>
+</ul>
+<h2 id="Symbol-파헤치기"><a href="#Symbol-파헤치기" class="headerlink" title="Symbol 파헤치기"></a>Symbol 파헤치기</h2><p>이제 왜 쓰는지를 알았으니 본격적으로 심볼에 대해 파헤쳐보자.<br>심볼은 생성할 때마다 독자적인 영역을 가지지만 공유도 가능하다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="built_in">Symbol</span>(<span class="string">'key'</span>);</span><br><span class="line"><span class="keyword">const</span> b = <span class="built_in">Symbol</span>.for(<span class="string">'key2'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(a === <span class="built_in">Symbol</span>(<span class="string">'key'</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(b === <span class="built_in">Symbol</span>.for(<span class="string">'key2'</span>)); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// usage</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  [a]: <span class="number">1</span>,</span><br><span class="line">  [b]: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(obj[a]); <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(obj[b]); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>또한 심볼의 타입은 symbol이며 new 연산자를 써서 생성하면 오류가 뜬다.<br>(당연한 소리처럼 들리겠지만 ES5의 function의 경우를 생각하면 이런 오류 하나하나가 참 감사하다.)  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">Symbol</span>(<span class="string">'a'</span>)); <span class="comment">// 'symbol'</span></span><br><span class="line"><span class="comment">// 이제 new 연산자는 클래스에서만 쓰자, 이제 자바스크립트가 꽃길만 걷길 바란다.</span></span><br><span class="line"><span class="keyword">const</span> a = <span class="keyword">new</span> <span class="built_in">Symbol</span>(<span class="string">'a'</span>); <span class="comment">// Uncaught TypeError: Symbol is not a constructor</span></span><br></pre></td></tr></table></figure>
+
+<p>그럼 저 <code>Symbol 안에 들어가는 문자열은 무엇에 쓰이는 물건인고?</code>하면… 디버깅 용으로 쓰인다고 한다.<br>개인적으로는 변수명만으로도 어떤 심볼인지 유추가 가능할 것 같은데 심볼의 문자열을 가지고 디버깅을 어떻게 하는지 모르겠지만…<br>심볼의 문자열을 가지고 노는 방법은 아래와 같다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> asdf = <span class="built_in">Symbol</span>(<span class="string">'asdf'</span>);</span><br><span class="line"><span class="keyword">const</span> qwer = <span class="built_in">Symbol</span>.for(<span class="string">'qwer'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(asdf); <span class="comment">// Symbol(asdf), 문자열이 아닌 Symbol 타입이다.</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>(asdf)); <span class="comment">// 'Symbol(asdf)'</span></span><br><span class="line"><span class="built_in">console</span>.log(asdf.toString()); <span class="comment">// 'Symbol(asdf)'</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">''</span> + asdf); <span class="comment">// Uncaught TypeError: Cannot convert a Symbol value to a string</span></span><br><span class="line"><span class="built_in">console</span>.log(asdf.toString().substr(<span class="number">7</span>).slice(<span class="number">0</span>, <span class="number">-1</span>)); <span class="comment">// 'asdf'</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Symbol</span>.keyFor(qwer)); <span class="comment">// 'qwer'</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="프로퍼티의-은닉화"><a href="#프로퍼티의-은닉화" class="headerlink" title="프로퍼티의 은닉화?"></a>프로퍼티의 은닉화?</h2><p>심볼은 객체의 프로퍼티(메소드)에 쓸 때 우리는 그 값을 참조할 수 있을까?<br>있다! 따라서 은닉화를 위해서 Symbol을 쓰는 건 올바른 방법이 아니다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> symbol = <span class="built_in">Symbol</span>(<span class="string">'symbol'</span>);</span><br><span class="line"><span class="keyword">const</span> symbol2 = <span class="built_in">Symbol</span>(<span class="string">'symbol2'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  key: <span class="number">1</span>,</span><br><span class="line">  method: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>),</span><br><span class="line">  [symbol]: <span class="number">3</span>,</span><br><span class="line">  [symbol2]: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Symbol은 객체의 표준 메소드나 기존의 방법으로는 노출되지 않는다.  </span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">const</span> key <span class="keyword">in</span> obj) <span class="built_in">console</span>.log(key); <span class="comment">// 'key' 'method'</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.keys(obj)); <span class="comment">// ['key', 'method']</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(obj)); <span class="comment">// ['key', 'method']</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 하지만 그렇다고 해서 프로퍼티가 은닉화된 것은 아니다.</span></span><br><span class="line"><span class="comment">// 아래와 같이 접근이 가능하기 때문이다.</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertySymbols(obj)); <span class="comment">// [Symbol(symbol), Symbol(symbol2)]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 프로퍼티(키와 심볼)를 모두 가져오려면 Reflect 객체를 사용해야한다.</span></span><br><span class="line"><span class="comment">// 레인보우 리플렉션(무지개 반사)을 초등학교 때 많이 썼는데, Reflect는 '비추다'란 뜻이다.</span></span><br><span class="line"><span class="comment">// 즉 해당 객체를 비추어 안에 내용물을 다 본다고 생각하면 될 것 같다.</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Reflect</span>.ownKeys(obj));  <span class="comment">// ['key', 'method', Symbol(symbol), Symbol(symbol2)]</span></span><br></pre></td></tr></table></figure>
+
+<p>이 이상 심볼에 대해 더 딥하게 다루기에는 실용성이 떨어질 것 같고 그 때 그 때 찾아보면 될 것 같다.<br>사실 이터레이터 때문에 공부를 했지 실무에서 많이 쓸지는 잘 모르겠다.<br>이 글을 읽고 난 독자는 다음 글을 읽기 바란다.<br><a href="/2017/04/22/ES6-Iterator/">(ES6) Iterator</a></p>
+<h2 id="참조-링크"><a href="#참조-링크" class="headerlink" title="참조 링크"></a>참조 링크</h2><ul>
+<li><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Symbol" rel="external nofollow noopener noreferrer" target="_blank">Symbol - JavaScript | MDN</a>  </li>
+<li><a href="http://hacks.mozilla.or.kr/2015/09/es6-in-depth-symbols/" rel="external nofollow noopener noreferrer" target="_blank">ES6 In Depth: 심볼 (Symbol) ★ Mozilla 웹 기술 블로그</a>  </li>
+<li><a href="https://github.com/js-jsm/es6js/tree/master/07%20%EC%8B%AC%EB%B3%BC" rel="external nofollow noopener noreferrer" target="_blank">es6js/07 심볼 at master · js-jsm/es6js</a>  </li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2017/04/12/webpack2-smart-tree-shaking/" rel="next" title="(Webpack 2) 트리 쉐이킹을 똑똑하게 해보자!">
+                  <i class="fa fa-chevron-left"></i> (Webpack 2) 트리 쉐이킹을 똑똑하게 해보자!
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/04/18/webpack2-optimize/" rel="prev" title="(Webpack 2) 최적화하기">
+                  (Webpack 2) 최적화하기 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc">
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#목차"><span class="nav-number">1.</span> <span class="nav-text">목차</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#들어가기에-앞서"><span class="nav-number">2.</span> <span class="nav-text">들어가기에 앞서</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#원시값-Primitive-Value"><span class="nav-number">2.1.</span> <span class="nav-text">원시값(Primitive Value)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#객체-Object"><span class="nav-number">2.2.</span> <span class="nav-text">객체(Object)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Symbol의-특성"><span class="nav-number">3.</span> <span class="nav-text">Symbol의 특성</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Symbol의-탄생-배경"><span class="nav-number">4.</span> <span class="nav-text">Symbol의 탄생 배경</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Symbol의-사용-사례"><span class="nav-number">5.</span> <span class="nav-text">Symbol의 사용 사례</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Symbol-파헤치기"><span class="nav-number">6.</span> <span class="nav-text">Symbol 파헤치기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#프로퍼티의-은닉화"><span class="nav-number">7.</span> <span class="nav-text">프로퍼티의 은닉화?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#참조-링크"><span class="nav-number">8.</span> <span class="nav-text">참조 링크</span></a></li></ol></div>
+          </div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">227</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2017/04/16/ES6-Symbol/";
+    this.page.identifier = "2017/04/16/ES6-Symbol/";
+    this.page.title = '(ES6) Symbol';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+    </div>
+    <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    $(element).parent().append($(element).remove());
+  });
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+</body>
+</html>

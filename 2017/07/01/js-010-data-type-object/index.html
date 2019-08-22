@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="자알쓰란?자바스크립트 알고 쓰자. (잘 쓰자는 의미도 담겨있다.)자바스크립트라는 언어 자체는 내 기준에서는 설계 상 미스가 참 많다.함수 단위의 스코프, 호이스팅, 동적 타입 등등자바와 같은 깐깐(?)한 언어를 배우고 바라본 자스는 허점 투성이처럼 보였다.애초에 자바스크립트는 어떠한 프로그램을 만들기 위해서 탄생했다기 보다는웹 페이지에 입력값에 대한 유">
+<meta name="keywords" content="JS,ES,자알쓰,자료형,객체">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(자알쓰) 자료형(객체)">
+<meta property="og:url" content="https://perfectacle.github.io/2017/07/01/js-010-data-type-object/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="자알쓰란?자바스크립트 알고 쓰자. (잘 쓰자는 의미도 담겨있다.)자바스크립트라는 언어 자체는 내 기준에서는 설계 상 미스가 참 많다.함수 단위의 스코프, 호이스팅, 동적 타입 등등자바와 같은 깐깐(?)한 언어를 배우고 바라본 자스는 허점 투성이처럼 보였다.애초에 자바스크립트는 어떠한 프로그램을 만들기 위해서 탄생했다기 보다는웹 페이지에 입력값에 대한 유">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://perfectacle.github.io/images/js-010-data-type-object/thumb.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/js-010-data-type-object/ram.jpg">
+<meta property="og:updated_time" content="2019-08-22T05:15:57.131Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(자알쓰) 자료형(객체)">
+<meta name="twitter:description" content="자알쓰란?자바스크립트 알고 쓰자. (잘 쓰자는 의미도 담겨있다.)자바스크립트라는 언어 자체는 내 기준에서는 설계 상 미스가 참 많다.함수 단위의 스코프, 호이스팅, 동적 타입 등등자바와 같은 깐깐(?)한 언어를 배우고 바라본 자스는 허점 투성이처럼 보였다.애초에 자바스크립트는 어떠한 프로그램을 만들기 위해서 탄생했다기 보다는웹 페이지에 입력값에 대한 유">
+<meta name="twitter:image" content="https://perfectacle.github.io/images/js-010-data-type-object/thumb.png">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2017/07/01/js-010-data-type-object/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>(자알쓰) 자료형(객체) | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script pjax="">
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/07/01/js-010-data-type-object/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">(자알쓰) 자료형(객체)
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2017-07-01 13:14:58" itemprop="dateCreated datePublished" datetime="2017-07-01T13:14:58+09:00">2017-07-01</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 14:15:57" itemprop="dateModified" datetime="2019-08-22T14:15:57+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/ECMAScript/" itemprop="url" rel="index"><span itemprop="name">ECMAScript</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/ECMAScript/자알쓰/" itemprop="url" rel="index"><span itemprop="name">자알쓰</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/07/01/js-010-data-type-object/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/07/01/js-010-data-type-object/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/JS/" rel="tag"># JS</a>
+              
+                <a href="/tags/ES/" rel="tag"># ES</a>
+              
+                <a href="/tags/자알쓰/" rel="tag"># 자알쓰</a>
+              
+                <a href="/tags/자료형/" rel="tag"># 자료형</a>
+              
+                <a href="/tags/객체/" rel="tag"># 객체</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/js-010-data-type-object/thumb.png" alt="">  </p><h2 id="자알쓰란"><a href="#자알쓰란" class="headerlink" title="자알쓰란?"></a>자알쓰란?</h2><p><code>자</code>바스크립트 <code>알</code>고 <code>쓰</code>자. (잘 쓰자는 의미도 담겨있다.)<br>자바스크립트라는 언어 자체는 내 기준에서는 설계 상 미스가 참 많다.<br>함수 단위의 스코프, 호이스팅, 동적 타입 등등<br>자바와 같은 깐깐(?)한 언어를 배우고 바라본 자스는 허점 투성이처럼 보였다.<br>애초에 자바스크립트는 어떠한 프로그램을 만들기 위해서 탄생했다기 보다는<br>웹 페이지에 입력값에 대한 유효성 검사(데이터가 공란인지 아닌지 등등)와 같은<br>페이지의 동적 제어가 주된 목적 + 짧은 개발 기간(넷 스케이프 사의 새로운 브라우저에 탑재 예정) 때문에<br>설계 상에 미스가 있을 수 밖에 없다고 나는 생각된다.<br>일종의 안전 장치가 없어서 개발자가 일일이 구현해주고, 신경써야 하는 느낌이었다.<br>그렇다고 해서 자바스크립트를 극혐하거나 그런 것은 아니고 매우 사랑한다.<br>또한 그 허점을 아는 사람은 허점을 보완해서 요리조리 피해서 잘 쓰겠지만…<br>잘 모르는 부분들은 잘못 써도 동작이 잘 되기 마련이다.<br>이는 지금 당장에는 큰 문제가 안 될지 모르겠지만, 추후에 대규모 웹 어플리케이션을 만들거나<br>직면할 문제로부터 미리 해방시키기 위해 처음부터 좋은 습관을 들여가는 것이 좋다고 생각한다.<br>그 열 번째 시리즈는 자료형 중에 객체를 주제로 진행하겠다.  </p><a id="more"></a>
+
+<h2 id="자료형"><a href="#자료형" class="headerlink" title="자료형"></a>자료형</h2><p>0과 1로 이루어진 데이터를 메모리에서 꺼내서 써야하는데 어떻게 해석할지를 결정하는 유형.<br>나는 위와 같이 이해하고 있는데 잘 이해가 가지 않는다면 그냥 넘어가도 무방하다.<br>더 딥하게 알고 싶은 사람은 정적 타입의 언어(C, Java 등등)을 공부해보자.</p>
+<p>자바스크립트에서 자료형은 크게 두 가지로 나뉜다.  </p>
+<ol>
+<li><a href="/2017/07/01/js-009-data-type-primitive-value">원시값</a>  </li>
+<li><a href="#객체-Object">객체</a>  </li>
+</ol>
+<p>하나 하나 파헤쳐보자.  </p>
+<h3 id="객체-Object"><a href="#객체-Object" class="headerlink" title="객체(Object)"></a>객체(Object)</h3><p>객체는 다음과 같은 유형이 있다.<br>이번 글에서는 해당 내용들은 다루지 않고, 객체의 특성에 대해서만 다루도록 하겠다.  </p>
+<ul>
+<li>객체  </li>
+<li>배열  </li>
+<li>함수  </li>
+<li>정규 표현식  </li>
+<li>날짜  </li>
+<li>컬렉션(ES6에서 생김)  </li>
+<li>기타 등등</li>
+</ul>
+<p>그리고 이 객체에는 다음과 같은 특징이 있다.  </p>
+<ol>
+<li>변하는(Mutable) 값이다.  </li>
+<li>값으로써 비교하는 게 아니라 참조하는 주소로써 비교한다.  </li>
+<li>typeof 연산자로 구분하기 어려운 경우가 많다.</li>
+<li>프로퍼티의 추가가 가능하다.</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>];</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line">b.push(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">// [1, 2], 건드리지도 않은 a가 왜...?</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> d = &#123;&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(c === d); <span class="comment">// false, 둘은 똑같은 값이 아닌가...??</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;); <span class="comment">// 'function'</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> &#123;&#125;); <span class="comment">// 'object'</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> []); <span class="comment">// 'object', 배열의 타입도 object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> /a/); <span class="comment">// 'object', 정규 표현식의 타입도 object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="keyword">new</span> <span class="built_in">Date</span>()); <span class="comment">// 'object', 날짜의 타입도 object</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="keyword">new</span> <span class="built_in">WeakSet</span>()); <span class="comment">// 'object', 컬렉션의 타입도 object</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> e = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line">e.asdf = <span class="string">'qwer'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(e.asdf); <span class="comment">// 'qwer', 함수도 객체이므로 프로퍼티의 추가가 가능하다.</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="참조-타입-Reference-Type"><a href="#참조-타입-Reference-Type" class="headerlink" title="참조 타입(Reference Type)"></a>참조 타입(Reference Type)</h3><p>1번과 2번의 특징과 같이 작동하는 이유는 객체는 참조 타입이기 때문이다.<br>그럼 뭘 참조하느냐? 바로 메모리 주소를 말한다.<br><img src="/images/js-010-data-type-object/ram.jpg" alt="안녕? 나는 메인 메모리, 램이야!"><br>기본적으로 우리가 작성한 프로그램(그 안에 존재하는 모든 소스 코드 및 변수 등등)은 메모리에 있어야한다.<br>메모리는 8GB 등등 다양한 용량을 가지고 있고 그 안에 우리의 변수가 여기 저기 산재돼있는 구조이다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line"><span class="keyword">var</span> c = [<span class="number">1</span>];</span><br><span class="line"><span class="keyword">var</span> d = c;</span><br></pre></td></tr></table></figure>
+
+<p>이렇게 코드를 짰다고 하면 사실은 아래와 같다고 보면 된다.<br><strong>0x1234 와 같은 메모리 주소는 내가 임의로 지정한 것이다.<br>절대로 저런 식으로 메모리가 생기지 않았고, 이해를 돕기 위해 쉽게 설명하고자 적은 거다.</strong></p>
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>d</th>
+<th>0x1234</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>2</td>
+<td>0x1234</td>
+<td>0x1234</td>
+<td>[1]</td>
+</tr>
+</tbody></table>
+<p>즉 변수 c와 d에 [1]이 직접 저장되는 게 아니라 배열은 객체이고, 객체는 참조 타입이므로 <strong>메모리의 주소</strong>가 각각 저장되는 것이다.<br><strong>메모리의 주소를 참조</strong>하는 형태가 바로 참조 타입니다.  </p>
+<p>그럼 아래와 같은 경우에 한 번 어떻게 값이 변하는지 보자.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>];</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line">b.push(<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
+<p>2번 라인까지 하면 아래와 같을 것이다.</p>
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>b</th>
+<th>0x1234</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x1234</td>
+<td>0x1234</td>
+<td>[1]</td>
+</tr>
+</tbody></table>
+<p>3번 라인에 의해서 다음과 같이 바뀌게 되는 것이다.</p>
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>b</th>
+<th>0x1234</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x1234</td>
+<td>0x1234</td>
+<td>[1, 2]</td>
+</tr>
+</tbody></table>
+<p>즉 b가 참조하고 있는 녀석과 a가 참조하고 있는 녀석이 같으니 b를 통해 바꿔도 a가 참조하는 녀석이 바뀌게 되는 격이다.<br>하지만 아래와 같이 <strong>재할당</strong>을 하면 얘기는 달라진다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>];</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line">b = [<span class="number">1</span>, <span class="number">2</span>];</span><br></pre></td></tr></table></figure>
+
+<p>2번 라인까지 하면 아래와 같을 것이다.</p>
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>b</th>
+<th>0x1234</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x1234</td>
+<td>0x1234</td>
+<td>[1]</td>
+</tr>
+</tbody></table>
+<p>3번 라인에 의해서 다음과 같이 바뀌게 되는 것이다.</p>
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>b</th>
+<th>0x1234</th>
+<th>0x1235</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x1234</td>
+<td>0x1235</td>
+<td>[1]</td>
+<td>[1, 2]</td>
+</tr>
+</tbody></table>
+<p>새로 할당을 하게 되면 새로운 메모리 공간에 해당 값을 만들고, 해당 메모리 주소를 바라보게 만든다.  </p>
+<h3 id="자료형-검출하기"><a href="#자료형-검출하기" class="headerlink" title="자료형 검출하기"></a>자료형 검출하기</h3><p>위 코드를 봤을 때 function을 제외하고 모든 객체가 object라는 문자열이 나왔다.<br>그럼 각기 다른 데이터 타입들을 어떻게 구분할까?<br>아래와 같이 하면 된다.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(&#123;&#125;.toString() === <span class="string">'[object Object]'</span>); <span class="comment">// true, 객체 검출 성공</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Array</span>.isArray([])); <span class="comment">// true, 배열 검출 성공</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call(<span class="regexp">/a/</span>) === <span class="string">'[object RegExp]'</span>); <span class="comment">// true, 정규표현식 검출 성공</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call(<span class="keyword">new</span> <span class="built_in">Date</span>()) === <span class="string">'[object Date]'</span>); <span class="comment">// true, 날짜 검출 성공</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">new</span> <span class="built_in">Map</span>().toString() === <span class="string">'[object Map]'</span>); <span class="comment">// true, 컬렉션 검출 성공</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Math</span>.toString() === <span class="string">'[object Math]'</span>); <span class="comment">// true, 컬렉션 검출 성공</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="얕은-복사-깊은-복사"><a href="#얕은-복사-깊은-복사" class="headerlink" title="얕은 복사? 깊은 복사?"></a>얕은 복사? 깊은 복사?</h3><p>그렇담 참조 타입의 데이터를 동일한 메모리 주소를 참조하는 게 아니라 복사해서 새로운 메모리 공간에 할당하고 지지고 볶고 싶다면…?<br>이런 걸 위해 자바스크립트에서는 참조 데이터의 복사가 가능하다.<br>ES5는 아래 링크를 참조하자.<br><a href="http://cafe.naver.com/hacosa/184885" rel="external nofollow noopener noreferrer" target="_blank">직접 구현해본 JS 객체, 배열의 깊은 복사하는 방법</a></p>
+<h4 id="얕은-복사-Shallow-Copy"><a href="#얕은-복사-Shallow-Copy" class="headerlink" title="얕은 복사(Shallow Copy)"></a>얕은 복사(Shallow Copy)</h4><p>배열의 복사를 진행해보자.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [<span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"><span class="keyword">const</span> b = [...a];</span><br><span class="line">b.push(<span class="number">3</span>);</span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">// [1, 2]</span></span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">// [1, 2, 3]</span></span><br></pre></td></tr></table></figure>
+
+<p>결과는 아래와 같다.</p>
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>b</th>
+<th>0x1234</th>
+<th>0x1235</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x1234</td>
+<td>0x1235</td>
+<td>[1, 2]</td>
+<td>[1, 2, 3]</td>
+</tr>
+</tbody></table>
+<p>그럼 이번에는 객체를 복사해보자.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = &#123;<span class="attr">name</span>: <span class="string">'양권성'</span>&#125;;</span><br><span class="line"><span class="comment">// 객체에 spread 연산자를 쓸 수 있게 해주는 것은 Stage-3 단계이다.  </span></span><br><span class="line"><span class="comment">// https://github.com/tc39/proposal-object-rest-spread</span></span><br><span class="line"><span class="comment">// 따라서 바벨의 stage-3 preset이나 transform-object-rest-spread 플러그인을 사용하면 된다.</span></span><br><span class="line"><span class="keyword">const</span> b = &#123;...a&#125;;</span><br><span class="line">b.age = <span class="number">25</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">// &#123;name: '양권성'&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">// &#123;name: '양권성', age: 25&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>결과는 아래와 같다.  </p>
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>b</th>
+<th>0x1234</th>
+<th>0x1235</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x1234</td>
+<td>0x1235</td>
+<td>{name: ‘양권성’}</td>
+<td>{name: ‘양권성’, age: 25}</td>
+</tr>
+</tbody></table>
+<p>위의 데이터들을 참조 단계가 1단계 밖에 없었다.<br>뎁스가 깊어진다면 어떻게 될까…?  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = [<span class="number">1</span>, [<span class="number">2</span>]];</span><br><span class="line"><span class="keyword">const</span> b = [...a];</span><br><span class="line">b.push(<span class="number">4</span>);</span><br><span class="line">b[<span class="number">1</span>].push(<span class="number">3</span>);</span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">// [1, [2, 3]]</span></span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">// [1, [2, 3], 4]</span></span><br></pre></td></tr></table></figure>
+
+<p>참조 데이터 안에 참조 데이터가 있는 격이다.<br>메모리를 까보면 아래와 같을 것이다.  </p>
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th>b</th>
+<th>0x1234</th>
+<th>0x1235</th>
+<th>0x1236</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x1234</td>
+<td>0x1236</td>
+<td>[1, 0x1235]</td>
+<td>[2, 3]</td>
+<td>[1, 0x1235, 4]</td>
+</tr>
+</tbody></table>
+<p>즉 뎁스가 한 단계만 깊어져도 수박 겉핥기 식으로 껍데기만 복사가 되는 것이다.<br>그 속 알맹이는 재귀적으로 계속 타고 타고 들어가서 복사를 해줘야한다.<br>이는 객체도 마찬가지다.  </p>
+<h4 id="깊은-복사-Deep-Copy"><a href="#깊은-복사-Deep-Copy" class="headerlink" title="깊은 복사(Deep Copy)"></a>깊은 복사(Deep Copy)</h4><p>위 방식대로 얕은 복사를 진행하면 참조 단계가 한 뎁스만 깊어져도 제대로 된 복사가 이루어지지 않는 것을 알았다.<br>그렇다면 그 안에 참조 데이터가 있는지 없는지 계속해서 얕은 복사를 재귀적으로 진행해나가는 걸 깊은 복사라고 한다.<br>그럼 직접 깊은 복사를 구현해보자.  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 혹시 추후에 Array나 Object의 표준 메소드로 clone이 생길지 모르니 심볼을 통해 유니크한 값을 만들어서 쓰자.</span></span><br><span class="line"><span class="keyword">const</span> symClone = <span class="built_in">Symbol</span>(<span class="string">'clone'</span>);</span><br><span class="line"><span class="built_in">Array</span>.prototype[symClone] = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 배열의 얕은 복사(Shallow Copy)를 한 번 함.</span></span><br><span class="line">  <span class="keyword">let</span> copy = [...this];</span><br><span class="line">  <span class="comment">// map 메소드는 원본 배열을 훼손시키지 않으므로 반환된 값을 원본 배열에 할당.</span></span><br><span class="line">  copy = copy.map(<span class="function"><span class="params">v</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 현재 배열의 요소가 배열 또는 객체라면</span></span><br><span class="line">    <span class="comment">// 그것들을 다시 얕은 복사하는 재귀함수를 호출.</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">Array</span>.isArray(v) || v.toString() === <span class="string">'[object Object]'</span>) v = v[symClone]();</span><br><span class="line">    <span class="comment">// 리턴 값이 없다면 배열에 undefined가 들어가게 됨.</span></span><br><span class="line">    <span class="keyword">return</span> v;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> copy;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.prototype[symClone] = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 객체의 얕은 복사(Shallow Copy)를 한 번 함.</span></span><br><span class="line">  <span class="keyword">let</span> copy = &#123;...this&#125;;</span><br><span class="line">  <span class="comment">// 객체의 키 값들을 순회</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">const</span> key <span class="keyword">of</span> <span class="built_in">Object</span>.keys(copy)) &#123;</span><br><span class="line">    <span class="comment">// 현재 배열의 요소가 배열 또는 객체라면</span></span><br><span class="line">    <span class="comment">// 그것들을 다시 얕은 복사하는 재귀함수를 호출.</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">Array</span>.isArray(copy[key]) || copy[key].toString() === <span class="string">'[object Object]'</span>) copy[key] = copy[key][symClone]();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> copy;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 무지하게 참조 뎁스가 복잡한 객체.</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  name: <span class="string">'asdf'</span>,</span><br><span class="line">  arr: [ <span class="comment">// 객체 안에 배열</span></span><br><span class="line">    <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [ <span class="comment">// 객체 안에 배열 안에 배열</span></span><br><span class="line">      <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, &#123; <span class="comment">// 객체 안에 배열 안에 배열 안에 객체</span></span><br><span class="line">        age: <span class="number">999</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  ]</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> objClone = obj[symClone]();</span><br><span class="line">objClone.arr[<span class="number">2</span>] = <span class="number">4</span>;</span><br><span class="line">objClone.arr[<span class="number">3</span>].unshift(<span class="number">2</span>);</span><br><span class="line">objClone.arr[<span class="number">3</span>][<span class="number">4</span>].qwer = <span class="string">'qwer'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">//   name: 'asdf',</span></span><br><span class="line"><span class="comment">//   arr: [ // 객체 안에 배열</span></span><br><span class="line"><span class="comment">//     1, 2, 4, [ // 객체 안에 배열 안에 배열</span></span><br><span class="line"><span class="comment">//       2, 4, 5, 6, &#123; // 객체 안에 배열 안에 배열 안에 객체</span></span><br><span class="line"><span class="comment">//         age: 999,</span></span><br><span class="line"><span class="comment">//         qwer: 'qwer'</span></span><br><span class="line"><span class="comment">//       &#125;</span></span><br><span class="line"><span class="comment">//     ]</span></span><br><span class="line"><span class="comment">//   ]</span></span><br><span class="line"><span class="comment">// &#125;;</span></span><br><span class="line"><span class="built_in">console</span>.log(objClone);</span><br><span class="line"></span><br><span class="line"><span class="comment">// &#123; 원본 값은 전혀 바뀌지 않았다.</span></span><br><span class="line"><span class="comment">//   name: 'asdf',</span></span><br><span class="line"><span class="comment">//   arr: [ // 객체 안에 배열</span></span><br><span class="line"><span class="comment">//     1, 2, 3, [ // 객체 안에 배열 안에 배열</span></span><br><span class="line"><span class="comment">//       4, 5, 6, &#123; // 객체 안에 배열 안에 배열 안에 객체</span></span><br><span class="line"><span class="comment">//         age: 999</span></span><br><span class="line"><span class="comment">//       &#125;</span></span><br><span class="line"><span class="comment">//     ]</span></span><br><span class="line"><span class="comment">//   ]</span></span><br><span class="line"><span class="comment">// &#125;;</span></span><br><span class="line"><span class="built_in">console</span>.log(obj);</span><br></pre></td></tr></table></figure>
+
+<p>symClone은 모든 참조 데이터를 순회하면서 재귀적으로 얕은 복사를 수행하는 함수이다.<br>결국엔 모든 참조 데이터를 얕은 복사하면서 그 깊숙한 곳까지 타고 들어가기 때문에 깊은 복사라고 부르는 것이다.<br>이것이야말로 진또배기 복사라고 할 수 있다.<br>하지만 이런 깊은 복사는 계속해서 함수를 호출하는 재귀함수이므로 콜스택을 많이 만들어내는 등등의 문제로 인해 값비싼 비용을 치르게 된다.<br>즉 느리다는 뜻이다. (체감 못하는 경우가 많을테지만)<br>이를 위해 Immutable.js가 나오고 여기서는 Immutable 자료형인 List와 Map을 권장하는 바이다.<br>좀 더 궁금한 사람은 <a href="https://facebook.github.io/immutable-js/" rel="external nofollow noopener noreferrer" target="_blank">Immutable.js 공식 사이트</a>를 참고하도록 하자.  </p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2017/07/01/js-009-data-type-primitive-value/" rel="next" title="(자알쓰) 자료형(원시값)">
+                  <i class="fa fa-chevron-left"></i> (자알쓰) 자료형(원시값)
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/07/01/js-011-variable/" rel="prev" title="(자알쓰) 변수">
+                  (자알쓰) 변수 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc">
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#자알쓰란"><span class="nav-number">1.</span> <span class="nav-text">자알쓰란?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#자료형"><span class="nav-number">2.</span> <span class="nav-text">자료형</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#객체-Object"><span class="nav-number">2.1.</span> <span class="nav-text">객체(Object)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#참조-타입-Reference-Type"><span class="nav-number">2.2.</span> <span class="nav-text">참조 타입(Reference Type)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#자료형-검출하기"><span class="nav-number">2.3.</span> <span class="nav-text">자료형 검출하기</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#얕은-복사-깊은-복사"><span class="nav-number">2.4.</span> <span class="nav-text">얕은 복사? 깊은 복사?</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#얕은-복사-Shallow-Copy"><span class="nav-number">2.4.1.</span> <span class="nav-text">얕은 복사(Shallow Copy)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#깊은-복사-Deep-Copy"><span class="nav-number">2.4.2.</span> <span class="nav-text">깊은 복사(Deep Copy)</span></a></li></ol></li></ol></li></ol></div>
+          </div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">227</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2017/07/01/js-010-data-type-object/";
+    this.page.identifier = "2017/07/01/js-010-data-type-object/";
+    this.page.title = '(자알쓰) 자료형(객체)';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+    </div>
+    <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    $(element).parent().append($(element).remove());
+  });
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+</body>
+</html>

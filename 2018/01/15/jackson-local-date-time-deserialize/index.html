@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="잭슨은 JSON -&amp;gt; Java 클래스로 Deserialize, Java 클래스 -&amp;gt; JSON으로 Serialize 할 때 매우 유용한 라이브러리다.  하지만 잭슨이 나온 이후에 자바 8이 나왔는지 모르겠는데 LocalDate, LocalTime, LocalDateTime 등등의 클래스를 기본적으로 깔끔하게 처리해주지 못한다.따라서 이번에는 어렵지">
+<meta name="keywords" content="Java,Spring Boot,Jackson,JSON">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(Jackson) LocalDate, LocalTime, LocalDateTime 뽀개기 - Deserialize">
+<meta property="og:url" content="https://perfectacle.github.io/2018/01/15/jackson-local-date-time-deserialize/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="잭슨은 JSON -&amp;gt; Java 클래스로 Deserialize, Java 클래스 -&amp;gt; JSON으로 Serialize 할 때 매우 유용한 라이브러리다.  하지만 잭슨이 나온 이후에 자바 8이 나왔는지 모르겠는데 LocalDate, LocalTime, LocalDateTime 등등의 클래스를 기본적으로 깔끔하게 처리해주지 못한다.따라서 이번에는 어렵지">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://perfectacle.github.io/images/jackson-local-date-time-deserialize/thumb.png">
+<meta property="og:updated_time" content="2019-08-22T04:55:48.526Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(Jackson) LocalDate, LocalTime, LocalDateTime 뽀개기 - Deserialize">
+<meta name="twitter:description" content="잭슨은 JSON -&amp;gt; Java 클래스로 Deserialize, Java 클래스 -&amp;gt; JSON으로 Serialize 할 때 매우 유용한 라이브러리다.  하지만 잭슨이 나온 이후에 자바 8이 나왔는지 모르겠는데 LocalDate, LocalTime, LocalDateTime 등등의 클래스를 기본적으로 깔끔하게 처리해주지 못한다.따라서 이번에는 어렵지">
+<meta name="twitter:image" content="https://perfectacle.github.io/images/jackson-local-date-time-deserialize/thumb.png">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2018/01/15/jackson-local-date-time-deserialize/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>(Jackson) LocalDate, LocalTime, LocalDateTime 뽀개기 - Deserialize | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script pjax="">
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2018/01/15/jackson-local-date-time-deserialize/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">(Jackson) LocalDate, LocalTime, LocalDateTime 뽀개기 - Deserialize
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2018-01-15 23:24:07" itemprop="dateCreated datePublished" datetime="2018-01-15T23:24:07+09:00">2018-01-15</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 13:55:48" itemprop="dateModified" datetime="2019-08-22T13:55:48+09:00">2019-08-22</time>
+              </span>
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/01/15/jackson-local-date-time-deserialize/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/15/jackson-local-date-time-deserialize/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/Java/" rel="tag"># Java</a>
+              
+                <a href="/tags/Spring-Boot/" rel="tag"># Spring Boot</a>
+              
+                <a href="/tags/Jackson/" rel="tag"># Jackson</a>
+              
+                <a href="/tags/JSON/" rel="tag"># JSON</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/jackson-local-date-time-deserialize/thumb.png" alt=""></p><p><a href="https://github.com/FasterXML/jackson" rel="external nofollow noopener noreferrer" target="_blank">잭슨</a>은 JSON -&gt; Java 클래스로 Deserialize, Java 클래스 -&gt; JSON으로 Serialize 할 때 매우 유용한 라이브러리다.  </p><p>하지만 잭슨이 나온 이후에 자바 8이 나왔는지 모르겠는데 LocalDate, LocalTime, LocalDateTime 등등의 클래스를 기본적으로 깔끔하게 처리해주지 못한다.<br>따라서 이번에는 어렵지는 않지만 새로 프로젝트 구성할 때마다 매번 까먹어서 찾아 헤매던 케이스들을 정리해봤다.<br>또한 예제의 설명은 스프링 부트를 기준으로 설명하겠다.  </p><a id="more"></a>
+
+
+<p>이 글을 본 다음에는 후속작인 <a href="/2018/01/15/jackson-local-date-time-serialize/">Serialize</a>를 보도록 하자.  </p>
+<h2 id="3줄-요약"><a href="#3줄-요약" class="headerlink" title="3줄 요약"></a>3줄 요약</h2><ol>
+<li>모든 필드마다 @JsonFormat 어노테이션 달아주기 귀찮으니 LocalDate, LocalTime, LocalDateTime 등등에 대한 기본 Custom Deserializer를 만들어주자.  </li>
+<li>특정 필드는 잭슨의 기본 Deserializer를 써야할 수도 있으니 jackson-datatype-jsr310을 Dependency에 추가해두자.  </li>
+<li>@DateTimeFormat은 제대로 안 먹히는 필드도 있으니 @JsonFormat을 애용하도록 하자.</li>
+</ol>
+<h2 id="Parameter"><a href="#Parameter" class="headerlink" title="Parameter"></a>Parameter</h2><p>파라미터로 데이터를 각각 받을 때는 JSON 데이터를 받는 게 아니므로 Jackson의 Deserialize와는 무관하게 작동한다.<br>우선 파라미터로 데이터를 받는 api를 만들어보자.  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">(@RequestParam LocalDate date, @RequestParam LocalTime time, @RequestParam LocalDateTime dateTime)</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>GET /?date=2011-11-11&amp;time=11:11:11&amp;dateTime=2017-11-11 11:11:11</code>으로 요청을 날려보면 아래와 같은 응답을 받을 수 있다.  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"timestamp"</span>: <span class="number">1516027261943</span>,</span><br><span class="line">    <span class="attr">"status"</span>: <span class="number">400</span>,</span><br><span class="line">    <span class="attr">"error"</span>: <span class="string">"Bad Request"</span>,</span><br><span class="line">    <span class="attr">"exception"</span>: <span class="string">"org.springframework.web.method.annotation.MethodArgumentTypeMismatchException"</span>,</span><br><span class="line">    <span class="attr">"message"</span>: <span class="string">"Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDate'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.RequestParam java.time.LocalDate] for value '2011-11-11'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2011-11-11]"</span>,</span><br><span class="line">    <span class="attr">"path"</span>: <span class="string">"/get"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>파라미터로 넘긴 값들을 String으로 인식해서 TypeMismatchException이 발생했다.<br>이럴 땐 @DateTimeFormat 어노테이션을 파라미터에 달아주면 된다.  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> DateType <span class="title">get</span><span class="params">(@RequestParam</span></span></span><br><span class="line"><span class="function"><span class="params">                        @DateTimeFormat(pattern = <span class="string">"yyyy-MM-dd"</span>)</span></span></span><br><span class="line"><span class="function">                        LocalDate date,</span></span><br><span class="line"><span class="function">                        @RequestParam</span></span><br><span class="line"><span class="function">                        @<span class="title">DateTimeFormat</span><span class="params">(pattern = <span class="string">"kk:mm:ss"</span>)</span></span></span><br><span class="line"><span class="function">                        LocalTime time,</span></span><br><span class="line"><span class="function">                        @RequestParam</span></span><br><span class="line"><span class="function">                        @<span class="title">DateTimeFormat</span><span class="params">(pattern = <span class="string">"yyyy-MM-dd kk:mm:ss"</span>)</span></span></span><br><span class="line"><span class="function">                        LocalDateTime dateTime) </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Deserialize"><a href="#Deserialize" class="headerlink" title="Deserialize"></a>Deserialize</h2><h3 id="Parameter-Command-객체"><a href="#Parameter-Command-객체" class="headerlink" title="Parameter(Command 객체)"></a>Parameter(Command 객체)</h3><p>그럼 파라미터로 데이터를 받으면서 잭슨의 Deserializer를 태울려면 어떻게 해야할까?<br>아래와 같이 컨트롤러를 수정해주면 된다.  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">(DateType dateType)</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@RequestParam으로 받던 데이터들을 하나의 클래스로 퉁쳤다.<br><a href="https://stackoverflow.com/questions/7583577/what-is-the-command-object-in-spring-framework" rel="external nofollow noopener noreferrer" target="_blank">what is the command object in spring framework</a><br>에 따르면 Command Object는 그냥 VO/POJO/JavaBean/기타 등등을 일컫는 것 같다.<br>이제 그 커맨드 객체를 만들어보자.  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateType</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> LocalDate date;</span><br><span class="line">    <span class="keyword">private</span> LocalTime time;</span><br><span class="line">    <span class="keyword">private</span> LocalDateTime dateTime;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDate <span class="title">getDate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDate</span><span class="params">(LocalDate date)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalTime <span class="title">getTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTime</span><span class="params">(LocalTime time)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDateTime <span class="title">getDateTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDateTime</span><span class="params">(LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DateType</span><span class="params">(LocalDate date, LocalTime time, LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>GET /?date=2011-11-11&amp;time=11:11:11&amp;dateTime=2017-11-11 11:11:11</code>으로 요청을 날려보면 아래와 같은 응답을 받게 된다.  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"timestamp"</span>: <span class="number">1516036778600</span>,</span><br><span class="line">    <span class="attr">"status"</span>: <span class="number">500</span>,</span><br><span class="line">    <span class="attr">"error"</span>: <span class="string">"Internal Server Error"</span>,</span><br><span class="line">    <span class="attr">"exception"</span>: <span class="string">"org.springframework.beans.BeanInstantiationException"</span>,</span><br><span class="line">    <span class="attr">"message"</span>: <span class="string">"Failed to instantiate [com.example.demo.DateType]: No default constructor found; nested exception is java.lang.NoSuchMethodException: com.example.demo.DateType.&lt;init&gt;()"</span>,</span><br><span class="line">    <span class="attr">"path"</span>: <span class="string">"/"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>커맨드 객체로 받는 클래스에는 무조건 기본 생성자가 있어야한다.<br>하지만 위에 매개변수를 3개 받는 생성자를 만들었기에 아무런 매개변수도 받지 않는 생성자를 만들어야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateType</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> LocalDate date;</span><br><span class="line">    <span class="keyword">private</span> LocalTime time;</span><br><span class="line">    <span class="keyword">private</span> LocalDateTime dateTime;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDate <span class="title">getDate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDate</span><span class="params">(LocalDate date)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalTime <span class="title">getTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTime</span><span class="params">(LocalTime time)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDateTime <span class="title">getDateTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDateTime</span><span class="params">(LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DateType</span><span class="params">(LocalDate date, LocalTime time, LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DateType</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>다시 동일한 요청을 보내면 아래와 같은 응답을 받게 된다.  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"timestamp"</span>: <span class="number">1516036927928</span>,</span><br><span class="line">    <span class="attr">"status"</span>: <span class="number">400</span>,</span><br><span class="line">    <span class="attr">"error"</span>: <span class="string">"Bad Request"</span>,</span><br><span class="line">    <span class="attr">"exception"</span>: <span class="string">"org.springframework.validation.BindException"</span>,</span><br><span class="line">    <span class="attr">"errors"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"codes"</span>: [</span><br><span class="line">                <span class="string">"typeMismatch.dateType.date"</span>,</span><br><span class="line">                <span class="string">"typeMismatch.date"</span>,</span><br><span class="line">                <span class="string">"typeMismatch.java.time.LocalDate"</span>,</span><br><span class="line">                <span class="string">"typeMismatch"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"arguments"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"codes"</span>: [</span><br><span class="line">                        <span class="string">"dateType.date"</span>,</span><br><span class="line">                        <span class="string">"date"</span></span><br><span class="line">                    ],</span><br><span class="line">                    <span class="attr">"arguments"</span>: <span class="literal">null</span>,</span><br><span class="line">                    <span class="attr">"defaultMessage"</span>: <span class="string">"date"</span>,</span><br><span class="line">                    <span class="attr">"code"</span>: <span class="string">"date"</span></span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"defaultMessage"</span>: <span class="string">"Failed to convert property value of type 'java.lang.String' to required type 'java.time.LocalDate' for property 'date'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [java.time.LocalDate] for value '2011-11-11'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2011-11-11]"</span>,</span><br><span class="line">            <span class="attr">"objectName"</span>: <span class="string">"dateType"</span>,</span><br><span class="line">            <span class="attr">"field"</span>: <span class="string">"date"</span>,</span><br><span class="line">            <span class="attr">"rejectedValue"</span>: <span class="string">"2011-11-11"</span>,</span><br><span class="line">            <span class="attr">"bindingFailure"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"typeMismatch"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"codes"</span>: [</span><br><span class="line">                <span class="string">"typeMismatch.dateType.dateTime"</span>,</span><br><span class="line">                <span class="string">"typeMismatch.dateTime"</span>,</span><br><span class="line">                <span class="string">"typeMismatch.java.time.LocalDateTime"</span>,</span><br><span class="line">                <span class="string">"typeMismatch"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"arguments"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"codes"</span>: [</span><br><span class="line">                        <span class="string">"dateType.dateTime"</span>,</span><br><span class="line">                        <span class="string">"dateTime"</span></span><br><span class="line">                    ],</span><br><span class="line">                    <span class="attr">"arguments"</span>: <span class="literal">null</span>,</span><br><span class="line">                    <span class="attr">"defaultMessage"</span>: <span class="string">"dateTime"</span>,</span><br><span class="line">                    <span class="attr">"code"</span>: <span class="string">"dateTime"</span></span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"defaultMessage"</span>: <span class="string">"Failed to convert property value of type 'java.lang.String' to required type 'java.time.LocalDateTime' for property 'dateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [java.time.LocalDateTime] for value '2017-11-11 11:11:11'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2017-11-11 11:11:11]"</span>,</span><br><span class="line">            <span class="attr">"objectName"</span>: <span class="string">"dateType"</span>,</span><br><span class="line">            <span class="attr">"field"</span>: <span class="string">"dateTime"</span>,</span><br><span class="line">            <span class="attr">"rejectedValue"</span>: <span class="string">"2017-11-11 11:11:11"</span>,</span><br><span class="line">            <span class="attr">"bindingFailure"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"typeMismatch"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"codes"</span>: [</span><br><span class="line">                <span class="string">"typeMismatch.dateType.time"</span>,</span><br><span class="line">                <span class="string">"typeMismatch.time"</span>,</span><br><span class="line">                <span class="string">"typeMismatch.java.time.LocalTime"</span>,</span><br><span class="line">                <span class="string">"typeMismatch"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"arguments"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"codes"</span>: [</span><br><span class="line">                        <span class="string">"dateType.time"</span>,</span><br><span class="line">                        <span class="string">"time"</span></span><br><span class="line">                    ],</span><br><span class="line">                    <span class="attr">"arguments"</span>: <span class="literal">null</span>,</span><br><span class="line">                    <span class="attr">"defaultMessage"</span>: <span class="string">"time"</span>,</span><br><span class="line">                    <span class="attr">"code"</span>: <span class="string">"time"</span></span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"defaultMessage"</span>: <span class="string">"Failed to convert property value of type 'java.lang.String' to required type 'java.time.LocalTime' for property 'time'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [java.time.LocalTime] for value '11:11:11'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [11:11:11]"</span>,</span><br><span class="line">            <span class="attr">"objectName"</span>: <span class="string">"dateType"</span>,</span><br><span class="line">            <span class="attr">"field"</span>: <span class="string">"time"</span>,</span><br><span class="line">            <span class="attr">"rejectedValue"</span>: <span class="string">"11:11:11"</span>,</span><br><span class="line">            <span class="attr">"bindingFailure"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"typeMismatch"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"message"</span>: <span class="string">"Validation failed for object='dateType'. Error count: 3"</span>,</span><br><span class="line">    <span class="attr">"path"</span>: <span class="string">"/"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>역시나 String으로 인식해서 발생하는 문제다.<br>@DateTimeFormat을 사용하자.  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateType</span> </span>&#123;</span><br><span class="line">    <span class="meta">@DateTimeFormat</span>(pattern = <span class="string">"yyyy-MM-dd"</span>)</span><br><span class="line">    <span class="keyword">private</span> LocalDate date;</span><br><span class="line">    <span class="meta">@DateTimeFormat</span>(pattern = <span class="string">"kk:mm:ss"</span>)</span><br><span class="line">    <span class="keyword">private</span> LocalTime time;</span><br><span class="line">    <span class="meta">@DateTimeFormat</span>(pattern = <span class="string">"yyyy-MM-dd kk:mm:ss"</span>)</span><br><span class="line">    <span class="keyword">private</span> LocalDateTime dateTime;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDate <span class="title">getDate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDate</span><span class="params">(LocalDate date)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalTime <span class="title">getTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTime</span><span class="params">(LocalTime time)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDateTime <span class="title">getDateTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDateTime</span><span class="params">(LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DateType</span><span class="params">(LocalDate date, LocalTime time, LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DateType</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 다시 GET 요청을 보내면 정상적으로 Deserialize 돼서 오류가 나지 않는다.  </p>
+<h3 id="Body-JSON"><a href="#Body-JSON" class="headerlink" title="Body (JSON)"></a>Body (JSON)</h3><p>Requset Body로 보낼 객체는 위에서 만든 커맨드 객체를 재활용해서 api를 만들어보자.  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="meta">@PostMapping</span>(<span class="string">"/"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">post</span><span class="params">(@RequestBody DateType dateType)</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>POST /</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"date"</span>: <span class="string">"2011-11-11"</span>,</span><br><span class="line">	<span class="attr">"time"</span>: <span class="string">"11:11:11"</span>,</span><br><span class="line">	<span class="attr">"dateTime"</span>: <span class="string">"2011-11-11 11:11:11"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>으로 요청을 날려보면 아래와 같은 응답을 받을 수 있다.  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"timestamp"</span>: <span class="number">1516031758629</span>,</span><br><span class="line">    <span class="attr">"status"</span>: <span class="number">400</span>,</span><br><span class="line">    <span class="attr">"error"</span>: <span class="string">"Bad Request"</span>,</span><br><span class="line">    <span class="attr">"exception"</span>: <span class="string">"org.springframework.http.converter.HttpMessageNotReadableException"</span>,</span><br><span class="line">    <span class="attr">"message"</span>: <span class="string">"JSON parse error: Can not construct instance of java.time.LocalDate: no String-argument constructor/factory method to deserialize from String value ('2011-11-11'); nested exception is com.fasterxml.jackson.databind.JsonMappingException: Can not construct instance of java.time.LocalDate: no String-argument constructor/factory method to deserialize from String value ('2011-11-11')\n at [Source: java.io.PushbackInputStream@405079af; line: 2, column: 10] (through reference chain: com.example.demo.DateType[\"date\"])"</span>,</span><br><span class="line">    <span class="attr">"path"</span>: <span class="string">"/"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>웬일인지 모르겠지만 문제가 발생한다.  </p>
+<h4 id="JSR-310-Java-Specification-Request-Date-and-Time-API"><a href="#JSR-310-Java-Specification-Request-Date-and-Time-API" class="headerlink" title="JSR-310 (Java Specification Request - Date and Time API)"></a><a href="https://jcp.org/en/jsr/detail?id=310" rel="external nofollow noopener noreferrer" target="_blank">JSR-310</a> (Java Specification Request - Date and Time API)</h4><p><a href="http://wonwoo.ml/index.php/post/1008" rel="external nofollow noopener noreferrer" target="_blank">Spring Jpa java8 date (LocalDateTime) 와 Jackson</a>을 참고했을 때<br>Java8이 나오기 전에는 Date 클래스가 좀 허접했다고 한다.<br>그 이전에는 <a href="http://www.joda.org/joda-time/" rel="external nofollow noopener noreferrer" target="_blank">Joda Time</a>이라는 라이브러리를 사용했다고 한다.<br>이 JSR-310 스펙은 조다 타임의 창시자도 같이 제정했다고 하니 아주 믿을만(?)한 스펙인 거 같다.<br>이 스펙의 구현체가 LocalDate, LocalTime, LocalDateTime 등등인 것 같다.  </p>
+<p>잭슨에서 제대로 저런 날짜/시간 관련 클래스를 (De)Serialize 하려면 <a href="https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310" rel="external nofollow noopener noreferrer" target="_blank">Jackson Datatype: JSR310</a>을 Dependency에 추가해줘야한다.<br>Maven이나 Gradle에 추가해주자.  </p>
+<p>그리고 나서 다시 서버를 띄워보면 다음과 같은 응답이 날아온다.  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"timestamp"</span>: <span class="number">1516032507565</span>,</span><br><span class="line">    <span class="attr">"status"</span>: <span class="number">400</span>,</span><br><span class="line">    <span class="attr">"error"</span>: <span class="string">"Bad Request"</span>,</span><br><span class="line">    <span class="attr">"exception"</span>: <span class="string">"org.springframework.http.converter.HttpMessageNotReadableException"</span>,</span><br><span class="line">    <span class="attr">"message"</span>: <span class="string">"JSON parse error: Can not deserialize value of type java.time.LocalDateTime from String \"2011-11-11 11:11:11\": Text '2011-11-11 11:11:11' could not be parsed at index 10; nested exception is com.fasterxml.jackson.databind.exc.InvalidFormatException: Can not deserialize value of type java.time.LocalDateTime from String \"2011-11-11 11:11:11\": Text '2011-11-11 11:11:11' could not be parsed at index 10\n at [Source: java.io.PushbackInputStream@c126518; line: 4, column: 14] (through reference chain: com.example.demo.DateType[\"dateTime\"])"</span>,</span><br><span class="line">    <span class="attr">"path"</span>: <span class="string">"/"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>어떤 이유에선지 LocalDateTime만 제대로 Deserialize 못 하고 있다.<br>아래와 같이 request body를 수정해주면 된다.  </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"date"</span>: <span class="string">"2011-11-11"</span>,</span><br><span class="line">	<span class="attr">"time"</span>: <span class="string">"11:11:11"</span>,</span><br><span class="line">	<span class="attr">"dateTime"</span>: <span class="string">"2011-11-11T11:11:11"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>하지만 날짜와 시간 사이에 존재하는 저 T가 꼴불견이다.<br>저 T를 날리기 위해서는 잭슨의 어노테이션인 @JsonFormat을 쓰면 된다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateType</span> </span>&#123;</span><br><span class="line">    <span class="meta">@JsonFormat</span>(pattern = <span class="string">"yyyy-MM-dd"</span>)</span><br><span class="line">    <span class="keyword">private</span> LocalDate date;</span><br><span class="line">    <span class="meta">@JsonFormat</span>(pattern = <span class="string">"kk:mm:ss"</span>)</span><br><span class="line">    <span class="keyword">private</span> LocalTime time;</span><br><span class="line">    <span class="meta">@JsonFormat</span>(pattern = <span class="string">"yyyy-MM-dd kk:mm:ss"</span>)</span><br><span class="line">    <span class="keyword">private</span> LocalDateTime dateTime;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDate <span class="title">getDate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDate</span><span class="params">(LocalDate date)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalTime <span class="title">getTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTime</span><span class="params">(LocalTime time)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDateTime <span class="title">getDateTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDateTime</span><span class="params">(LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DateType</span><span class="params">(LocalDate date, LocalTime time, LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DateType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = LocalDate.now();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이렇게 하고 T를 뺀 상태로 응답을 보내면 아주 잘 날아온다.  </p>
+<h3 id="Custom-Deserializer"><a href="#Custom-Deserializer" class="headerlink" title="Custom Deserializer"></a>Custom Deserializer</h3><p>하지만 이렇게 되면 날짜/시간 클래스에게 일일이 어노테이션을 달아줘야하니 귀챠니즘이 상당해진다.<br>이럴 때 잭슨의 기본 Deserializer를 오버라이딩한 Custom Deserializer를 사용하게 설정을 수정해주면 된다.  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JacksonConfig</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Module <span class="title">jsonMapperJava8DateTimeModule</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        SimpleModule <span class="keyword">module</span> = <span class="keyword">new</span> SimpleModule();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">module</span>.addDeserializer(LocalDate.class, <span class="keyword">new</span> JsonDeserializer&lt;LocalDate&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> LocalDate <span class="title">deserialize</span><span class="params">(JsonParser jsonParser, DeserializationContext deserializationContext)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> LocalDate.parse(jsonParser.getValueAsString(), DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd"</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">module</span>.addDeserializer(LocalTime.class, <span class="keyword">new</span> JsonDeserializer&lt;LocalTime&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> LocalTime <span class="title">deserialize</span><span class="params">(JsonParser jsonParser, DeserializationContext deserializationContext)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> LocalTime.parse(jsonParser.getValueAsString(), DateTimeFormatter.ofPattern(<span class="string">"kk:mm:ss"</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">module</span>.addDeserializer(LocalDateTime.class, <span class="keyword">new</span> JsonDeserializer&lt;LocalDateTime&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> LocalDateTime <span class="title">deserialize</span><span class="params">(JsonParser jsonParser, DeserializationContext deserializationContext)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> LocalDateTime.parse(jsonParser.getValueAsString(), DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd kk:mm:ss"</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">module</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>그리고 DateType 클래스에서 @JsonFormat 어노테이션을 빼주자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateType</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> LocalDate date;</span><br><span class="line">    <span class="keyword">private</span> LocalTime time;</span><br><span class="line">    <span class="keyword">private</span> LocalDateTime dateTime;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDate <span class="title">getDate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDate</span><span class="params">(LocalDate date)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalTime <span class="title">getTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTime</span><span class="params">(LocalTime time)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDateTime <span class="title">getDateTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDateTime</span><span class="params">(LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DateType</span><span class="params">(LocalDate date, LocalTime time, LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DateType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = LocalDate.now();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>사실 Custom Deserializer를 쓰면 jackson-datatype-jsr310은 필요 없긴 하다.<br>(하지만 나중에 Serialize를 위해서는 또 필요하기 때문에 지우진 말자.)<br>이렇게 하면 이제 @DateTimeFormat이나 @JsonFormat은 무력화되는 것 같다.  </p>
+<p>만약 특정 필드만 오버라이딩한 Deserializer를 안 쓰려면 아래와 같이 하면 된다.  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateType</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> LocalDate date;</span><br><span class="line">    <span class="keyword">private</span> LocalTime time;</span><br><span class="line">    <span class="meta">@JsonDeserialize</span>(using = LocalDateTimeDeserializer.class)</span><br><span class="line">    <span class="meta">@JsonFormat</span>(pattern = <span class="string">"yyyy/MM/dd kk:mm:ss"</span>)</span><br><span class="line">    <span class="keyword">private</span> LocalDateTime dateTime;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDate <span class="title">getDate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDate</span><span class="params">(LocalDate date)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalTime <span class="title">getTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTime</span><span class="params">(LocalTime time)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDateTime <span class="title">getDateTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDateTime</span><span class="params">(LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DateType</span><span class="params">(LocalDate date, LocalTime time, LocalDateTime dateTime)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = date;</span><br><span class="line">        <span class="keyword">this</span>.time = time;</span><br><span class="line">        <span class="keyword">this</span>.dateTime = dateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DateType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.date = LocalDate.now();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@JsonFormat 대신에 @DateTimeFormat을 쓰면 아무런 효과가 없다.  </p>
+<p>이제 아래와 같이 요청을 보내보자.<br><code>POST /</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"date"</span>: <span class="string">"2011-11-11"</span>,</span><br><span class="line">	<span class="attr">"time"</span>: <span class="string">"11:11:11"</span>,</span><br><span class="line">	<span class="attr">"dateTime"</span>: <span class="string">"2011/11/11 11:11:11"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>정상적으로 요청이 들어갔다면 성공한 것이다.</p>
+<p>이제는 <a href="/2018/01/15/jackson-local-date-time-serialize/">Serialize</a>를 보도록 하자.  </p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2018/01/14/jpa-entity-manager-factory/" rel="next" title="(JPA) Entity와 EntityManager와 EntityManagerFactory">
+                  <i class="fa fa-chevron-left"></i> (JPA) Entity와 EntityManager와 EntityManagerFactory
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2018/01/16/jackson-local-date-time-serialize/" rel="prev" title="(Jackson) LocalDate, LocalTime, LocalDateTime 뽀개기 - Serialize">
+                  (Jackson) LocalDate, LocalTime, LocalDateTime 뽀개기 - Serialize <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc">
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3줄-요약"><span class="nav-number">1.</span> <span class="nav-text">3줄 요약</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parameter"><span class="nav-number">2.</span> <span class="nav-text">Parameter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deserialize"><span class="nav-number">3.</span> <span class="nav-text">Deserialize</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Parameter-Command-객체"><span class="nav-number">3.1.</span> <span class="nav-text">Parameter(Command 객체)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Body-JSON"><span class="nav-number">3.2.</span> <span class="nav-text">Body (JSON)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JSR-310-Java-Specification-Request-Date-and-Time-API"><span class="nav-number">3.2.1.</span> <span class="nav-text">JSR-310 (Java Specification Request - Date and Time API)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Custom-Deserializer"><span class="nav-number">3.3.</span> <span class="nav-text">Custom Deserializer</span></a></li></ol></li></ol></div>
+          </div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">227</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2018/01/15/jackson-local-date-time-deserialize/";
+    this.page.identifier = "2018/01/15/jackson-local-date-time-deserialize/";
+    this.page.title = '(Jackson) LocalDate, LocalTime, LocalDateTime 뽀개기 - Deserialize';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+    </div>
+    <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    $(element).parent().append($(element).remove());
+  });
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+</body>
+</html>

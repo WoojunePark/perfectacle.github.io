@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="공유기에 암호를 걸어놓는다는 것의 의미무선 공유기의 보안 때문에 AP에 암호를 걸어놓는 경우가 많다.여기서 무선 공유기에 암호를 건다는 것은…   무선 공유기에 타인이 접속하는 걸 방지하고자 암호를 건다.(WPA2PSK와 같은 방식으로…)   송수신하는 데이터(평문으로 된 개인정보 등등)을 암호화 하고자 데이터를 암호화 한다.(AES와 같은 알고리즘으로">
+<meta name="keywords" content="IT,Computer,인터넷,속도,암호,보안">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(상식) 무선 공유기 암호와 속도에 관한 진실">
+<meta property="og:url" content="https://perfectacle.github.io/2017/01/24/Wifi-password-fact/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="공유기에 암호를 걸어놓는다는 것의 의미무선 공유기의 보안 때문에 AP에 암호를 걸어놓는 경우가 많다.여기서 무선 공유기에 암호를 건다는 것은…   무선 공유기에 타인이 접속하는 걸 방지하고자 암호를 건다.(WPA2PSK와 같은 방식으로…)   송수신하는 데이터(평문으로 된 개인정보 등등)을 암호화 하고자 데이터를 암호화 한다.(AES와 같은 알고리즘으로">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://perfectacle.github.io/images/Wifi-password-fact/thumb.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/Wifi-password-fact/01.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/Wifi-password-fact/speed.jpg">
+<meta property="og:updated_time" content="2019-08-22T05:54:34.681Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(상식) 무선 공유기 암호와 속도에 관한 진실">
+<meta name="twitter:description" content="공유기에 암호를 걸어놓는다는 것의 의미무선 공유기의 보안 때문에 AP에 암호를 걸어놓는 경우가 많다.여기서 무선 공유기에 암호를 건다는 것은…   무선 공유기에 타인이 접속하는 걸 방지하고자 암호를 건다.(WPA2PSK와 같은 방식으로…)   송수신하는 데이터(평문으로 된 개인정보 등등)을 암호화 하고자 데이터를 암호화 한다.(AES와 같은 알고리즘으로">
+<meta name="twitter:image" content="https://perfectacle.github.io/images/Wifi-password-fact/thumb.png">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2017/01/24/Wifi-password-fact/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>(상식) 무선 공유기 암호와 속도에 관한 진실 | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script pjax="">
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/01/24/Wifi-password-fact/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">(상식) 무선 공유기 암호와 속도에 관한 진실
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2017-01-24 09:02:39" itemprop="dateCreated datePublished" datetime="2017-01-24T09:02:39+09:00">2017-01-24</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 14:54:34" itemprop="dateModified" datetime="2019-08-22T14:54:34+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/기타/" itemprop="url" rel="index"><span itemprop="name">기타</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/기타/등등/" itemprop="url" rel="index"><span itemprop="name">등등</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/01/24/Wifi-password-fact/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/24/Wifi-password-fact/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/IT/" rel="tag"># IT</a>
+              
+                <a href="/tags/Computer/" rel="tag"># Computer</a>
+              
+                <a href="/tags/인터넷/" rel="tag"># 인터넷</a>
+              
+                <a href="/tags/속도/" rel="tag"># 속도</a>
+              
+                <a href="/tags/암호/" rel="tag"># 암호</a>
+              
+                <a href="/tags/보안/" rel="tag"># 보안</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/Wifi-password-fact/thumb.png" alt="">  </p><h2 id="공유기에-암호를-걸어놓는다는-것의-의미"><a href="#공유기에-암호를-걸어놓는다는-것의-의미" class="headerlink" title="공유기에 암호를 걸어놓는다는 것의 의미"></a>공유기에 암호를 걸어놓는다는 것의 의미</h2><p><img src="/images/Wifi-password-fact/01.png" alt="인증이 1번 내용, 암호화가 2번 내용"><br>무선 공유기의 보안 때문에 AP에 암호를 걸어놓는 경우가 많다.<br>여기서 무선 공유기에 암호를 건다는 것은…  </p><ol>
+<li>무선 공유기에 타인이 접속하는 걸 방지하고자 암호를 건다.<br>(WPA2PSK와 같은 방식으로…)  </li>
+<li><code>송수신하는 데이터(평문으로 된 개인정보 등등)을 암호화 하고자 데이터를 암호화 한다.</code><br>(AES와 같은 알고리즘으로…)</li>
+</ol><a id="more"></a>
+
+
+<p>하지만 암호를 걸어놓음으로써 인터넷 속도가 줄어든다는 사실을 알고 있는가?<br>Why?<br>우리가 보내는 데이터 -&gt; 암호화 -&gt; 전송과 같이<br>‘암호화’의 단계가 포함되기 때문에 당연히 느려질 수 밖에 없다.<br>그럼으로 인해서 아예 암호를 걸어놓지 않고 사용하는 사람들이 있다.  </p>
+<h2 id="공유기에-암호-걸지-않고-사용하기"><a href="#공유기에-암호-걸지-않고-사용하기" class="headerlink" title="공유기에 암호 걸지 않고 사용하기"></a>공유기에 암호 걸지 않고 사용하기</h2><p>이러한 방법은 <code>매우 위험</code>하다.<br>타인이 나의 AP로 접근하여 동영상 등등의 기타 데이터를 마구 발생시키고 있다면<br>자신이 쓸 수 있는 속도가 줄어든다.<br>10MiB/s를 두 명이 나눠쓰면 5MiB/s로 줄어들거나<br>동영상을 받고 있는 유저가 거의 10MiB/s 가까이 끌어다 쓰는 등등…<br>혹은 한 AP에 접속된 기기가 많을 수록 혼선이 발생되는 등등 인터넷 접속이 불안정해지게 된다.</p>
+<p>이를 해결하기 위한 여러가지 방안이 있지만 대표적인 몇 가지를 소개하고자 한다.<br>물론 암호화를 진행하고 이 방안까지 쓴다면 보안에 금상첨화이다.  </p>
+<ol>
+<li>MAC 주소 인증<br>MAC 주소는 컴퓨터 부품 중 하나인 LAN 카드에 있는 ‘고유’한 정보로서,<br>IP 주소와 달리 LAN 카드를 바꾸지 않는한 영구적이다.<br>또한 MAC 주소는 전 세계적으로 유일한 번호이므로 어찌 보면 ‘개인 정보’ 영역에도 속해서<br>액티브 X 등등을 쓰지 않는 한 보안상 수집을 할 수 없다.<br>이러한 MAC 주소의 ‘유일성’을 통해서 ‘인증된 MAC 주소’만 접속을 허용하게끔 하는 것이다.<br>물론 MAC 주소를 바꾸는 방법이 존재하긴 하지만,<br>인증된 MAC 주소를 알아내는 건 그리 쉬운 일이 아니다.<br>또한 새로운 기기를 추가할 때마다 MAC 주소를 추가해야된다는 번거로움이 존재한다.  </li>
+<li>SSID 숨기기.<br>이 방법은 SSID 이름을 맞춰야만 해당 AP로 접속할 수 있게 하는 방법이다.<br>사람들이 쉽게 생각할 수 없는 문자(특수문자)들의 조합으로<br>SSID를 지정하면 쉽게 찾아낼 수가 없을 것이다.</li>
+</ol>
+<h2 id="공유기에-암호를-걸지-않는-것의-의미"><a href="#공유기에-암호를-걸지-않는-것의-의미" class="headerlink" title="공유기에 암호를 걸지 않는 것의 의미"></a>공유기에 암호를 걸지 않는 것의 의미</h2><p>우리가 흔히 쓰는 무선 공유기는 송수신 하는 패킷(메시지, 데이터를 자잘하게 쪼갠 단위)을 기본적으로 암호화하지 않는다.<br>잘 만들어진 사이트는 사이트 자체적(https 프로토콜 등등)으로 패킷을 암호화 하는 방법을 통해 보안을 유지하고 있다.<br>하지만 우리가 사용하는 사이트가 모두 그렇게 잘 만들어진 사이트인가?<br>보안에 그만큼 신경 쓴 사이트라면 비용이 비쌀테니 개인이나 소규모 기업 같은 경우에는<br>크게 신경을 쓰지 않는 경우도 많다.<br>잘 만들어진 사이트인지 일일이 확인하고 쓰기도 번거로울 뿐더러 알아내기도 쉽지 않다.<br>즉 그러한 사이트를 이용하면 우리의 개인정보가<br>고스란히 평문으로써 보이지 않는 공간에 날아다니게 된다.<br>이러한 패킷들을 가로채는 건 해커들에겐 식은 죽 먹기다.<br>흔히 생각하는 ‘무선 공유기 암호’는 ‘AP의 접근 인증’ 외에도<br><code>&#39;송수신 패킷(데이터) 암호화&#39;</code>도 포함돼있다.<br>공짜라고, 비밀번호가 걸려있지 않다고, 옆 집에 있는 와이파이를 훔쳐쓰다가<br>친구한테 몰래 보낸 메일이나 사이트의 비밀번호 등등이 크래커에게 고스란히 노출될 수 있다.<br>옆 집 사람이 크래커라서 의도적으로 공개를 해놓은 건지도 모른다.<br>공개 AP를 쓸 때는 <code>보안에 민감하지 않은 작업</code>만 하자.  </p>
+<h2 id="공유기-암호화에-대한-다른-비밀"><a href="#공유기-암호화에-대한-다른-비밀" class="headerlink" title="공유기 암호화에 대한 다른 비밀"></a>공유기 암호화에 대한 다른 비밀</h2><p>암호화 방법이 여러 개 있고, 암호화 방법에 따라서 인터넷 속도도 천차 만별이다.<br>출처는 아래 링크와 같다.<br><a href="http://www.clien.net/cs2/bbs/board.php?bo_table=cm_iphonien&wr_id=1061462" rel="external nofollow noopener noreferrer" target="_blank">iptime 암호화 방법에 따라 속도 차이가 엄청나군요.</a><br><img src="/images/Wifi-password-fact/speed.jpg" alt="이는 암호화 알고리즘 때문에 나타나는 현상이다"><br>복잡한 알고리즘, 안전한 알고리즘일 수록 느리지 않을까…<br>뭐 꼭 그렇다는 것만은 아니지만…</p>
+<p>하지만 여러 가지의 암호화 방법 중 ‘안전하지 않은’ 암호화 방식도 있다.<br>이 말은 암호화를 걸었는데 이미 크래커들에게 뚫린 방식일 수도 있다는 뜻이다.<br>802.11N 방식(100메가 광랜)에서는 WPA2PSK + AES 방식을 쓰는 게 가장 좋을 것 같다.<br><a href="http://www.bodnara.co.kr/bbs/article.html?num=106786" rel="external nofollow noopener noreferrer" target="_blank">WiFi 공유기 암호방식, 꼭 WPA2-AES를 써야하는 이유는?</a><br>802.11AC 방식(기가 광랜)에서는 어떤 방식이 제일 좋은지는 모르겠다.<br>TKIP 방식의 암호화 알고리즘은 802.11N 방식을 지원하지 않는다는 것 같다.<br><a href="http://blog.daum.net/fachul/49" rel="external nofollow noopener noreferrer" target="_blank">공유기 암호화방법 변경으로 무선/WIFI 속도 제대로 활용하기!</a></p>
+<p>비밀번호를 걸지 않고, 송수신 데이터만 암호화 하는 방법이 존재하는지 모르겠지만,<br>어지간하면 비밀번호가 걸려있지 않은 공개 AP는 쓰지 않는 게 좋고,<br>꼭 써야한다면 <code>보안에 민감하지 않은 작업</code>만 하자.<br>또한 소 잃고 외양간 고치기 싫은 사람들은  </p>
+<ol>
+<li>무선 공유기를 WPA2PSK + AES 방식의 암호화 방법을 적용시키거나…  </li>
+<li>속도를 포기하기 싫으신 분은 귀찮으시더라도 유선랜을 쓰도록 하자…</li>
+</ol>
+<h2 id="참조-링크"><a href="#참조-링크" class="headerlink" title="참조 링크"></a>참조 링크</h2><ul>
+<li><a href="http://www.clien.net/cs2/bbs/board.php?bo_table=cm_iphonien&wr_id=1061462" rel="external nofollow noopener noreferrer" target="_blank">iptime 암호화 방법에 따라 속도 차이가 엄청나군요.</a>  </li>
+<li><a href="http://www.bodnara.co.kr/bbs/article.html?num=106786" rel="external nofollow noopener noreferrer" target="_blank">WiFi 공유기 암호방식, 꼭 WPA2-AES를 써야하는 이유는?</a>  </li>
+<li><a href="http://blog.daum.net/fachul/49" rel="external nofollow noopener noreferrer" target="_blank">공유기 암호화방법 변경으로 무선/WIFI 속도 제대로 활용하기!</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2017/01/23/giga-internet-fact/" rel="next" title="(상식) 인터넷 속도에 대한 진실">
+                  <i class="fa fa-chevron-left"></i> (상식) 인터넷 속도에 대한 진실
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/01/24/ASM-ref-002/" rel="prev" title="(ASM) 참고용 정리 - 리틀 엔디안, 빅 엔디안">
+                  (ASM) 참고용 정리 - 리틀 엔디안, 빅 엔디안 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc">
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#공유기에-암호를-걸어놓는다는-것의-의미"><span class="nav-number">1.</span> <span class="nav-text">공유기에 암호를 걸어놓는다는 것의 의미</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#공유기에-암호-걸지-않고-사용하기"><span class="nav-number">2.</span> <span class="nav-text">공유기에 암호 걸지 않고 사용하기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#공유기에-암호를-걸지-않는-것의-의미"><span class="nav-number">3.</span> <span class="nav-text">공유기에 암호를 걸지 않는 것의 의미</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#공유기-암호화에-대한-다른-비밀"><span class="nav-number">4.</span> <span class="nav-text">공유기 암호화에 대한 다른 비밀</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#참조-링크"><span class="nav-number">5.</span> <span class="nav-text">참조 링크</span></a></li></ol></div>
+          </div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">227</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2017/01/24/Wifi-password-fact/";
+    this.page.identifier = "2017/01/24/Wifi-password-fact/";
+    this.page.title = '(상식) 무선 공유기 암호와 속도에 관한 진실';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+    </div>
+    <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    $(element).parent().append($(element).remove());
+  });
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+</body>
+</html>

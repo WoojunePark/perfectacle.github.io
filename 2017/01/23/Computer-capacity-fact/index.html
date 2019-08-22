@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="이제 사람들이 IT에 많은 관심이 생겨서1TB 짜리 저장장치를 사도 온전히 1TiB가 아님을 알 수 있다.내가 여기서 TB와 TiB를 사용했는데, 이에 대해 알아보자.  SI 단위프랑스어로 Système international d’unités현 과학계에서 사용하는 표준단위.표준화의 대표적인 성공사례이자 현재의 국제 과학계가 있을 수 있게 해 준 일등공신.">
+<meta name="keywords" content="IT,Computer,용량,상식">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(상식) 컴퓨터 용량 단위에 대한 진실">
+<meta property="og:url" content="https://perfectacle.github.io/2017/01/23/Computer-capacity-fact/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="이제 사람들이 IT에 많은 관심이 생겨서1TB 짜리 저장장치를 사도 온전히 1TiB가 아님을 알 수 있다.내가 여기서 TB와 TiB를 사용했는데, 이에 대해 알아보자.  SI 단위프랑스어로 Système international d’unités현 과학계에서 사용하는 표준단위.표준화의 대표적인 성공사례이자 현재의 국제 과학계가 있을 수 있게 해 준 일등공신.">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://perfectacle.github.io/images/Computer-capacity-fact/thumb.png">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/4/4f/Binaryvdecimal.svg">
+<meta property="og:updated_time" content="2019-08-22T03:52:00.133Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(상식) 컴퓨터 용량 단위에 대한 진실">
+<meta name="twitter:description" content="이제 사람들이 IT에 많은 관심이 생겨서1TB 짜리 저장장치를 사도 온전히 1TiB가 아님을 알 수 있다.내가 여기서 TB와 TiB를 사용했는데, 이에 대해 알아보자.  SI 단위프랑스어로 Système international d’unités현 과학계에서 사용하는 표준단위.표준화의 대표적인 성공사례이자 현재의 국제 과학계가 있을 수 있게 해 준 일등공신.">
+<meta name="twitter:image" content="https://perfectacle.github.io/images/Computer-capacity-fact/thumb.png">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2017/01/23/Computer-capacity-fact/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>(상식) 컴퓨터 용량 단위에 대한 진실 | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script pjax="">
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/01/23/Computer-capacity-fact/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">(상식) 컴퓨터 용량 단위에 대한 진실
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2017-01-23 17:57:03" itemprop="dateCreated datePublished" datetime="2017-01-23T17:57:03+09:00">2017-01-23</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 12:52:00" itemprop="dateModified" datetime="2019-08-22T12:52:00+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/기타/" itemprop="url" rel="index"><span itemprop="name">기타</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/기타/등등/" itemprop="url" rel="index"><span itemprop="name">등등</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/01/23/Computer-capacity-fact/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/23/Computer-capacity-fact/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/IT/" rel="tag"># IT</a>
+              
+                <a href="/tags/Computer/" rel="tag"># Computer</a>
+              
+                <a href="/tags/용량/" rel="tag"># 용량</a>
+              
+                <a href="/tags/상식/" rel="tag"># 상식</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/Computer-capacity-fact/thumb.png" alt=""></p><p>이제 사람들이 IT에 많은 관심이 생겨서<br>1TB 짜리 저장장치를 사도 온전히 1TiB가 아님을 알 수 있다.<br>내가 여기서 TB와 TiB를 사용했는데, 이에 대해 알아보자.  </p><h2 id="SI-단위"><a href="#SI-단위" class="headerlink" title="SI 단위"></a>SI 단위</h2><p>프랑스어로 Système international d’unités<br>현 과학계에서 사용하는 표준단위.<br>표준화의 대표적인 성공사례이자 현재의 국제 과학계가 있을 수 있게 해 준 일등공신.<br>컴퓨터 용량과 관련된 단위들만 살펴보자.</p><a id="more"></a>
+
+
+<table>
+<thead>
+<tr>
+<th>단위</th>
+<th>이름</th>
+<th>배수(10진법)</th>
+<th>배수(2진법)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Y</td>
+<td>yotta</td>
+<td>10<sup>24</sup></td>
+<td>≒2<sup>80</sup></td>
+</tr>
+<tr>
+<td>Z</td>
+<td>zetta</td>
+<td>10<sup>21</sup></td>
+<td>≒2<sup>70</sup></td>
+</tr>
+<tr>
+<td>E</td>
+<td>exa</td>
+<td>10<sup>18</sup></td>
+<td>≒2<sup>60</sup></td>
+</tr>
+<tr>
+<td>P</td>
+<td>peta</td>
+<td>10<sup>15</sup></td>
+<td>≒2<sup>50</sup></td>
+</tr>
+<tr>
+<td>T</td>
+<td>tera</td>
+<td>10<sup>12</sup></td>
+<td>≒2<sup>40</sup></td>
+</tr>
+<tr>
+<td>G</td>
+<td>giga</td>
+<td>10<sup>9</sup></td>
+<td>≒2<sup>30</sup></td>
+</tr>
+<tr>
+<td>M</td>
+<td>mega</td>
+<td>10<sup>6</sup></td>
+<td>≒2<sup>20</sup></td>
+</tr>
+<tr>
+<td>k</td>
+<td>kilo</td>
+<td>10<sup>3</sup></td>
+<td>≒2<sup>10</sup></td>
+</tr>
+</tbody></table>
+<p>위와 같이 SI 단위의 접두어는 과학계에서 사용하는 표준 단위이다.<br>참고로 k는 온도를 나타내는 K와 헷갈린다고 소문자로 표기하였다.<br>저장장치 제조 회사는 이를 저장장치의 용량을 표기하는데 사용했다.<br>저장장치 제조 회사가 말하는 1kB = 10<sup>3</sup>Byte = 1000Byte<br>하지만 전기회로는 전압이 불안정해서 컴퓨터에서도 전압을 두 가지로만 나누었다.<br>이게 컴퓨터가 0과 1로만 이루어진 까닭이다.<br>이러한 탓에 컴퓨터는 1kB = 2<sup>10</sup>Byte = 1024Byte로 인식한다.<br>우리가 생각하는 1024Byte에서 24Byte의 오차가 생긴다.<br><code>1000Byte ≒ 1024Byte</code><br>1kB니까 24Byte의 차이 밖에 안 나는데, 1TB라면…?<br>2<sup>40</sup> - 10<sup>12</sup> = 99511627776(Byte) =  92.6774253845214844(GB)의 오차가 난다.<br>물론 저장 장치에 따라 달라지기도 한다.<br><img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Binaryvdecimal.svg" alt="실제 용량과 표기 용량사이의 차이"><br>내가 보기엔 이거 분명 상술이다.<br>애초에 십진 표기법을 사용하는 SI 단위를 이진 표기법을 사용하는 컴퓨터에 사용하는 것 자체가 맞지 않았다.<br>이진 표기법의 표준이 정해지기 전에 컴퓨터가 나와서 어쩔 수 없었을지도 모르기도 하지만…  </p>
+<h2 id="IEC-표준-접두어-IEC-60027-2"><a href="#IEC-표준-접두어-IEC-60027-2" class="headerlink" title="IEC 표준 접두어(IEC 60027-2)"></a>IEC 표준 접두어(IEC 60027-2)</h2><p>국제 전기 기술위원회(International Electrotechnical Commission, IEC)에서 정의한 이진 표준 접두어이다.</p>
+<table>
+<thead>
+<tr>
+<th>단위</th>
+<th>이름</th>
+<th>배수(10진법)</th>
+<th>배수(2진법)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Yi</td>
+<td>yobi</td>
+<td>2<sup>80</sup></td>
+<td>≒10<sup>24</sup></td>
+</tr>
+<tr>
+<td>Zi</td>
+<td>zebi</td>
+<td>2<sup>70</sup></td>
+<td>≒10<sup>21</sup></td>
+</tr>
+<tr>
+<td>Ei</td>
+<td>exbi</td>
+<td>2<sup>60</sup></td>
+<td>≒10<sup>18</sup></td>
+</tr>
+<tr>
+<td>Pi</td>
+<td>pebi</td>
+<td>2<sup>50</sup></td>
+<td>≒10<sup>15</sup></td>
+</tr>
+<tr>
+<td>Ti</td>
+<td>tebi</td>
+<td>2<sup>40</sup></td>
+<td>≒10<sup>12</sup></td>
+</tr>
+<tr>
+<td>Gi</td>
+<td>gibi</td>
+<td>2<sup>30</sup></td>
+<td>≒10<sup>9</sup></td>
+</tr>
+<tr>
+<td>Mi</td>
+<td>mebi</td>
+<td>2<sup>20</sup></td>
+<td>≒10<sup>6</sup></td>
+</tr>
+<tr>
+<td>Ki</td>
+<td>kibi</td>
+<td>2<sup>10</sup></td>
+<td>≒10<sup>3</sup></td>
+</tr>
+</tbody></table>
+<p>1KiB = 2<sup>10</sup>Byte = 1024Byte로 우리가 생각하는 단위가 맞다.  </p>
+<p>그나마 다행인 것은 하드 디스크나 플래시 메모리(USB, SD 카드, SSD 등등)과는 달리<br>RAM이나 CD(거의 쓰지 않게 됐지만…)는 SI 단위를 쓰면서 IEC 표준 접두어와 같은 결과를 낸다고 한다.<br>쉽게 말해 RAM이나 CD는 상술을 쓰지 않는다는 뜻이다.<br>아마 RAM의 경우에는 메모리 주소와 관련이 있지도 않을까… 싶다.</p>
+<p>하지만 이름이 뭔가 이상하고 어색해서 많이들 쓰지 않는다.<br>이러면 이럴 수록 그들의 상술에 놀아나기 때문에 조금이라도 써야겠다.  </p>
+<p>또한 이러한 상술은 인터넷 업체에서도 쓰고 있다.<br>아래 링크를 참조하자.<br><a href="/2017/01/23/giga-internet-fact/">(상식) 인터넷 속도에 대한 진실</a></p>
+<h2 id="참조-링크"><a href="#참조-링크" class="headerlink" title="참조 링크"></a>참조 링크</h2><ul>
+<li><a href="https://namu.wiki/w/SI%20%EB%8B%A8%EC%9C%84" rel="external nofollow noopener noreferrer" target="_blank">SI 단위</a>  </li>
+<li><a href="https://ko.wikipedia.org/wiki/%EC%9D%B4%EC%A7%84_%EC%A0%91%EB%91%90%EC%96%B4" rel="external nofollow noopener noreferrer" target="_blank">이진 접두어</a>  </li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2017/01/23/C-ref-002/" rel="next" title="(C/C++) 참고용 정리 - 변수와 리터럴, 그리고 메모리">
+                  <i class="fa fa-chevron-left"></i> (C/C++) 참고용 정리 - 변수와 리터럴, 그리고 메모리
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/01/23/giga-internet-fact/" rel="prev" title="(상식) 인터넷 속도에 대한 진실">
+                  (상식) 인터넷 속도에 대한 진실 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc">
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SI-단위"><span class="nav-number">1.</span> <span class="nav-text">SI 단위</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IEC-표준-접두어-IEC-60027-2"><span class="nav-number">2.</span> <span class="nav-text">IEC 표준 접두어(IEC 60027-2)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#참조-링크"><span class="nav-number">3.</span> <span class="nav-text">참조 링크</span></a></li></ol></div>
+          </div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">227</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2017/01/23/Computer-capacity-fact/";
+    this.page.identifier = "2017/01/23/Computer-capacity-fact/";
+    this.page.title = '(상식) 컴퓨터 용량 단위에 대한 진실';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+    </div>
+    <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    $(element).parent().append($(element).remove());
+  });
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+</body>
+</html>

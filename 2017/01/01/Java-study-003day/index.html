@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="형변환(캐스팅, Casting)기본형(primitive type)에서 boolean을 제외한 나머지 타입들은 형변환이 가능.역시 자스를 먼저 배우고 나니 자스의 자유로운 형변환이 그리울 때가 있다.또한 기본형과 참조형(reference type)간의 형변환은 불가능하다.또한 실수형을 정수형으로 바꾸면 반올림 하지 않고 소수점 이하를 다 짜른다.왜냐하면 정수">
+<meta name="keywords" content="Java,자바의 정석,형변환,정규화,연산자">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(Java) 자바의 정석 3판 003일차 - 형변환, 정규화, 연산자">
+<meta property="og:url" content="https://perfectacle.github.io/2017/01/01/Java-study-003day/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="형변환(캐스팅, Casting)기본형(primitive type)에서 boolean을 제외한 나머지 타입들은 형변환이 가능.역시 자스를 먼저 배우고 나니 자스의 자유로운 형변환이 그리울 때가 있다.또한 기본형과 참조형(reference type)간의 형변환은 불가능하다.또한 실수형을 정수형으로 바꾸면 반올림 하지 않고 소수점 이하를 다 짜른다.왜냐하면 정수">
+<meta property="og:locale" content="ko">
+<meta property="og:image" content="https://perfectacle.github.io/images/Java-study-003day/thumb.png">
+<meta property="og:updated_time" content="2019-08-22T05:02:20.341Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(Java) 자바의 정석 3판 003일차 - 형변환, 정규화, 연산자">
+<meta name="twitter:description" content="형변환(캐스팅, Casting)기본형(primitive type)에서 boolean을 제외한 나머지 타입들은 형변환이 가능.역시 자스를 먼저 배우고 나니 자스의 자유로운 형변환이 그리울 때가 있다.또한 기본형과 참조형(reference type)간의 형변환은 불가능하다.또한 실수형을 정수형으로 바꾸면 반올림 하지 않고 소수점 이하를 다 짜른다.왜냐하면 정수">
+<meta name="twitter:image" content="https://perfectacle.github.io/images/Java-study-003day/thumb.png">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2017/01/01/Java-study-003day/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>(Java) 자바의 정석 3판 003일차 - 형변환, 정규화, 연산자 | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script pjax="">
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/01/01/Java-study-003day/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">(Java) 자바의 정석 3판 003일차 - 형변환, 정규화, 연산자
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2017-01-01 20:00:22" itemprop="dateCreated datePublished" datetime="2017-01-01T20:00:22+09:00">2017-01-01</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 14:02:20" itemprop="dateModified" datetime="2019-08-22T14:02:20+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Note/" itemprop="url" rel="index"><span itemprop="name">Note</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Note/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/01/01/Java-study-003day/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/01/Java-study-003day/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/Java/" rel="tag"># Java</a>
+              
+                <a href="/tags/자바의-정석/" rel="tag"># 자바의 정석</a>
+              
+                <a href="/tags/형변환/" rel="tag"># 형변환</a>
+              
+                <a href="/tags/정규화/" rel="tag"># 정규화</a>
+              
+                <a href="/tags/연산자/" rel="tag"># 연산자</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/Java-study-003day/thumb.png" alt=""></p><h2 id="형변환-캐스팅-Casting"><a href="#형변환-캐스팅-Casting" class="headerlink" title="형변환(캐스팅, Casting)"></a>형변환(캐스팅, Casting)</h2><p>기본형(primitive type)에서 boolean을 제외한 나머지 타입들은 형변환이 가능.<br>역시 자스를 먼저 배우고 나니 자스의 자유로운 형변환이 그리울 때가 있다.<br>또한 기본형과 참조형(reference type)간의 형변환은 불가능하다.<br>또한 실수형을 정수형으로 바꾸면 반올림 하지 않고 소수점 이하를 다 짜른다.<br>왜냐하면 정수형에서는 소수점 이하를 표현할 방법이 없기 때문이다.<br>형변환을 할 때 캐스팅 연산자를 써줘야하지만 생략하면 자동으로 컴파일러가 붙여준다.<br>하지만 손실이 발생할 수 있는 경우에는 오류가 발생한다.<br>따라서 손실이 발생하는 경우에는 무조건 캐스팅 연산자를 써줘야한다.</p><a id="more"></a>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">char</span> ch = <span class="string">'A'</span>;</span><br><span class="line">        <span class="keyword">short</span> num = <span class="number">255</span>;</span><br><span class="line">        <span class="keyword">int</span> num2 = num;</span><br><span class="line">        num2 = ch;</span><br><span class="line">        <span class="keyword">long</span> num3 = <span class="number">12345678781234L</span>;</span><br><span class="line">        <span class="comment">// float은 4byte지만 부동 소수점 형태로 표현되기 때문에 8byte인 long보다 더 넓은 범위를 표현할 수 있다.</span></span><br><span class="line">        <span class="comment">// 하지만 정밀도 때문에 오차가 발생할 수는 있다.</span></span><br><span class="line">        <span class="keyword">float</span> num4 = num3;</span><br><span class="line">        <span class="keyword">double</span> num5 = num3;</span><br><span class="line">        <span class="comment">// ch와 num은 둘 다 2byte지만 ch는 unsigned short와 같이 부호가 없으므로 표현 범위가 다름.</span></span><br><span class="line">        <span class="comment">// 따라서 서로 손실이 발생하므로 형변환 연산자가 꼭 존재해야함.</span></span><br><span class="line">        ch = (<span class="keyword">char</span>)num;</span><br><span class="line">        num = (<span class="keyword">short</span>)ch;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="십진수를-2진수로-보기"><a href="#십진수를-2진수로-보기" class="headerlink" title="십진수를 2진수로 보기"></a>십진수를 2진수로 보기</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> num = (<span class="keyword">int</span>)-<span class="number">2.8</span>d;</span><br><span class="line">        <span class="comment">// num = 11111111111111111111111111111110</span></span><br><span class="line">        System.out.println(<span class="string">"num = "</span> + Integer.toBinaryString(num));</span><br><span class="line">        num = (<span class="keyword">int</span>)<span class="number">2.8</span>d;</span><br><span class="line">        System.out.println(<span class="string">"num = "</span> + Integer.toBinaryString(num)); <span class="comment">// num = 10</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="정규화"><a href="#정규화" class="headerlink" title="정규화"></a>정규화</h2><p>정규표현식의 정규는 많이 들어봤는데 그것과는 많이 다른 것이다.<br>기본적으로 부동소수점에 대한 이해를 하고 있어야한다.<br>우선 정의부터 살펴보면  </p>
+<blockquote>
+<p>2진수로 변환된 실수를 저장기 전에 1.xxx x 2<sup>n</sup>의 형태로 변환하는 과정.<br>2진수로 변환된 실수를 정수부에 1만 남기고 소수점에 관한 정보는 2<sup>n</sup>으로 표현한 것.</p>
+</blockquote>
+<p>십진 실수 10.625를 2진 실수로 바꾸면 1010.101이다.<br>2진수로 변환된 실수를 정규화하면 1.010101 x 2<sup>3</sup>가 된다.<br>이를 지수 표기법(Exponential Notation)으로 바꾸면 1.010101e3이 된다.<br>이 정규화된 수를 토대로 IEE754로 표기하여 저장하는 것이다.</p>
+<h2 id="연산자-operator"><a href="#연산자-operator" class="headerlink" title="연산자(operator)"></a>연산자(operator)</h2><ul>
+<li>식(expression)<br>연산자와 피연산자를 조합하여 계산하고자 하는 바를 표현한 것.<br>2+3 등등</li>
+<li>식을 평가(evaluation)하다.<br>식을 계산하여 결과를 얻는 것<br>단 하나의 식을 평가(계산)하면 단 하나의 결과를 얻음.  </li>
+<li>문(statement)<br>식을 프로그램에 포함시키려면 식의 끝에 세미콜론을 붙여 하나의 문으로 만들어야함.<br>2+3; 등등<br>하지만 결과를 얻었지만 쓰이지 않고 사라지기 때문에 무의미함.<br>나중에 사용하기 위해 메모리 상의 공간(변수, 상수)에 저장한 후 꺼내 쓰면 됨.<br>int num = 1 + 2;<br>int num2 = num * 3;<br>변수 선언 = 식; =&gt; 하나의 문장.<br>하지만 다른 곳에서도 쓰이지 않을 결과라면 굳이 식을 문으로 바꾸지 않아도 됨.<br>아래와 같이 메소드의 매개변수로 쓰이는 등등의 경우와 같음.<br>System.out.println(2+3);<br>식을 혼자 쓴 게 아니라 문 안에 식이 쓰인 것이다.  </li>
+</ul>
+<h2 id="연습문제-오답"><a href="#연습문제-오답" class="headerlink" title="연습문제 오답"></a>연습문제 오답</h2><ul>
+<li>char의 형변환!<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">      System.out.println(<span class="string">'A'</span> + <span class="string">'B'</span>); <span class="comment">// 65 + 66 = 131</span></span><br><span class="line">      System.out.println(<span class="string">'1'</span> + <span class="number">2</span>); <span class="comment">// 49 + 2 = 51</span></span><br><span class="line">      System.out.println(<span class="string">'1'</span> + <span class="string">'2'</span>); <span class="comment">// 49 + 50 = 99</span></span><br><span class="line">      System.out.println(<span class="string">""</span> + <span class="keyword">true</span>); <span class="comment">// "true"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>문자열 + any type → 문자열 + 문자열 → 문자열<br>any type + 문자열 → 문자열 + 문자열 → 문자열</p>
+<ul>
+<li><p>System은 키워드가 아니었다!</p>
+</li>
+<li><p>참조형 변수(reference type) 4byte이다!!<br><a href="https://labofengineer.wordpress.com/2013/07/08/java-%EB%B3%80%EC%88%98%ED%83%80%EC%9E%85/" rel="external nofollow noopener noreferrer" target="_blank">JAVA 변수타입</a><br>참조형 변수는 null 또는 객체의 주소(4 byte, 0x0~0xffffffff)를 값으로 갖는다.<br>null은 어떤 값도 갖고 있지 않음, 즉 어떠한 객체도 참조하고 있지 않다는 것을 뜻한다.</p>
+</li>
+<li><p>캐스팅 연산자 생략</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">      <span class="comment">// 표현할 수 있는 범위더라도 int =&gt; 4byte, byte =&gt; 1byte 이므로 캐스팅 연산자 꼭 써줘야함.</span></span><br><span class="line">      <span class="keyword">byte</span> num2 = num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>접근 지정자, 지정 예약어, 메소드<br>접근 지정자 - public, protect, default, private<br>지정 예약어 - this, static, final<br>메소드 - 리턴타입 이름(매개변수) {}<br>지정 예약어 this를 빼고 설명.  </p>
+<ul>
+<li>지정 예약어끼리는 순서 상관 없음 =&gt; static final이던 final static이던  </li>
+<li>접근 지정자와 지정 예약어도 순서 상관 없음 =&gt; public static이던 static public이던  </li>
+<li>하지만 메소드는 무조건 접근 지정자와 지정 예약어 뒤에 와야함.  </li>
+<li>접근 지정자를 생략하면 default 접근 지정자가 적용됨.  </li>
+<li>지정 예약어는 생략 가능하며 생략해도 기본값이 없음.</li>
+<li>메소드에서는 매개변수를 제외한 모든 것은 생략 불가능. 즉 기본 값이 없음.</li>
+</ul>
+</li>
+<li><p>변수의 기본값  </p>
+<ul>
+<li>참조형 - null  </li>
+<li>기본형  <ul>
+<li>boolean - false  </li>
+<li>char - ‘\u0000’  </li>
+<li>byte - 0  </li>
+<li>short - 0  </li>
+<li>int - 0  </li>
+<li>long - 0L or 0l  </li>
+<li>float - 0.0F or 0.0f  </li>
+<li>double - 0.0 or 0.0D or 0.0d<br>byte, short는 컴파일 할 때 자동으로 int 타입으로 바꿈.<br>long에 접미어 L을 붙이는 이유는 int와 다른 메모리 공간을 차지하게 하기 위함.<br>float도 double과 차별을 두기 위해 접미어를 붙이게 끔 설계됨. </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/12/31/Java-study-002day/" rel="next" title="(Java) 자바의 정석 3판 002일차 - char의 형변환과 실수형(부동 소수점)">
+                  <i class="fa fa-chevron-left"></i> (Java) 자바의 정석 3판 002일차 - char의 형변환과 실수형(부동 소수점)
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/01/02/Java-study-004day/" rel="prev" title="(Java) 자바의 정석 3판 004일차 - 연산자(우선 순위 및 결합 규칙), switch 문">
+                  (Java) 자바의 정석 3판 004일차 - 연산자(우선 순위 및 결합 규칙), switch 문 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc">
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#형변환-캐스팅-Casting"><span class="nav-number">1.</span> <span class="nav-text">형변환(캐스팅, Casting)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#십진수를-2진수로-보기"><span class="nav-number">2.</span> <span class="nav-text">십진수를 2진수로 보기</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#정규화"><span class="nav-number">3.</span> <span class="nav-text">정규화</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#연산자-operator"><span class="nav-number">4.</span> <span class="nav-text">연산자(operator)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#연습문제-오답"><span class="nav-number">5.</span> <span class="nav-text">연습문제 오답</span></a></li></ol></div>
+          </div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">227</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2017/01/01/Java-study-003day/";
+    this.page.identifier = "2017/01/01/Java-study-003day/";
+    this.page.title = '(Java) 자바의 정석 3판 003일차 - 형변환, 정규화, 연산자';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+    </div>
+    <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    $(element).parent().append($(element).remove());
+  });
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+</body>
+</html>
