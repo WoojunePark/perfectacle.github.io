@@ -265,6 +265,134 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/01/25/C-ref-003/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2017/01/25/C-ref-003/" class="post-title-link" itemprop="url">(C/C++) 참고용 정리 - 전역 변수 vs 지역 변수 vs static 변수</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2017-01-25 09:31:26" itemprop="dateCreated datePublished" datetime="2017-01-25T09:31:26+09:00">2017-01-25</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 12:46:52" itemprop="dateModified" datetime="2019-08-22T12:46:52+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/C-C/" itemprop="url" rel="index"><span itemprop="name">C/C++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/01/25/C-ref-003/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/25/C-ref-003/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="/images/C-ref-003/thumb.png" alt=""> </p><ul>
+<li>전역 변수(Global Variable)  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> var = <span class="number">3</span>; <span class="comment">// 전역변수</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    var++; <span class="comment">// 어디서나 접근 가능</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, var); <span class="comment">// 4</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    add();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, var); <span class="comment">// 4, 값의 유지</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2017/01/25/C-ref-003/#more" rel="contents">
+                더 읽어보기 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/01/24/Java-study-006day/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1400,154 +1528,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/01/06/ASM-ref-001/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="양권성">
-      <meta itemprop="description" content="느리더라도 꾸준하게">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="오늘도 끄적끄적">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2017/01/06/ASM-ref-001/" class="post-title-link" itemprop="url">(ASM) 참고용 정리 - 기계어와 ASM, 고급 언어의 관계</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">작성일</span>
-
-              
-                
-              
-
-              <time title="Post created: 2017-01-06 09:06:13" itemprop="dateCreated datePublished" datetime="2017-01-06T09:06:13+09:00">2017-01-06</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">수정일</span>
-                <time title="Updated at: 2019-08-22 11:26:28" itemprop="dateModified" datetime="2019-08-22T11:26:28+09:00">2019-08-22</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Programming/ASM/" itemprop="url" rel="index"><span itemprop="name">ASM</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2017/01/06/ASM-ref-001/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/06/ASM-ref-001/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="/images/ASM-ref-001/thumb.png" alt=""></p><h2 id="가상-기계-Virtual-Machine"><a href="#가상-기계-Virtual-Machine" class="headerlink" title="가상 기계(Virtual Machine)"></a>가상 기계(Virtual Machine)</h2><p>기계를 추상화한 것.<br>소프트웨어일 수도, 하드웨어일 수도 있다.<br>각각의 가상 기계는 대응되는 언어들이 존재한다.<br>아래의 표에서 레벨에 해당하는 것들이 가상 기계이다.</p><table>
-<thead>
-<tr>
-<th>Level</th>
-<th>Language</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>High-Level Language</td>
-<td>Java, C, etc.</td>
-</tr>
-<tr>
-<td>Assembly Language</td>
-<td>x86 ASM, 65c816 ASM, etc.</td>
-</tr>
-<tr>
-<td>Instruction Set Architecture(ISA)</td>
-<td>Machine Code</td>
-</tr>
-<tr>
-<td>Digital Logic</td>
-<td>???</td>
-</tr>
-</tbody></table>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2017/01/06/ASM-ref-001/#more" rel="contents">
-                더 읽어보기 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1599,7 +1579,7 @@
         
           <a href="/archives">
         
-          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-count">179</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
@@ -2169,7 +2149,13 @@
         
           
         
-        <span class="site-state-item-count">227</span>
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">230</span>
         <span class="site-state-item-name">태그</span>
         </a>
       </div>

@@ -265,6 +265,131 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/09/28/map-api-performance-improvement/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2017/09/28/map-api-performance-improvement/" class="post-title-link" itemprop="url">지도 API 성능 개선기</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2017-09-28 23:29:16" itemprop="dateCreated datePublished" datetime="2017-09-28T23:29:16+09:00">2017-09-28</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 14:34:24" itemprop="dateModified" datetime="2019-08-22T14:34:24+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Note/" itemprop="url" rel="index"><span itemprop="name">Note</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Note/Dev/" itemprop="url" rel="index"><span itemprop="name">Dev</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/09/28/map-api-performance-improvement/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/09/28/map-api-performance-improvement/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="/images/map-api-performance-improvement/thumb.png" alt="">  </p><h2 id="문제점"><a href="#문제점" class="headerlink" title="문제점"></a>문제점</h2><p><img src="/images/map-api-performance-improvement/01.png" alt="크롬 개발자 도구 네트워크 탭에서 본 API 호출"><br>Time은 데이터 전체를 파싱하는데 걸린 시간이니 무시하고…<br>트래픽이 13MB 남짓…<br>사용자가 조건을 바꿔서 검색을 한다면 데이터 광탈범이 될 가능성이 다분한 상황이었다.  </p><p><img src="/images/map-api-performance-improvement/03.png" alt="순수 응답 시간을 알고 싶어서 다운로드 받아봄"><br>응답 시간이 22초 남짓…  </p><p><img src="/images/map-api-performance-improvement/16.png" alt="StopWatch를 통해 어느 작업에서 병목이 가장 많이 발생하는지 파악">  </p><h2 id="원인-파악"><a href="#원인-파악" class="headerlink" title="원인 파악"></a>원인 파악</h2><h3 id="쿼리"><a href="#쿼리" class="headerlink" title="쿼리"></a>쿼리</h3><p><img src="/images/map-api-performance-improvement/17.png" alt="숙박 연동사 실제 가격 주입하는 부분"><br>숙박 연동 최저가는 jooq로 불러오고 있고, 숙박 연동사 테이블은 jpa로 불러오고 있음.<br>순수 네이티브 쿼리가 아닌 이상 퍼포먼스가 제대로 나오지 않을 것으로 판단됨.  </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2017/09/28/map-api-performance-improvement/#more" rel="contents">
+                더 읽어보기 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/09/23/Spring-boot-gradle-profile/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1386,126 +1511,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/08/28/jazz-hop-sleepy-time-beats/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="양권성">
-      <meta itemprop="description" content="느리더라도 꾸준하게">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="오늘도 끄적끄적">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2017/08/28/jazz-hop-sleepy-time-beats/" class="post-title-link" itemprop="url">(JazzHop) redpest - Sleepy time beats</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">작성일</span>
-
-              
-                
-              
-
-              <time title="Post created: 2017-08-28 22:07:11" itemprop="dateCreated datePublished" datetime="2017-08-28T22:07:11+09:00">2017-08-28</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">수정일</span>
-                <time title="Updated at: 2019-03-10 16:22:48" itemprop="dateModified" datetime="2019-03-10T16:22:48+09:00">2019-03-10</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/기타/" itemprop="url" rel="index"><span itemprop="name">기타</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/기타/음악/" itemprop="url" rel="index"><span itemprop="name">음악</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2017/08/28/jazz-hop-sleepy-time-beats/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/08/28/jazz-hop-sleepy-time-beats/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <img src="./thumb.jpg" style="display: none">
-<iframe width="100%" height="300" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/330637147&amp;color=ff9900&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
-
-<p>봄의 향그러운 느낌을 한껏 품은 비트다.<br>들으면 잠이 쏟아질 것 같지만 1시간을 넘게 들어도 잠이 안 올 때는 잘 안 온다.  </p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1557,7 +1562,7 @@
         
           <a href="/archives">
         
-          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-count">179</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
@@ -2127,7 +2132,13 @@
         
           
         
-        <span class="site-state-item-count">227</span>
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">230</span>
         <span class="site-state-item-name">태그</span>
         </a>
       </div>
