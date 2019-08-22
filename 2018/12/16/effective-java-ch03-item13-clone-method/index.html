@@ -92,7 +92,7 @@
   <meta name="generator" content="Hexo 3.9.0">
   
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
-  <script pjax="">
+  <script>
     var host = window.location.hostname;
     if (host !== "localhost" || !true) {
       window.dataLayer = window.dataLayer || [];
@@ -1241,7 +1241,6 @@
 
   
   <script src="/lib/jquery/index.js?v=3.4.1"></script>
-  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-pjax@0/pjax.min.js"></script>
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 <script src="/js/utils.js?v=7.3.0"></script>
 <script src="/js/schemes/pisces.js?v=7.3.0"></script>
@@ -1272,7 +1271,6 @@
 
 
 
-    <div id="pjax">
 
   
 
@@ -1334,35 +1332,6 @@
       }
     })();
   
-</script>
-
-    </div>
-    <script>
-var pjax = new Pjax({
-  selectors: [
-    'head title',
-    '#page-configurations',
-    '.content-wrap',
-    '.post-toc-wrap',
-    '#pjax'
-  ],
-  analytics: false,
-  cacheBust: false,
-  scrollTo: !CONFIG.bookmark.enable
-});
-window.addEventListener('pjax:success', () => {
-  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
-    $(element).parent().append($(element).remove());
-  });
-  // Define Motion Sequence & Bootstrap Motion.
-  if (CONFIG.motion.enable) {
-    NexT.motion.integrator
-      .init()
-      .add(NexT.motion.middleWares.postList)
-      .bootstrap();
-  }
-  NexT.utils.updateSidebarPosition();
-});
 </script>
 
 </body>
