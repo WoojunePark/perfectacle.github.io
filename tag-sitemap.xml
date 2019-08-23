@@ -3,6 +3,27 @@
 
 
     <url>
+        <loc>https://perfectacle.github.io/tags/%EB%A9%B4%EC%A0%91/</loc>
+        <lastmod>2019-08-23T10:19:37.483Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/tags/%EC%9D%B4%EC%A7%81/</loc>
+        <lastmod>2019-08-23T10:19:37.483Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/tags/%ED%87%B4%EC%82%AC/</loc>
+        <lastmod>2019-08-23T10:19:37.483Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://perfectacle.github.io/tags/GC/</loc>
         <lastmod>2019-08-23T02:33:39.574Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -166,27 +187,6 @@
     <url>
         <loc>https://perfectacle.github.io/tags/JMX/</loc>
         <lastmod>2019-08-23T02:31:34.166Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/tags/%EB%A9%B4%EC%A0%91/</loc>
-        <lastmod>2019-08-23T00:30:17.318Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/tags/%EC%9D%B4%EC%A7%81/</loc>
-        <lastmod>2019-08-23T00:30:17.318Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/tags/%ED%87%B4%EC%82%AC/</loc>
-        <lastmod>2019-08-23T00:30:17.318Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

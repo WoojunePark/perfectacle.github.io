@@ -8,6 +8,14 @@
     </url>
 
     <url>
+        <loc>https://perfectacle.github.io/2019/08/23/exit-yanolja-feat-leisureq/</loc>
+        <lastmod>2019-08-23T10:19:37.483Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://perfectacle.github.io/2019/05/11/jvm-gc-advanced/</loc>
         <lastmod>2019-08-23T02:33:39.574Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -66,14 +74,6 @@
     <url>
         <loc>https://perfectacle.github.io/2019/05/07/jvm-gc-basic/</loc>
         <lastmod>2019-08-23T02:31:19.354Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/2019/08/23/exit-yanolja-feat-leisureq/</loc>
-        <lastmod>2019-08-23T00:30:17.318Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

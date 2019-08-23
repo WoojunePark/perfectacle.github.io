@@ -8,6 +8,20 @@
     </url>
 
     <url>
+        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EC%9E%A1%EB%8F%99%EC%82%AC%EB%8B%88/</loc>
+        <lastmod>2019-08-23T10:19:37.483Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/</loc>
+        <lastmod>2019-08-23T10:19:37.483Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://perfectacle.github.io/categories/Programming/Java/</loc>
         <lastmod>2019-08-23T02:33:39.574Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -43,13 +57,6 @@
     </url>
 
     <url>
-        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/</loc>
-        <lastmod>2019-08-23T02:32:31.460Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://perfectacle.github.io/categories/Note/Spring-Boot/</loc>
         <lastmod>2019-08-23T02:32:07.660Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -73,13 +80,6 @@
     <url>
         <loc>https://perfectacle.github.io/categories/Note/%EC%82%BD%EC%A7%88/</loc>
         <lastmod>2019-08-23T02:31:34.166Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EC%9E%A1%EB%8F%99%EC%82%AC%EB%8B%88/</loc>
-        <lastmod>2019-08-23T00:30:17.318Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
