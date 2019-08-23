@@ -67,8 +67,8 @@
 <meta property="og:description" content="GMT(Greenwich Mean Time) vs. UTC(Coordinated Universal Time)세계 표준 시간 관련해서 위 두 키워드가 자주 나오길래 구글에서 검색해보았다.   There is no time difference between Greenwich Mean Time and Coordinated Universal Time.6:13 AM">
 <meta property="og:locale" content="ko">
 <meta property="og:image" content="https://perfectacle.github.io/images/date-and-time/thumb.jpg">
-<meta property="og:image" content="https://perfectacle.github.io/2018/09/26/date-and-time/date-format-by-country.svg">
-<meta property="og:updated_time" content="2019-08-22T04:22:28.979Z">
+<meta property="og:image" content="https://perfectacle.github.io/images/date-and-time/date-format-by-country.svg">
+<meta property="og:updated_time" content="2019-08-23T02:31:53.566Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="날짜와 시간">
 <meta name="twitter:description" content="GMT(Greenwich Mean Time) vs. UTC(Coordinated Universal Time)세계 표준 시간 관련해서 위 두 키워드가 자주 나오길래 구글에서 검색해보았다.   There is no time difference between Greenwich Mean Time and Coordinated Universal Time.6:13 AM">
@@ -314,7 +314,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">수정일</span>
-                <time title="Updated at: 2019-08-22 13:22:28" itemprop="dateModified" datetime="2019-08-22T13:22:28+09:00">2019-08-22</time>
+                <time title="Updated at: 2019-08-23 11:31:53" itemprop="dateModified" datetime="2019-08-23T11:31:53+09:00">2019-08-23</time>
               </span>
             
           
@@ -435,7 +435,7 @@
 <p>또한 영토가 좌우로 쭉 뻗은 미국 같은 경우에는 여러 타임존(HST(Hawaii Standard Time), PDT(Pacific Daylight Time) 등등)을 사용하고 있다.</p>
 <p>이러한 사유로 AWS RDS의 기본 타임존은 UTC이고, 우리는 현재 시간을 저장(now())했다고 판단했는데 DB에 저장된 시간을 보면 9시간 이전의 시간이 저장된 사례를 볼 수 있다.<br>이게 바로 우리나라가 UTC +9인 KST를 사용하고 있기 때문이다.  </p>
 <h2 id="ISO-8601-Date-and-time-format"><a href="#ISO-8601-Date-and-time-format" class="headerlink" title="ISO-8601 - Date and time format"></a><a href="https://en.wikipedia.org/wiki/ISO_8601" rel="external nofollow noopener noreferrer" target="_blank">ISO-8601 - Date and time format</a></h2><p><a href="https://en.wikipedia.org/wiki/International_Organization_for_Standardization" rel="external nofollow noopener noreferrer" target="_blank">ISO(International Organization for Standardization)</a>는 세계에서 인정하는 표준을 정의하는 기관이다.<br>이 기관에서 시간과 날짜에 관한 표준을 지정하였는데 이게 이 기관에서 정한 8601번 째 표준이라는 의미이다.<br>자바를 비롯해서 많은 프로그래밍 언어에서 날짜와 시간을 표기할 때 위 표준을 준수하고 있다.  </p>
-<p><img src="date-format-by-country.svg" alt="나라별 날짜 형식, 청록색이 일-월-연, 황색이 연-월-일, 자주색이 월-일-연, 적색이 일-월-연과 월-일-연 혼용"><br>사진에서 보다싶이 동아시아권(한국, 일본, 중국 등등)에서는 연-월-일의 순서로 표기한다.<br>하지만 다른 많은 나라에서는 일-월-연, 월-일-연 등등 아주 다양하게 쓰고 있다.<br>우리나라에서는 1970년 01월 02일을 표기할 때 1970-01-02이지만, 미국에서는 02-01-1970이 된다.<br>이런 혼란을 줄이고자 ISO 8601이 나오게 된 것이다.  </p>
+<p><img src="/images/date-and-time/date-format-by-country.svg" alt="나라별 날짜 형식, 청록색이 일-월-연, 황색이 연-월-일, 자주색이 월-일-연, 적색이 일-월-연과 월-일-연 혼용"><br>사진에서 보다싶이 동아시아권(한국, 일본, 중국 등등)에서는 연-월-일의 순서로 표기한다.<br>하지만 다른 많은 나라에서는 일-월-연, 월-일-연 등등 아주 다양하게 쓰고 있다.<br>우리나라에서는 1970년 01월 02일을 표기할 때 1970-01-02이지만, 미국에서는 02-01-1970이 된다.<br>이런 혼란을 줄이고자 ISO 8601이 나오게 된 것이다.  </p>
 <p>기본적인 규칙은 다음과 같다.  </p>
 <ul>
 <li>큰 단위부터 작은 단위로(연 월 일 시 분 초) 표기한다.  </li>

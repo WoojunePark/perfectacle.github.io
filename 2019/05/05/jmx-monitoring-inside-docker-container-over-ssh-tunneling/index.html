@@ -67,7 +67,7 @@
 <meta property="og:description" content="들어가기에 앞서JMX를 모니터링 하려면 VisualVM이나 JDK에 기본적으로 내장돼있는 JConsole을 사용해야한다.로컬에서 JMX 모니터링하기우선 로컬에 어플리케이션을 띄우고 JMX 모니터링하기란 참 쉽다.우선 자바 어플리케이션을 띄워보자.  1java -jar air.jar">
 <meta property="og:locale" content="ko">
 <meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/thumb.png">
-<meta property="og:image" content="https://perfectacle.github.io/2019/05/05/jmx-monitoring-inside-docker-container-over-ssh-tunneling/01.png">
+<meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/01.png">
 <meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/02.png">
 <meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/03.png">
 <meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/04.png">
@@ -76,7 +76,7 @@
 <meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/02.png">
 <meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/05.png">
 <meta property="og:image" content="https://perfectacle.github.io/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/06.png">
-<meta property="og:updated_time" content="2019-08-22T05:15:57.055Z">
+<meta property="og:updated_time" content="2019-08-23T02:31:34.166Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="(삽질기) SSH 터널링을 통해 원격지에 존재하는 도커 컨테이너 안의 JMX 모니터링하기">
 <meta name="twitter:description" content="들어가기에 앞서JMX를 모니터링 하려면 VisualVM이나 JDK에 기본적으로 내장돼있는 JConsole을 사용해야한다.로컬에서 JMX 모니터링하기우선 로컬에 어플리케이션을 띄우고 JMX 모니터링하기란 참 쉽다.우선 자바 어플리케이션을 띄워보자.  1java -jar air.jar">
@@ -322,7 +322,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">수정일</span>
-                <time title="Updated at: 2019-08-22 14:15:57" itemprop="dateModified" datetime="2019-08-22T14:15:57+09:00">2019-08-22</time>
+                <time title="Updated at: 2019-08-23 11:31:34" itemprop="dateModified" datetime="2019-08-23T11:31:34+09:00">2019-08-23</time>
               </span>
             
           
@@ -388,7 +388,7 @@
 
 
 
-<p><img src="01.png" alt="그리고 모니터링 툴을 보면 바로 해당 어플리케이션이 잡혀있다."></p>
+<p><img src="/images/jmx-monitoring-inside-docker-container-over-ssh-tunneling/01.png" alt="그리고 모니터링 툴을 보면 바로 해당 어플리케이션이 잡혀있다."></p>
 <h2 id="도커-컨테이너-안의-JMX-모니터링-하기"><a href="#도커-컨테이너-안의-JMX-모니터링-하기" class="headerlink" title="도커 컨테이너 안의 JMX 모니터링 하기"></a>도커 컨테이너 안의 JMX 모니터링 하기</h2><p>우선 도커 이미지 파일부터 만들어야한다.  </p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> openjdk:<span class="number">11</span>-jdk-slim</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /root</span></span><br><span class="line"><span class="bash"></span></span><br><span class="line"><span class="bash">COPY build/libs/air.jar .</span></span><br><span class="line"><span class="bash"></span></span><br><span class="line"><span class="bash">CMD (java \</span></span><br><span class="line"><span class="bash">          -Dcom.sun.management.jmxremote \</span></span><br><span class="line"><span class="bash">          -Dcom.sun.management.jmxremote.port=9090 \</span></span><br><span class="line"><span class="bash">          -Dcom.sun.management.jmxremote.authenticate=<span class="literal">false</span> \</span></span><br><span class="line"><span class="bash">          -Dcom.sun.management.jmxremote.ssl=<span class="literal">false</span> \</span></span><br><span class="line"><span class="bash">          -Dcom.sun.management.jmxremote.rmi.port=9090 \</span></span><br><span class="line"><span class="bash">          -Djava.rmi.server.hostname=localhost \</span></span><br><span class="line"><span class="bash">          -jar air.jar)</span></span><br></pre></td></tr></table></figure>
 

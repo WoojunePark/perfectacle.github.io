@@ -8,14 +8,77 @@
     </url>
 
     <url>
-        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EC%9E%A1%EB%8F%99%EC%82%AC%EB%8B%88/</loc>
-        <lastmod>2019-08-23T00:30:17.318Z</lastmod>
+        <loc>https://perfectacle.github.io/categories/Programming/Java/</loc>
+        <lastmod>2019-08-23T02:33:39.574Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/Programming/</loc>
+        <lastmod>2019-08-23T02:33:39.574Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/Programming/ECMAScript/ES2015/</loc>
+        <lastmod>2019-08-23T02:33:21.886Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/Programming/ECMAScript/</loc>
+        <lastmod>2019-08-23T02:33:21.886Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EC%9E%90%EC%9E%91/</loc>
+        <lastmod>2019-08-23T02:32:31.460Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/</loc>
+        <lastmod>2019-08-23T02:32:31.460Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/Note/Spring-Boot/</loc>
+        <lastmod>2019-08-23T02:32:07.660Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/Note/</loc>
+        <lastmod>2019-08-23T02:32:07.660Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EB%93%B1%EB%93%B1/</loc>
+        <lastmod>2019-08-23T02:31:53.566Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/Note/%EC%82%BD%EC%A7%88/</loc>
+        <lastmod>2019-08-23T02:31:34.166Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EC%9E%A1%EB%8F%99%EC%82%AC%EB%8B%88/</loc>
         <lastmod>2019-08-23T00:30:17.318Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -78,29 +141,8 @@
     </url>
 
     <url>
-        <loc>https://perfectacle.github.io/categories/Note/</loc>
-        <lastmod>2019-08-22T05:54:34.803Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EB%93%B1%EB%93%B1/</loc>
-        <lastmod>2019-08-22T05:54:34.794Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://perfectacle.github.io/categories/Middle-end/DevOps/</loc>
         <lastmod>2019-08-22T05:54:34.777Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EC%9E%90%EC%9E%91/</loc>
-        <lastmod>2019-08-22T05:54:34.749Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -120,20 +162,6 @@
     </url>
 
     <url>
-        <loc>https://perfectacle.github.io/categories/Programming/</loc>
-        <lastmod>2019-08-22T05:54:34.716Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/categories/Note/Spring-Boot/</loc>
-        <lastmod>2019-08-22T05:54:34.690Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://perfectacle.github.io/categories/Note/Dev/</loc>
         <lastmod>2019-08-22T05:54:34.677Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -143,13 +171,6 @@
     <url>
         <loc>https://perfectacle.github.io/categories/Middle-end/%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0/</loc>
         <lastmod>2019-08-22T05:54:34.631Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/categories/Programming/ECMAScript/</loc>
-        <lastmod>2019-08-22T05:34:24.622Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -183,13 +204,6 @@
     </url>
 
     <url>
-        <loc>https://perfectacle.github.io/categories/Programming/Java/</loc>
-        <lastmod>2019-08-22T05:34:24.104Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://perfectacle.github.io/categories/Middle-end/TDD/</loc>
         <lastmod>2019-08-22T05:34:24.100Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -211,13 +225,6 @@
     </url>
 
     <url>
-        <loc>https://perfectacle.github.io/categories/Note/%EC%82%BD%EC%A7%88/</loc>
-        <lastmod>2019-08-22T05:15:57.055Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://perfectacle.github.io/categories/Note/Java/</loc>
         <lastmod>2019-08-22T05:02:20.381Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -234,13 +241,6 @@
     <url>
         <loc>https://perfectacle.github.io/categories/Middle-end/git/</loc>
         <lastmod>2019-08-22T04:51:06.003Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/categories/Programming/ECMAScript/ES2015/</loc>
-        <lastmod>2019-08-22T04:50:58.014Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
