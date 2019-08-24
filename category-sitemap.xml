@@ -8,14 +8,21 @@
     </url>
 
     <url>
-        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EC%9E%A1%EB%8F%99%EC%82%AC%EB%8B%88/</loc>
-        <lastmod>2019-08-24T01:39:18.677Z</lastmod>
+        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EA%B2%BD%EC%A0%9C/</loc>
+        <lastmod>2019-08-24T06:03:12.949Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/</loc>
+        <lastmod>2019-08-24T06:03:12.949Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EC%9E%A1%EB%8F%99%EC%82%AC%EB%8B%88/</loc>
         <lastmod>2019-08-24T01:39:18.677Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -94,13 +101,6 @@
     <url>
         <loc>https://perfectacle.github.io/categories/Back-end/</loc>
         <lastmod>2019-08-22T05:54:34.849Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/categories/%EA%B8%B0%ED%83%80/%EA%B2%BD%EC%A0%9C/</loc>
-        <lastmod>2019-08-22T05:54:34.844Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

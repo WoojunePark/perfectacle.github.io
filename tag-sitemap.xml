@@ -3,6 +3,48 @@
 
 
     <url>
+        <loc>https://perfectacle.github.io/tags/%ED%98%84%EA%B8%88%ED%9D%90%EB%A6%84/</loc>
+        <lastmod>2019-08-24T06:03:12.949Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/tags/%EB%B6%80%EC%B1%84/</loc>
+        <lastmod>2019-08-24T06:03:12.949Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/tags/%EC%9E%90%EC%82%B0/</loc>
+        <lastmod>2019-08-24T06:03:12.949Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/tags/%EC%9E%AC%ED%85%8C%ED%81%AC/</loc>
+        <lastmod>2019-08-24T06:03:12.949Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/tags/%EC%9E%90%EB%B3%B8%EC%A3%BC%EC%9D%98/</loc>
+        <lastmod>2019-08-24T06:03:12.949Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/tags/%EA%B2%BD%EC%A0%9C/</loc>
+        <lastmod>2019-08-24T06:03:12.949Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://perfectacle.github.io/tags/%EB%A9%B4%EC%A0%91/</loc>
         <lastmod>2019-08-24T01:39:18.677Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -235,27 +277,6 @@
 
     <url>
         <loc>https://perfectacle.github.io/tags/%EC%9D%B8%ED%94%8C%EB%A0%88%EC%9D%B4%EC%85%98/</loc>
-        <lastmod>2019-08-22T05:54:34.844Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/tags/%EC%9E%AC%ED%85%8C%ED%81%AC/</loc>
-        <lastmod>2019-08-22T05:54:34.844Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/tags/%EA%B2%BD%EC%A0%9C/</loc>
-        <lastmod>2019-08-22T05:54:34.844Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/tags/%EC%9E%90%EB%B3%B8%EC%A3%BC%EC%9D%98/</loc>
         <lastmod>2019-08-22T05:54:34.844Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>

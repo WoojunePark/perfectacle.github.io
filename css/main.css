@@ -1247,7 +1247,7 @@ pre .javascript .function {
   font-size: 0.875em;
   font-weight: bold;
   line-height: 1;
-  margin: -20px auto 15px;
+  margin: -10px auto 0;
   text-align: center;
 }
 .post-sticky-flag {
@@ -1732,7 +1732,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #34edff;
+  background: #1b46d7;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
