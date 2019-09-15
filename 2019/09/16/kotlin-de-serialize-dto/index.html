@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=7.3.0" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+  <meta name="google-site-verification" content="yL1R2eDsKDqjPNaOBKp1usSDw8SQNzaO35svs1LKYWw">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":true,"preload":true},
+    path: 'search.xml',
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '복사',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    }
+  };
+</script>
+
+  <meta name="description" content="연차 대비 너무너무 느린 개발 속도를 향상시키기 위해 나만의 Cheetsheet를 하나씩 만들어야겠다.처음 접하는 코틀린 환경에서 자바에서는 좀 할만했던 DTO의 (De)Serialize 관련해서 적어보았다.모든 설명은 JSON으로 request와 response를 주고받는 HTTP API 기반으로 진행하기 때문에 엄밀히 따지면 부정확한 내용들이 많다.">
+<meta name="keywords" content="Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(Kotlin) De&#x2F;Serialize DTO 뽀개서 뿌셔버리기">
+<meta property="og:url" content="https://perfectacle.github.io/2019/09/16/kotlin-de-serialize-dto/index.html">
+<meta property="og:site_name" content="오늘도 끄적끄적">
+<meta property="og:description" content="연차 대비 너무너무 느린 개발 속도를 향상시키기 위해 나만의 Cheetsheet를 하나씩 만들어야겠다.처음 접하는 코틀린 환경에서 자바에서는 좀 할만했던 DTO의 (De)Serialize 관련해서 적어보았다.모든 설명은 JSON으로 request와 response를 주고받는 HTTP API 기반으로 진행하기 때문에 엄밀히 따지면 부정확한 내용들이 많다.">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2019-09-15T16:47:54.116Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(Kotlin) De&#x2F;Serialize DTO 뽀개서 뿌셔버리기">
+<meta name="twitter:description" content="연차 대비 너무너무 느린 개발 속도를 향상시키기 위해 나만의 Cheetsheet를 하나씩 만들어야겠다.처음 접하는 코틀린 환경에서 자바에서는 좀 할만했던 DTO의 (De)Serialize 관련해서 적어보았다.모든 설명은 JSON으로 request와 response를 주고받는 HTTP API 기반으로 진행하기 때문에 엄밀히 따지면 부정확한 내용들이 많다.">
+<meta property="og:image" content="/images/avatar.png">
+  <link rel="alternate" href="/atom.xml" title="오늘도 끄적끄적" type="application/atom+xml">
+  <link rel="canonical" href="https://perfectacle.github.io/2019/09/16/kotlin-de-serialize-dto/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>(Kotlin) De/Serialize DTO 뽀개서 뿌셔버리기 | 오늘도 끄적끄적</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-87795455-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-87795455-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="ko">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">오늘도 끄적끄적</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">느리더라도 꾸준하게</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>홈</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>아카이브</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>카테고리</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>태그</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>검색</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-wrapper">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Searching..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2019/09/16/kotlin-de-serialize-dto/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:block;margin:0px auto 60px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">(Kotlin) De/Serialize DTO 뽀개서 뿌셔버리기
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2019-09-16 00:30:06 / Updated at: 01:47:54" itemprop="dateCreated datePublished" datetime="2019-09-16T00:30:06+09:00">2019-09-16</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Note/" itemprop="url" rel="index"><span itemprop="name">Note</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Note/Kotlin/" itemprop="url" rel="index"><span itemprop="name">Kotlin</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/09/16/kotlin-de-serialize-dto/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/16/kotlin-de-serialize-dto/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+            
+              
+            
+            <div class="post-tags">
+              
+                <a href="/tags/Kotlin/" rel="tag"># Kotlin</a>
+              
+            </div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>연차 대비 너무너무 느린 개발 속도를 향상시키기 위해 나만의 Cheetsheet를 하나씩 만들어야겠다.<br>처음 접하는 코틀린 환경에서 자바에서는 좀 할만했던 DTO의 (De)Serialize 관련해서 적어보았다.<br>모든 설명은 <strong>JSON으로 request와 response를 주고받는 HTTP API 기반</strong>으로 진행하기 때문에 엄밀히 따지면 부정확한 내용들이 많다.</p><a id="more"></a>
+<h2 id="용어-설명"><a href="#용어-설명" class="headerlink" title="용어 설명"></a>용어 설명</h2><p>간단하게 용어들을 집고 넘어가자.</p>
+<h3 id="DTO-Data-Transfer-Object"><a href="#DTO-Data-Transfer-Object" class="headerlink" title="DTO(Data Transfer Object)"></a>DTO(Data Transfer Object)</h3><p>데이터를 전송하는데 사용하는 객체  </p>
+<p>쉽게 말해서 HTTP API에서 사용하는 JSON 타입 등등의 <strong>Request Body</strong>와 <strong>Response Body</strong>를 떠올리면 된다.<br>자바스크립트에서는 JSON이 자바스크립트의 Object 리터럴과 매우 유사해서 파싱하는데 크게 무리가 없지만,<br>JVM 진영에서는 꽤나 큰 이슈이다. (잘 몰라서 삽질을 하는 계기가 된다.)  </p>
+<h3 id="Deserialize"><a href="#Deserialize" class="headerlink" title="Deserialize"></a>Deserialize</h3><p>쉽게 말하면 JSON 형태의 Request Body를 코틀린 등등의 Object로 파싱하는 작업을 의미한다.<br><strong>Setter에 해당 로직이 들어간다.</strong></p>
+<p>Request Body는 클라이언트가 서버로 던지는 내용이다.<br>따라서 서버의 권한 밖이기 때문에 Kotlin이 non-null type을 지원한들 아래와 같은 문제를 마주치게 된다.</p>
+<ol>
+<li>non-null tpye이고, default value가 없는데 client에서 필드를 넘겨주지 않으면 (<code>{}</code>)</li>
+<li>non-null tpye이고, default value가 있는데 client에서 null을 넘기면 (<code>{&quot;field&quot;: null}</code>)</li>
+</ol>
+<p>위와 같은 경우에 아래 오류와 마주치게 된다. (컴파일 타임에 클라이언트가 어떻게 던질지 모르므로 <strong>런타임 에러</strong>로 발생한다.)<br><code>JSON property name due to missing (therefore NULL) value for creator parameter name which is a non-nullable type</code></p>
+<p><strong>따라서 클라이언트가 우리 말을 잘 듣는다는 보장이 없으므로 Request Body DTO의 필드들은 nullable type으로 지정해주자!</strong></p>
+<h3 id="Serialize"><a href="#Serialize" class="headerlink" title="Serialize"></a>Serialize</h3><p>쉽게 말하면 코틀린 등등의 Object를 JSON 형태의 Response Body로 파싱하는 작업을 의미한다.<br><strong>Getter에 해당 로직이 들어간다.</strong></p>
+<h2 id="기본적인-형태"><a href="#기본적인-형태" class="headerlink" title="기본적인 형태"></a>기본적인 형태</h2><p>가장 기본적인 형태들의 DTO를 파싱해보자.  </p>
+<h3 id="Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-필드명이-똑같은-경우"><a href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-필드명이-똑같은-경우" class="headerlink" title="Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 필드명이 똑같은 경우"></a>Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 필드명이 똑같은 경우</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * deserialize from (request body)</span></span><br><span class="line"><span class="comment"> * &#123;name: "name"&#125;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * serialize to (response body)</span></span><br><span class="line"><span class="comment"> * &#123;name: "name"&#125;</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DTO</span></span>(<span class="keyword">val</span> name: String?)</span><br></pre></td></tr></table></figure>
+
+<h4 id="코틀린의-필드명과는-다른-경우"><a href="#코틀린의-필드명과는-다른-경우" class="headerlink" title="코틀린의 필드명과는 다른 경우"></a>코틀린의 필드명과는 다른 경우</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * deserialize from (request body)</span></span><br><span class="line"><span class="comment"> * &#123;n: "name"&#125;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * serialize to (response body)</span></span><br><span class="line"><span class="comment"> * &#123;n: "name"&#125;</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DTO</span></span>(<span class="meta">@JsonProperty(<span class="meta-string">"n"</span>)</span> <span class="keyword">val</span> name: String?)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-필드명이-다른-경우"><a href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-필드명이-다른-경우" class="headerlink" title="Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 필드명이 다른 경우"></a>Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 필드명이 다른 경우</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * deserialize from (request body)</span></span><br><span class="line"><span class="comment"> * &#123;n: "name"&#125;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * serialize to (response body)</span></span><br><span class="line"><span class="comment"> * &#123;names: "name"&#125;</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DTO</span></span>(name: String?) &#123;</span><br><span class="line">    <span class="keyword">var</span> name = name</span><br><span class="line">        <span class="meta">@JsonProperty(value = <span class="meta-string">"names"</span>, access = JsonProperty.Access.READ_ONLY)</span> <span class="keyword">get</span></span><br><span class="line">        <span class="meta">@JsonProperty(value = <span class="meta-string">"n"</span>, access = JsonProperty.Access.WRITE_ONLY)</span> <span class="keyword">set</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="LocalDateTime-3형제-다루기"><a href="#LocalDateTime-3형제-다루기" class="headerlink" title="LocalDateTime 3형제 다루기"></a>LocalDateTime 3형제 다루기</h2><p>LocalDate, LocalTime, LocalDateTime 3형제를 다뤄보자.<br>모든 클라이언트가 ISO 8601을 따라서 Request Body를 만들어서 주면 좋겠지만 그렇지 않은 경우가 많기 때문에 직접 파싱해야할 경우가 있다.  </p>
+<h3 id="기본-파싱-규칙-ISO-8601"><a href="#기본-파싱-규칙-ISO-8601" class="headerlink" title="기본 파싱 규칙 (ISO 8601)"></a>기본 파싱 규칙 (ISO 8601)</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * deserialize from (request body)</span></span><br><span class="line"><span class="comment"> * &#123;"date": "2019-08-08", "time": "19:21:33", "dateTime": "2019-08-08T19:21:33"&#125;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * serialize to (response body)</span></span><br><span class="line"><span class="comment"> * &#123;"date": "2019-08-08", "time": "19:21:33", "dateTime": "2019-08-08T19:21:33"&#125;</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DTO</span></span>(</span><br><span class="line">    <span class="keyword">val</span> date: LocalDate?,</span><br><span class="line">    <span class="keyword">val</span> time: LocalTime?,</span><br><span class="line">    <span class="keyword">val</span> dateTime: LocalDateTime?</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-동일한-파싱-규칙을-사용하는-경우"><a href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-동일한-파싱-규칙을-사용하는-경우" class="headerlink" title="Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 동일한 파싱 규칙을 사용하는 경우"></a>Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 동일한 파싱 규칙을 사용하는 경우</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * deserialize from (request body)</span></span><br><span class="line"><span class="comment"> * &#123;"date": "2019/08/08", "time": "19시 21분 33초", "dateTime": "2019/08/08 19시 21분 33초"&#125;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * serialize to (response body)</span></span><br><span class="line"><span class="comment"> * &#123;"date": "2019/08/08", "time": "19시 21분 33초", "dateTime": "2019/08/08 19시 21분 33초"&#125;</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DTO</span></span>(</span><br><span class="line">    <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy/MM/dd"</span>)</span> <span class="keyword">val</span> date: LocalDate?,</span><br><span class="line">    <span class="meta">@JsonFormat(pattern = <span class="meta-string">"HH시 mm분 ss초"</span>)</span> <span class="keyword">val</span> time: LocalTime?,</span><br><span class="line">    <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy/MM/dd HH시 mm분 ss초"</span>)</span> <span class="keyword">val</span> dateTime: LocalDateTime?</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-다른-파싱-규칙을-사용하는-경우"><a href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-다른-파싱-규칙을-사용하는-경우" class="headerlink" title="Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 다른 파싱 규칙을 사용하는 경우"></a>Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 다른 파싱 규칙을 사용하는 경우</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * deserialize from (request body)</span></span><br><span class="line"><span class="comment"> * &#123;"date": "2019/08/08", "time": "19시 21분 33초", "dateTime": "2019/08/08 19시 21분 33초"&#125;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * serialize to (response body)</span></span><br><span class="line"><span class="comment"> * &#123;"date": "2019-08-08", "time": "19:21:33", "dateTime": "2019-08-08T19:21:33"&#125;</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DTO</span></span>(</span><br><span class="line">    date: LocalDate?,</span><br><span class="line">    time: LocalTime?,</span><br><span class="line">    dateTime: LocalDateTime?</span><br><span class="line">) &#123;</span><br><span class="line">    <span class="keyword">var</span> date = date</span><br><span class="line">        <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy-MM-dd"</span>)</span> <span class="keyword">get</span></span><br><span class="line">        <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy/MM/dd"</span>)</span> <span class="keyword">set</span></span><br><span class="line">    <span class="keyword">var</span> time = time</span><br><span class="line">        <span class="meta">@JsonFormat(pattern = <span class="meta-string">"HH:mm:ss"</span>)</span> <span class="keyword">get</span></span><br><span class="line">        <span class="meta">@JsonFormat(pattern = <span class="meta-string">"HH시 mm분 ss초"</span>)</span> <span class="keyword">set</span></span><br><span class="line">    <span class="keyword">var</span> dateTime = dateTime</span><br><span class="line">        <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy-MM-dd'T'HH:mm:ss"</span>)</span> <span class="keyword">get</span></span><br><span class="line">        <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy/MM/dd HH시 mm분 ss초"</span>)</span> <span class="keyword">set</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="세계-시간-다루기"><a href="#세계-시간-다루기" class="headerlink" title="세계 시간 다루기"></a>세계 시간 다루기</h2><p>Local 시리즈는 타임존이 없다.<br>저 시간/날짜가 영국 기준인지, 한국 기준인지 모른다.<br><strong>생일</strong>과 같이 타임존에 관계를 받지 않는 시간/날짜에 사용해야한다.  </p>
+<p><strong>스포츠 중계</strong>와 같이 전세계에서 동시에 진행되는 경우에는 타임존이 필수다.<br>그럼 타임존을 가지고 있는 OffsetDateTime, ZonedDateTime, Instant를 다뤄보자.  </p>
+<p>OffsetDateTime은 Timezone만 가지고 있는 반면, ZonedDateTime은 Timezone + Zone의 특성(Summer Time 여부 등등)도 가지고 있다.<br>Instant는 Unix Timestamp를 다룰 때 용이하다.</p>
+<p>application.yaml에 아래 설정을 넣지 않으면 Deserialize해서 다루는 DTO 객체와 Response Body에 Timezone이 UTC로 고정된다.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  jackson:</span></span><br><span class="line"><span class="attr">    deserialization:</span></span><br><span class="line"><span class="attr">      adjust_dates_to_context_time_zone:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="기본-파싱-규칙-ISO-8601-1"><a href="#기본-파싱-규칙-ISO-8601-1" class="headerlink" title="기본 파싱 규칙 (ISO 8601)"></a>기본 파싱 규칙 (ISO 8601)</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * deserialize from (request body)</span></span><br><span class="line"><span class="comment"> * &#123;"offsetDateTime": "2019-08-08T19:21:33+09:00", "zonedDateTime": "2019-08-08T19:21:33+09:00[Asia/Seoul]", "unixTime": 1568558972&#125;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * serialize to (response body)</span></span><br><span class="line"><span class="comment"> * &#123;"offsetDateTime": "2019-08-08T19:21:33+09:00", "zonedDateTime": "2019-08-08T19:21:33+09:00", "unixTime": "2019-09-15T14:49:32Z"&#125;</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DTO</span></span>(</span><br><span class="line">    <span class="keyword">val</span> offsetDateTime: OffsetDateTime?,</span><br><span class="line">    <span class="keyword">val</span> zonedDateTime: ZonedDateTime?,</span><br><span class="line">    <span class="keyword">val</span> unixTime: Instant?</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-동일한-파싱-규칙을-사용하는-경우-1"><a href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-동일한-파싱-규칙을-사용하는-경우-1" class="headerlink" title="Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 동일한 파싱 규칙을 사용하는 경우"></a>Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 동일한 파싱 규칙을 사용하는 경우</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * deserialize from (request body)</span></span><br><span class="line"><span class="comment"> * &#123;"offsetDateTime": "2019/08/08 19시 21분 33초 +09:00", "zonedDateTime": "2019/08/08 19시 21분 33초 +09:00 [Asia/Seoul]", "unixTime": 1568558972&#125;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * serialize to (response body)</span></span><br><span class="line"><span class="comment"> * &#123;"offsetDateTime": "2019/08/08 19시 21분 33초 +09:00", "zonedDateTime": "2019/08/08 19시 21분 33초 +09:00 [KST]", "unixTime": "2019-09-15T14:49:32Z"&#125;</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DTO</span></span>(</span><br><span class="line">    <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy/MM/dd HH시 mm분 ss초 XXX"</span>)</span> <span class="keyword">val</span> offsetDateTime: OffsetDateTime?,</span><br><span class="line">    <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy/MM/dd HH시 mm분 ss초 XXX '['z']'"</span>)</span> <span class="keyword">val</span> zonedDateTime: ZonedDateTime?,</span><br><span class="line">    <span class="keyword">val</span> unixTime: Instant?</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-다른-파싱-규칙을-사용하는-경우-1"><a href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-다른-파싱-규칙을-사용하는-경우-1" class="headerlink" title="Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 다른 파싱 규칙을 사용하는 경우"></a>Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 다른 파싱 규칙을 사용하는 경우</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * deserialize from (request body)</span></span><br><span class="line"><span class="comment"> * &#123;"offsetDateTime": "2019/08/08 19시 21분 33초 +09:00", "zonedDateTime": "2019/08/08 19시 21분 33초 +09:00 [Asia/Seoul]", "unixTime": "2019/08/08 19시 21분 33초 +09:00"&#125;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * serialize to (response body)</span></span><br><span class="line"><span class="comment"> * &#123;"offsetDateTime": "2019-08-08T19:21:33+09:00", "zonedDateTime": "2019-08-08T19:21:33+09:00[KST]", "unixTime": 1565259693&#125;</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ZonedDateTimeDTO3</span></span>(</span><br><span class="line">    offsetDateTime: OffsetDateTime?,</span><br><span class="line">    zonedDateTime: ZonedDateTime?,</span><br><span class="line">    unixTime: Instant?</span><br><span class="line">) &#123;</span><br><span class="line">    <span class="keyword">var</span> offsetDateTime = offsetDateTime</span><br><span class="line">        <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy-MM-dd'T'HH:mm:ssXXX"</span>)</span> <span class="keyword">get</span></span><br><span class="line">        <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy/MM/dd HH시 mm분 ss초 XXX"</span>)</span> <span class="keyword">set</span></span><br><span class="line">    <span class="keyword">var</span> zonedDateTime = zonedDateTime</span><br><span class="line">        <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy-MM-dd'T'HH:mm:ssXXX'['z']'"</span>)</span> <span class="keyword">get</span></span><br><span class="line">        <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy/MM/dd HH시 mm분 ss초 XXX '['z']'"</span>)</span> <span class="keyword">set</span></span><br><span class="line">    <span class="keyword">var</span> unixTime = unixTime</span><br><span class="line">        <span class="meta">@JsonFormat(pattern = <span class="meta-string">"yyyy/MM/dd HH시 mm분 ss초 XXX"</span>)</span> <span class="keyword">set</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getUnixTime</span><span class="params">()</span></span> = unixTime?.epochSecond</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+        <ins class="adsbygoogle" style="display:block;margin:80px auto 35px;width:728px;height:90px" data-ad-client="ca-pub-3881550906962162" data-ad-slot="8264718850"></ins>
+ <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+
+        <a data-url="https://perfectacle.github.io/2019/09/16/kotlin-de-serialize-dto/" data-id="" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/08/24/assets-debts-cash-flow-and-captial-gains/" rel="next" title="자산과 부채, 그리고 현금흐름과 자본이득">
+                  <i class="fa fa-chevron-left"></i> 자산과 부채, 그리고 현금흐름과 자본이득
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav" style="display: none">
+        <li class="sidebar-nav-toc" data-target="post-toc-wrap">
+          목차
+        </li>
+        <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+          프로필
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc">
+            <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#용어-설명"><span class="nav-number">1.</span> <span class="nav-text">용어 설명</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DTO-Data-Transfer-Object"><span class="nav-number">1.1.</span> <span class="nav-text">DTO(Data Transfer Object)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deserialize"><span class="nav-number">1.2.</span> <span class="nav-text">Deserialize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Serialize"><span class="nav-number">1.3.</span> <span class="nav-text">Serialize</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#기본적인-형태"><span class="nav-number">2.</span> <span class="nav-text">기본적인 형태</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-필드명이-똑같은-경우"><span class="nav-number">2.1.</span> <span class="nav-text">Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 필드명이 똑같은 경우</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#코틀린의-필드명과는-다른-경우"><span class="nav-number">2.1.1.</span> <span class="nav-text">코틀린의 필드명과는 다른 경우</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-필드명이-다른-경우"><span class="nav-number">2.2.</span> <span class="nav-text">Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 필드명이 다른 경우</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LocalDateTime-3형제-다루기"><span class="nav-number">3.</span> <span class="nav-text">LocalDateTime 3형제 다루기</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#기본-파싱-규칙-ISO-8601"><span class="nav-number">3.1.</span> <span class="nav-text">기본 파싱 규칙 (ISO 8601)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-동일한-파싱-규칙을-사용하는-경우"><span class="nav-number">3.2.</span> <span class="nav-text">Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 동일한 파싱 규칙을 사용하는 경우</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-다른-파싱-규칙을-사용하는-경우"><span class="nav-number">3.3.</span> <span class="nav-text">Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 다른 파싱 규칙을 사용하는 경우</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#세계-시간-다루기"><span class="nav-number">4.</span> <span class="nav-text">세계 시간 다루기</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#기본-파싱-규칙-ISO-8601-1"><span class="nav-number">4.1.</span> <span class="nav-text">기본 파싱 규칙 (ISO 8601)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-동일한-파싱-규칙을-사용하는-경우-1"><span class="nav-number">4.2.</span> <span class="nav-text">Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 동일한 파싱 규칙을 사용하는 경우</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Request-Body를-Deserialize-할-때와-Response-Body를-Serialize-할-때-다른-파싱-규칙을-사용하는-경우-1"><span class="nav-number">4.3.</span> <span class="nav-text">Request Body를 Deserialize 할 때와 Response Body를 Serialize 할 때 다른 파싱 규칙을 사용하는 경우</span></a></li></ol></li></ol></div>
+          </div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
+  <p class="site-author-name" itemprop="name">양권성</p>
+  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives">
+        
+          <span class="site-state-item-count">181</span>
+          <span class="site-state-item-name">포스트</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">카테고리</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">234</span>
+        <span class="site-state-item-name">태그</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://github.com/perfectacle" title="GitHub &rarr; https://github.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="mailto:perfectacle@gmail.com" title="E-Mail &rarr; mailto:perfectacle@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://www.facebook.com/perfectacle" title="Facebook &rarr; https://www.facebook.com/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-facebook"></i></a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+      
+        
+      
+        <a href="https://stackoverflow.com/users/8778461/perfectacle" title="StackOverflow &rarr; https://stackoverflow.com/users/8778461/perfectacle" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i></a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">양권성</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Pisces</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+<script src="/js/utils.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+<script src="/js/share.js?v=7.3.0"></script>
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/post-details.js?v=7.3.0"></script>
+
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://exobud.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "https://perfectacle.github.io/2019/09/16/kotlin-de-serialize-dto/";
+    this.page.identifier = "2019/09/16/kotlin-de-serialize-dto/";
+    this.page.title = '(Kotlin) De/Serialize DTO 뽀개서 뿌셔버리기';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://exobud.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    (function() {
+      var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+      if (offsetTop <= 0) {
+        // load directly when there's no a scrollbar
+        window.addEventListener('load', loadComments, false);
+      } else {
+        var disqus_scroll = () => {
+          // offsetTop may changes because of manually resizing browser window or lazy loading images.
+          var offsetTop = document.getElementById('comments').offsetTop - window.innerHeight;
+          var scrollTop = window.scrollY;
+
+          // pre-load comments a bit? (margin or anything else)
+          if (offsetTop - scrollTop < 60) {
+            window.removeEventListener('scroll', disqus_scroll);
+            loadComments();
+          }
+        };
+        window.addEventListener('scroll', disqus_scroll);
+      }
+    })();
+  
+</script>
+
+</body>
+</html>
