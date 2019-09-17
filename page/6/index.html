@@ -265,6 +265,111 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2018/01/16/jackson-local-date-time-serialize/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/01/16/jackson-local-date-time-serialize/" class="post-title-link" itemprop="url">(Jackson) LocalDate, LocalTime, LocalDateTime 뽀개기 - Serialize</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2018-01-16 10:54:25" itemprop="dateCreated datePublished" datetime="2018-01-16T10:54:25+09:00">2018-01-16</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 13:55:48" itemprop="dateModified" datetime="2019-08-22T13:55:48+09:00">2019-08-22</time>
+              </span>
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/01/16/jackson-local-date-time-serialize/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/16/jackson-local-date-time-serialize/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="/images/jackson-local-date-time-serialize/thumb.png" alt=""></p><p><a href="https://github.com/FasterXML/jackson" rel="external nofollow noopener noreferrer" target="_blank">잭슨</a>은 JSON -&gt; Java 클래스로 Deserialize, Java 클래스 -&gt; JSON으로 Serialize 할 때 매우 유용한 라이브러리다.  </p><p>하지만 잭슨이 나온 이후에 자바 8이 나왔는지 모르겠는데 LocalDate, LocalTime, LocalDateTime 등등의 클래스를 기본적으로 깔끔하게 처리해주지 못한다.<br>따라서 이번에는 어렵지는 않지만 새로 프로젝트 구성할 때마다 매번 까먹어서 찾아 헤매던 케이스들을 정리해봤다.<br>또한 예제의 설명은 스프링 부트를 기준으로 설명하겠다.  </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/01/16/jackson-local-date-time-serialize/#more" rel="contents">
+                더 읽어보기 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2018/01/15/jackson-local-date-time-deserialize/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1374,131 +1479,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/10/16/http-status-code-307-vs-308/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="양권성">
-      <meta itemprop="description" content="느리더라도 꾸준하게">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="오늘도 끄적끄적">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2017/10/16/http-status-code-307-vs-308/" class="post-title-link" itemprop="url">(HTTP) 상태 코드 - 307 vs 308</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">작성일</span>
-
-              
-                
-              
-
-              <time title="Post created: 2017-10-16 20:29:58" itemprop="dateCreated datePublished" datetime="2017-10-16T20:29:58+09:00">2017-10-16</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">수정일</span>
-                <time title="Updated at: 2019-08-22 13:55:48" itemprop="dateModified" datetime="2019-08-22T13:55:48+09:00">2019-08-22</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Middle-end/" itemprop="url" rel="index"><span itemprop="name">Middle-end</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Middle-end/Web-Server/" itemprop="url" rel="index"><span itemprop="name">Web Server</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2017/10/16/http-status-code-307-vs-308/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/16/http-status-code-307-vs-308/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="/images/http-status-code-307-vs-308/thumb.png" alt="">  </p><p>redirect를 위한 HTTP 상태 코드 301과 302에 대해 잘 모르겠다면 아래 링크를 참고하고 글을 읽도록 하자.<br><a href="http://www.aun-korea.com/301%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98-302%EB%A6%AC%EB%94%94%EB%A0%89%EC%85%98%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%82%AC%EC%9A%A9%EB%B2%95/" rel="external nofollow noopener noreferrer" target="_blank">301리디렉션 &amp; 302리디렉션의 차이(사용법)</a>  </p><h2 id="307-Temporary-Redirect-vs-308-Permanent-Redirect"><a href="#307-Temporary-Redirect-vs-308-Permanent-Redirect" class="headerlink" title="307 Temporary Redirect vs 308 Permanent Redirect"></a><a href="https://tools.ietf.org/html/rfc7231#section-6.4.7" rel="external nofollow noopener noreferrer" target="_blank">307 Temporary Redirect</a> vs <a href="https://tools.ietf.org/html/rfc7538#section-3" rel="external nofollow noopener noreferrer" target="_blank">308 Permanent Redirect</a></h2><p>307은 302와 유사하고, 308은 301과 유사하다.<br>다만 차이점이 있다면 전송 받은 HTTP Method를 유지한다는 것이다.<br>301과 302는 redirect 시킬 때 method를 get으로 바꿔서 전송한다.<br>따라서 get 요청을 보낼 때는 문제가 없지만 post 메소드를 요청했을 때 문제가 발생할 수 있다.<br>http to https redirect를 구현할 때 301 또는 302 상태 코드를 쓰게 되면<br>http 프로토콜을 통해 post 메소드로 날아온 게 https 프토토콜을 통해 get 메소드로 변경되면서 컨트롤러나 라우터에 매핑되는 URI가 없어서 오류가 나게 된다.<br>따라서 301 대신에 308을, 302 대신에 307을 쓰면 좀 더 안전하게 redirect 시킬 수 있다.<br>또한 이제 301과 302를 redirect라는 명칭으로 부를 수도 없다.<br><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/301" rel="external nofollow noopener noreferrer" target="_blank">301은 Moved Permanently</a>로, <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302" rel="external nofollow noopener noreferrer" target="_blank">302는 Found</a>로 명칭이 변경되었다.  </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2017/10/16/http-status-code-307-vs-308/#more" rel="contents">
-                더 읽어보기 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1550,7 +1530,7 @@
         
           <a href="/archives">
         
-          <span class="site-state-item-count">181</span>
+          <span class="site-state-item-count">182</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>

@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>(Kotlin) Request에서 Nullable? Non-Null?</title>
+      <link href="/2019/09/18/kotlin-request-nullable-non-null/"/>
+      <url>/2019/09/18/kotlin-request-nullable-non-null/</url>
+      
+        <content type="html"><![CDATA[<p>코틀린의 장점을 하나 꼽자면 Non-null 타입을 지원한다는 것이다.<br>모든 곳에 null을 없앨 수 있는데(100% 순수 코틀린 코드로만 짠다면)<br>통제할 수 없는 부분은 클라이언트로부터 받는 Request이다.  </p><p>그래서 Request에는 어떤 타입을 써야할지 삽질을 해봤다.  </p><a id="more"></a><h2 id="기본값을-사용하자"><a href="#기본값을-사용하자" class="headerlink" title="기본값을 사용하자."></a>기본값을 사용하자.</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DTO</span></span>(<span class="keyword">val</span> name: String? = <span class="string">""</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="meta">@PostMapping</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">test</span><span class="params">(<span class="meta">@RequestBody</span> dto: <span class="type">DTO</span>)</span></span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>위와 같을 때 request body의 name에 아무런 내용도 입력하지 않으면 name에 기본값 <code>&quot;&quot;</code>이 잘 세팅된다.<br>기본값이 없어서 null로 세팅되는 것보다는 한결 다루기 편할 것이다.</p><ol start="2"><li>무조건 nullable 타입을 사용하자.  <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DTO</span></span>(<span class="keyword">val</span> name: String = <span class="string">"123"</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="meta">@PostMapping</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">test</span><span class="params">(<span class="meta">@RequestBody</span> dto: <span class="type">DTO</span>)</span></span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ol><p>위와 같을 때 클라이언트에서 의도적으로 <code>{&quot;name&quot;: null}</code>을 보내는 순간<br><code>failed for JSON property name due to missing (therefore NULL) value for creator parameter name which is a non-nullable type</code><br>라는 오류와 함께 400 에러를 뱉는다. (<strong>타입에 관련된 에러임</strong>)<br>따라서 nullable 타입을 사용하자.</p><ol start="3"><li>Header와 Parameter의 default value는 어노테이션에 있는 설정을 쓴다.  <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">test</span><span class="params">(<span class="meta">@RequestHeader(required = false, defaultValue = <span class="meta-string">"11"</span>)</span> test: <span class="type">Int</span>?)</span></span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ol><p>이 때 헤더에 아무런 값도 보내지 않으면 11이 세팅된다.<br>하지만 아래와 같이 변수에 기본값을 세팅했다면 null이 세팅된다.</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">test</span><span class="params">(<span class="meta">@RequestHeader(required = false)</span> test: <span class="type">Int</span>? = <span class="number">11</span>)</span></span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Note </category>
+          
+          <category> Kotlin </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Spring </tag>
+            
+            <tag> Kotlin </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>(Kotlin) De/Serialize DTO 뽀개서 뿌셔버리기</title>
       <link href="/2019/09/16/kotlin-de-serialize-dto/"/>
       <url>/2019/09/16/kotlin-de-serialize-dto/</url>
@@ -21,6 +50,8 @@
       
       
         <tags>
+            
+            <tag> Spring </tag>
             
             <tag> Kotlin </tag>
             
