@@ -265,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/09/04/di-v2/">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/09/04/di-v3/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="양권성">
@@ -279,7 +279,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/2017/09/04/di-v2/" class="post-title-link" itemprop="url">Dependency Injection(의존성 주입)을 알아보자 - 생성자 함수</a>
+            <a href="/2017/09/04/di-v3/" class="post-title-link" itemprop="url">Dependency Injection(의존성 주입)을 알아보자 - setter</a>
           
         </h1>
 
@@ -341,7 +341,7 @@
       
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2017/09/04/di-v2/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/09/04/di-v2/" itemprop="commentCount"></span></a>
+    <a title="disqus" href="/2017/09/04/di-v3/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/09/04/di-v3/" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -355,11 +355,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><img src="/images/di-v2/thumb.png" alt=""></p><p><a href="/2017/09/04/di-v1/">v1</a>에는 재사용 가능한 코드가 있음에도 불구하고 미묘(?)한 차이 때문에 계속 각국의 타이어를 장착한 자동차 클래스를 만들어야하는 단점이 있었다.<br>이는 자동차를 만들 때 이미 타이어를 만드는 방법이 결정되어 있기 때문에 발생하는 문제이다.<br>(<strong>자동차(전체)</strong>가 <strong>타이어(부분)</strong>에 <strong>의존</strong>하고 있는 코드)<br>즉, 자동차를 만들 때 타이어를 만드는 방법을 결정하면 되는 사항이다.<br>(<strong>의존하는 부분(타이어)</strong>을 <strong>전체(자동차)</strong>에 <strong>주입</strong>시키는 패턴)  </p>
+          <p><img src="/images/di-v3/thumb.png" alt=""></p><p><a href="/2017/09/04/di-v2/">v2</a>에는 자동차를 생산할 때 어떤 타이어를 만들지 정할 수 있고 새로운 타이어로 교체도 가능했다.<br>하지만 올바른 값이 들어왔는지 유효성 검사할 방법이 없다.<br>사실 변경할 수는 있지만 안전하지 않고 그닥 권장하는 방법이 아니다.  </p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Car.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Tire tire;</span><br><span class="line">    Car(Tire tire) &#123;</span><br><span class="line">        <span class="keyword">this</span>.tire = tire;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// setter로 유효성 검사를 위해선 어쩔 수 없이(?) tire를 얻기 위해선 getter를 써야함.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Tire <span class="title">getTire</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> tire;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// setter로 다음과 같이 유효성 검사가 가능해짐.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTire</span><span class="params">(Tire tire)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(tire == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">        <span class="keyword">this</span>.tire = tire;</span><br><span class="line">   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2017/09/04/di-v2/#more" rel="contents">
+              <a class="btn" href="/2017/09/04/di-v3/#more" rel="contents">
                 더 읽어보기 &raquo;
               </a>
             </div>
