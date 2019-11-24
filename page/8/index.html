@@ -265,6 +265,131 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/09/04/spring-di-v1/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2017/09/04/spring-di-v1/" class="post-title-link" itemprop="url">(Spring) 자바 빈즈 객체를 XML 파일로 관리하면서 DI하기 - 기본</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2017-09-04 09:35:22" itemprop="dateCreated datePublished" datetime="2017-09-04T09:35:22+09:00">2017-09-04</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 14:54:34" itemprop="dateModified" datetime="2019-08-22T14:54:34+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Back-end/" itemprop="url" rel="index"><span itemprop="name">Back-end</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Back-end/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/09/04/spring-di-v1/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/09/04/spring-di-v1/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="/images/spring-di-v1/thumb.png" alt=""></p><p>일반 자바를 가지고 DI를 해본 <a href="/2017/09/04/di-v3/">v3</a>에서는 Car 클래스를 자바 빈즈 스펙을 제대로 준수해서 만들지 않았다.<br>따라서 한 번 자바 빈즈 스펙에 맞춰 바꿔보자.  </p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Tire tire;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Car</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Car</span><span class="params">(Tire tire)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.tire = tire; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Tire <span class="title">getTire</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> tire;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTire</span><span class="params">(Tire tire)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.tire = tire;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2017/09/04/spring-di-v1/#more" rel="contents">
+                더 읽어보기 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/09/04/di-v2/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1427,131 +1552,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2017/08/07/computer-number-making-reason/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="양권성">
-      <meta itemprop="description" content="느리더라도 꾸준하게">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="오늘도 끄적끄적">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2017/08/07/computer-number-making-reason/" class="post-title-link" itemprop="url">(상식) 컴퓨터에서 2진수, 8진수, 16진수를 쓰게 된 이유</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">작성일</span>
-
-              
-                
-              
-
-              <time title="Post created: 2017-08-07 09:02:39" itemprop="dateCreated datePublished" datetime="2017-08-07T09:02:39+09:00">2017-08-07</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">수정일</span>
-                <time title="Updated at: 2019-08-22 12:52:00" itemprop="dateModified" datetime="2019-08-22T12:52:00+09:00">2019-08-22</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/기타/" itemprop="url" rel="index"><span itemprop="name">기타</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/기타/등등/" itemprop="url" rel="index"><span itemprop="name">등등</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2017/08/07/computer-number-making-reason/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/08/07/computer-number-making-reason/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="/images/computer-number-making-reason/thumb.png" alt=""><br>여러 책을 보고 혼자서 내린 결론이기 때문에 틀릴 가능성이 있으니 지적해주면 감사하겠습니다 ^^</p><h2 id="최초의-컴퓨터는-10진수를-사용했다"><a href="#최초의-컴퓨터는-10진수를-사용했다" class="headerlink" title="최초의 컴퓨터는 10진수를 사용했다."></a>최초의 컴퓨터는 10진수를 사용했다.</h2><p>나는 처음부터 2진수를 사용한 줄 알았는데 최초의 컴퓨터인 <a href="https://ko.wikipedia.org/wiki/%EC%97%90%EB%8B%88%EC%95%85" rel="external nofollow noopener noreferrer" target="_blank">에니악</a>은 10진수를 사용했다고 한다.<br>아마도 우리의 손가락이 10개이고 평상시에 연산을 할 때도 10진수를 주로 사용하기 때문에 익숙해서 10진수를 사용했던 게 아닐까?  </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2017/08/07/computer-number-making-reason/#more" rel="contents">
-                더 읽어보기 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1596,14 +1596,14 @@
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="양권성">
   <p class="site-author-name" itemprop="name">양권성</p>
-  <div class="site-description motion-element" itemprop="description">Back-end Engineer</div>
+  <div class="site-description motion-element" itemprop="description">Toss Server Developer</div>
 </div>
   <nav class="site-state motion-element">
       <div class="site-state-item site-state-posts">
         
           <a href="/archives">
         
-          <span class="site-state-item-count">182</span>
+          <span class="site-state-item-count">183</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
@@ -1617,6 +1617,8 @@
           
         
         
+        
+          
         
           
         
@@ -2189,7 +2191,11 @@
         
           
         
-        <span class="site-state-item-count">234</span>
+          
+        
+          
+        
+        <span class="site-state-item-count">236</span>
         <span class="site-state-item-name">태그</span>
         </a>
       </div>

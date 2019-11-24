@@ -8,14 +8,21 @@
     </url>
 
     <url>
-        <loc>https://perfectacle.github.io/categories/Note/Kotlin/</loc>
-        <lastmod>2019-09-17T17:43:43.514Z</lastmod>
+        <loc>https://perfectacle.github.io/categories/Note/Dev/</loc>
+        <lastmod>2019-11-24T00:59:51.342Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://perfectacle.github.io/categories/Note/</loc>
+        <lastmod>2019-11-24T00:59:51.342Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/Note/Kotlin/</loc>
         <lastmod>2019-09-17T17:43:43.514Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -164,13 +171,6 @@
     <url>
         <loc>https://perfectacle.github.io/categories/Programming/Node-js/</loc>
         <lastmod>2019-08-22T05:54:34.716Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/categories/Note/Dev/</loc>
-        <lastmod>2019-08-22T05:54:34.677Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
