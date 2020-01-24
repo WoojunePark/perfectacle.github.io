@@ -483,7 +483,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = &#123;</span><br><span class="line">  <span class="keyword">catch</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">foo.catch();</span><br></pre></td></tr></table></figure>
 
 <p>이제 위 코드가 어떻게 트랜스파일 되는지 보자.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">"use strict"</span>;  </span><br><span class="line"><span class="keyword">var</span> foo = &#123;</span><br><span class="line">  <span class="keyword">catch</span>: <span class="function"><span class="keyword">function</span> <span class="title">_catch</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">foo.catch();</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">"use strict"</span>;  </span><br><span class="line"><span class="keyword">var</span> foo = &#123;</span><br><span class="line">  <span class="keyword">catch</span>: <span class="function"><span class="keyword">function</span> _catch(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">foo.catch();</span><br></pre></td></tr></table></figure>
 
 <p>위와 같은 코드를 IE8에서 테스트 해보자.<br><img src="/images/Babel-ES6-with-IE8/ie8-3.png" alt="결과는 참담하다."><br>2번 라인과 4번 라인에서 객체의 메소드와 메소드 호출로 <strong>catch</strong>를 사용하였다.<br>IE8은 ES3를 지원하고, ES3에서는 catch 같은 키워드를 저렇게 식별자로 쓰게 되면 오류를 뿜는다.<br>ES3를 위한 플러그인이 바벨에는 또 존재한다.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm i -D babel-plugin-transform-es3-property-literals babel-plugin-transform-es3-member-expression-literals</span><br></pre></td></tr></table></figure>
@@ -491,7 +491,7 @@
 <ul>
 <li>babel-plugin-transform-es3-property-literals을 쓰면 아래와 같이 바뀐다.</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = &#123;</span><br><span class="line">  <span class="string">"catch"</span>: <span class="function"><span class="keyword">function</span> <span class="title">_catch</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = &#123;</span><br><span class="line">  <span class="string">"catch"</span>: <span class="function"><span class="keyword">function</span> _catch(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>프로퍼티에서 키워드인 catch에 쌍따옴표를 붙인 걸 볼 수 있다.</p>
 <ul>
@@ -621,7 +621,7 @@
         
           <a href="/archives">
         
-          <span class="site-state-item-count">183</span>
+          <span class="site-state-item-count">184</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
@@ -1213,7 +1213,9 @@
         
           
         
-        <span class="site-state-item-count">236</span>
+          
+        
+        <span class="site-state-item-count">237</span>
         <span class="site-state-item-name">태그</span>
         </a>
       </div>
@@ -1278,7 +1280,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

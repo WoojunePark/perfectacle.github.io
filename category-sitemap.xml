@@ -8,14 +8,35 @@
     </url>
 
     <url>
-        <loc>https://perfectacle.github.io/categories/Note/Dev/</loc>
-        <lastmod>2019-11-24T00:59:51.342Z</lastmod>
+        <loc>https://perfectacle.github.io/categories/Note/%EC%82%BD%EC%A7%88/</loc>
+        <lastmod>2020-01-24T06:52:03.948Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://perfectacle.github.io/categories/Note/</loc>
+        <lastmod>2020-01-24T06:52:03.948Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/Middle-end/Network/</loc>
+        <lastmod>2020-01-19T11:28:50.207Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/Middle-end/</loc>
+        <lastmod>2020-01-19T11:28:50.207Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/categories/Note/Dev/</loc>
         <lastmod>2019-11-24T00:59:51.342Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -99,13 +120,6 @@
     </url>
 
     <url>
-        <loc>https://perfectacle.github.io/categories/Note/%EC%82%BD%EC%A7%88/</loc>
-        <lastmod>2019-08-23T02:31:34.166Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://perfectacle.github.io/categories/Back-end/Spring/</loc>
         <lastmod>2019-08-22T05:54:34.849Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -115,20 +129,6 @@
     <url>
         <loc>https://perfectacle.github.io/categories/Back-end/</loc>
         <lastmod>2019-08-22T05:54:34.849Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/categories/Middle-end/Network/</loc>
-        <lastmod>2019-08-22T05:54:34.822Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/categories/Middle-end/</loc>
-        <lastmod>2019-08-22T05:54:34.822Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

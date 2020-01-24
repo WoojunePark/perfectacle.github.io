@@ -3,6 +3,34 @@
 
 
     <url>
+        <loc>https://perfectacle.github.io/tags/%EA%B3%B5%EC%9D%B8%EC%9D%B8%EC%A6%9D%EC%84%9C/</loc>
+        <lastmod>2020-01-24T06:52:03.948Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/tags/%EB%B3%B4%EC%95%88/</loc>
+        <lastmod>2020-01-24T06:52:03.948Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/tags/Security/</loc>
+        <lastmod>2020-01-19T11:28:50.207Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/tags/Network/</loc>
+        <lastmod>2020-01-19T11:28:50.207Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://perfectacle.github.io/tags/AES/</loc>
         <lastmod>2019-11-24T00:59:51.342Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -304,13 +332,6 @@
     </url>
 
     <url>
-        <loc>https://perfectacle.github.io/tags/Network/</loc>
-        <lastmod>2019-08-22T05:54:34.822Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://perfectacle.github.io/tags/babel/</loc>
         <lastmod>2019-08-22T05:54:34.809Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -467,13 +488,6 @@
     <url>
         <loc>https://perfectacle.github.io/tags/log/</loc>
         <lastmod>2019-08-22T05:54:34.685Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/tags/%EB%B3%B4%EC%95%88/</loc>
-        <lastmod>2019-08-22T05:54:34.681Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -817,13 +831,6 @@
     <url>
         <loc>https://perfectacle.github.io/tags/Cross-Browsing/</loc>
         <lastmod>2019-08-22T05:34:24.490Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/tags/Security/</loc>
-        <lastmod>2019-08-22T05:34:24.379Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

@@ -8,6 +8,22 @@
     </url>
 
     <url>
+        <loc>https://perfectacle.github.io/2020/01/24/korean-certification/</loc>
+        <lastmod>2020-01-24T06:52:03.948Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://perfectacle.github.io/2018/04/13/key-algorithm/</loc>
+        <lastmod>2020-01-19T11:28:50.207Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://perfectacle.github.io/2019/11/24/aes/</loc>
         <lastmod>2019-11-24T00:59:51.342Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -554,14 +570,6 @@
     <url>
         <loc>https://perfectacle.github.io/2017/07/18/js-count-char-word/</loc>
         <lastmod>2019-08-22T05:34:24.387Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://perfectacle.github.io/2018/04/13/key-algorithm/</loc>
-        <lastmod>2019-08-22T05:34:24.379Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

@@ -432,7 +432,7 @@
 
 <p><code>#!/usr/bin/env node</code> 요 구문으로 인해 node.js에서 cli를 만들 수 있게 해주는 것이라고 생각하면 된다.<br>그럼 직접 <code>../lib/babel</code>을 찾아가보자.  </p>
 <p><img src="/images/what-is-node-js/08.png" alt="node_modules/babel-cli/lib/babel 디렉토리가 존재한다."><br>Node.js에서 기본적으로 디렉토리 뒤에 따로 파일이 명시되지 않으면 index.js 파일을 찾아가는 규칙이 있다.<br>index.js 파일의 상단 부분을 보면 다음과 같다.  </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br><span class="line"><span class="meta">"use strict"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> _keys = <span class="built_in">require</span>(<span class="string">"babel-runtime/core-js/object/keys"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> _keys2 = _interopRequireDefault(_keys);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_interopRequireDefault</span>(<span class="params">obj</span>) </span>&#123; <span class="keyword">return</span> obj &amp;&amp; obj.__esModule ? obj : &#123; <span class="attr">default</span>: obj &#125;; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">"fs"</span>);</span><br><span class="line"><span class="keyword">var</span> commander = <span class="built_in">require</span>(<span class="string">"commander"</span>);</span><br><span class="line"><span class="keyword">var</span> kebabCase = <span class="built_in">require</span>(<span class="string">"lodash/kebabCase"</span>);</span><br><span class="line"><span class="keyword">var</span> options = <span class="built_in">require</span>(<span class="string">"babel-core"</span>).options;</span><br><span class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">"babel-core"</span>).util;</span><br><span class="line"><span class="keyword">var</span> uniq = <span class="built_in">require</span>(<span class="string">"lodash/uniq"</span>);</span><br><span class="line"><span class="keyword">var</span> glob = <span class="built_in">require</span>(<span class="string">"glob"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 이하 생략</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br><span class="line"><span class="meta">"use strict"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> _keys = <span class="built_in">require</span>(<span class="string">"babel-runtime/core-js/object/keys"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> _keys2 = _interopRequireDefault(_keys);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> _interopRequireDefault(<span class="params">obj</span>) </span>&#123; <span class="keyword">return</span> obj &amp;&amp; obj.__esModule ? obj : &#123; <span class="attr">default</span>: obj &#125;; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">"fs"</span>);</span><br><span class="line"><span class="keyword">var</span> commander = <span class="built_in">require</span>(<span class="string">"commander"</span>);</span><br><span class="line"><span class="keyword">var</span> kebabCase = <span class="built_in">require</span>(<span class="string">"lodash/kebabCase"</span>);</span><br><span class="line"><span class="keyword">var</span> options = <span class="built_in">require</span>(<span class="string">"babel-core"</span>).options;</span><br><span class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">"babel-core"</span>).util;</span><br><span class="line"><span class="keyword">var</span> uniq = <span class="built_in">require</span>(<span class="string">"lodash/uniq"</span>);</span><br><span class="line"><span class="keyword">var</span> glob = <span class="built_in">require</span>(<span class="string">"glob"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 이하 생략</span></span><br></pre></td></tr></table></figure>
 
 <p>소스 코드 첫 라인에 <code>#!/usr/bin/env node</code>을 보면 CLI임을 짐작할 수 있다.<br>그럼 다음과 같이도 실행을 해볼 수도 있다는 말이 된다.  </p>
 <p><img src="/images/what-is-node-js/09.png" alt="npm script가 아닌 직접 파일로 접근해서 CLI를 실행">  </p>
@@ -565,7 +565,7 @@
         
           <a href="/archives">
         
-          <span class="site-state-item-count">183</span>
+          <span class="site-state-item-count">184</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
@@ -1157,7 +1157,9 @@
         
           
         
-        <span class="site-state-item-count">236</span>
+          
+        
+        <span class="site-state-item-count">237</span>
         <span class="site-state-item-name">태그</span>
         </a>
       </div>
@@ -1222,7 +1224,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

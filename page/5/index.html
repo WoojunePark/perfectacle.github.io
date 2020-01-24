@@ -265,6 +265,140 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2018/05/30/network-hardware/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="양권성">
+      <meta itemprop="description" content="느리더라도 꾸준하게">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="오늘도 끄적끄적">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/05/30/network-hardware/" class="post-title-link" itemprop="url">후니의 쉽게 쓴 시스코 네트워킹 정리 - OSI 7 Layer 네트워크 장비</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">작성일</span>
+
+              
+                
+              
+
+              <time title="Post created: 2018-05-30 03:34:00" itemprop="dateCreated datePublished" datetime="2018-05-30T03:34:00+09:00">2018-05-30</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">수정일</span>
+                <time title="Updated at: 2019-08-22 14:54:34" itemprop="dateModified" datetime="2019-08-22T14:54:34+09:00">2019-08-22</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Middle-end/" itemprop="url" rel="index"><span itemprop="name">Middle-end</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Middle-end/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/05/30/network-hardware/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/05/30/network-hardware/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="/images/network-hardware/thumb.png" alt=""></p><h2 id="Layer-1-Physical-Layer"><a href="#Layer-1-Physical-Layer" class="headerlink" title="Layer 1(Physical Layer)"></a>Layer 1(Physical Layer)</h2><p>랜선, 랜카드는 너무 익숙하고 짜치니 일단 생략.<br>기본적으로 이더넷 방식을 기준으로 설명.</p><ul>
+<li><p>리피터(Repeater): 신호를 증폭해주는 것<br>LAN선의 경우에 최대 거리가 100m인 것들이 있다. (데이터의 무결성을 보장할 수 있는 거리인 듯)<br>이런 장비가 그럼 어떻게 수 십 km 떨어진 곳에 있는 데이터를 받아올 수 있는 것일까?<br>바로 최대 거리인 100m 내에 리피터라는 장비를 둬서 데이터를 전달만 하는 역할을 하는 걸 보고 리피터라고 한다.<br>음악 장비에 있어서는 엠프(소리를 크게 내주게 하는 장비) 정도로 이해하면 편할 것 같다.<br>OSI 7 Layer의 1 Layer(Physical Layer)에 속한다.  </p>
+</li>
+<li><p><em>허브가 리피터 역할까지 하고 가격도 싸지면서 거의 쓰이지 않는 장비로 알고 있다.*</em><br>무선랜의 경우 신호의 세기를 증폭시켜주는 중계기/리피터/증폭기 등등으로 쓰이는데 예전에 사용하던 유선랜 리피터와 해주는 역할이 유사하긴 하다.</p>
+</li>
+<li><p>허브(Hub): 멀티포트(Multiport) 리피터<br>리피터의 역할을 하는데 포트가 여러 개인 것이다.<br>리피터는 입력한 데이터를 그대로 출력한다고 했고, 허브에서는 멀티포트로 연결된 장비들에게 이 데이터를 그대로 전달하는 역할을 한다.<br>1번 포트에 연결된 장비가 데이터를 보내면 이더넷 특성상 1번 포트를 제외하고 나머지 모든 포트로 데이터를 뿌리게 된다.<br>눈치 없는 2번 포트에 연결된 장비가 동시에 데이터를 보내게 되면 이더넷의 특성 상 CSMA/CD 프로토콜을 사용하고 충돌이 발생하게 된다.<br>이 때 충돌한 두 장비는 다시 눈치게임을 통해 데이터를 뿌리게 된다.<br>위와 같이 같은 허브에 물려있는 모든 장비는 같은 Collision Domain 상에 존재하게 되는 것이다.<br>따라서 허브가 엄청 많은 포트를 지원한다고 해서 꼭 좋은 것만은 아니다.<br>위와 같이 데이터를 어느 한 순간에만 보낼 수 있는 허브를 Shared Hub라고 부르고,<br>위와 같은 특성 때문에 인터넷 속도를 사실 N빵 했다고 보면 된다.<br>Collision Domain은 별도의 허브를 쓴다고 해서 해결되는 게 아니라 오히려 Collision Domain의 범위를 늘리는 일이다.<br>아마 인터넷/IP 공유기가 허브이지 않을까 싶다.  </p>
+</li>
+<li><p>모뎀(Modem): 아날로그 신호 &lt;-&gt; 디지털 신호<br>아날로그 신호(빛, 전기) -&gt; 디지털 신호(0, 1)를 수행하는 장비를 <strong>Mo</strong>dulator(변조기)라고 부르고,<br>반대인 디지털 신호 -&gt; 아날로그 신호를 수행하는 장비를 <strong>Dem</strong>odualtor(복조기)라고 부르고, 이 둘을 합친 게 모뎀이다.<br>과거에는 전화선으로 연결을 해서 매우 느렸지만 요즘에는 빛을 신호로 사용하는 기가광랜 등등의 등장으로 모뎀 장비도 크게 성장하였다.</p>
+</li>
+</ul>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/05/30/network-hardware/#more" rel="contents">
+                더 읽어보기 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+      
+
+  <article class="post" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2018/05/30/network-ethernet-mac-address-x-cast/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -685,7 +819,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">수정일</span>
-                <time title="Updated at: 2019-08-22 14:34:24" itemprop="dateModified" datetime="2019-08-22T14:34:24+09:00">2019-08-22</time>
+                <time title="Updated at: 2020-01-19 20:28:50" itemprop="dateModified" datetime="2020-01-19T20:28:50+09:00">2020-01-19</time>
               </span>
             
           
@@ -1388,131 +1522,6 @@
   </article>
 
     
-      
-
-  <article class="post" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://perfectacle.github.io/2018/03/30/mock-time-with-time-machine/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="양권성">
-      <meta itemprop="description" content="느리더라도 꾸준하게">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="오늘도 끄적끄적">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2018/03/30/mock-time-with-time-machine/" class="post-title-link" itemprop="url">(Java) 타임머신을 타고 시간 여행 떠나기</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">작성일</span>
-
-              
-                
-              
-
-              <time title="Post created: 2018-03-30 00:41:17" itemprop="dateCreated datePublished" datetime="2018-03-30T00:41:17+09:00">2018-03-30</time>
-            </span>
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">수정일</span>
-                <time title="Updated at: 2019-08-22 14:34:24" itemprop="dateModified" datetime="2019-08-22T14:34:24+09:00">2019-08-22</time>
-              </span>
-            
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Middle-end/" itemprop="url" rel="index"><span itemprop="name">Middle-end</span></a></span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Middle-end/TDD/" itemprop="url" rel="index"><span itemprop="name">TDD</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2018/03/30/mock-time-with-time-machine/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/03/30/mock-time-with-time-machine/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="/images/mock-time-with-time-machine/thumb.png" alt="타임머신을 타고 시간 여행을 떠나보자.">  </p><h2 id="문제의-발단"><a href="#문제의-발단" class="headerlink" title="문제의 발단"></a>문제의 발단</h2><p>가끔 현재 시간을 기준으로 코드를 짜야할 때가 있다.<br>이런 경우에 자바의 경우에는 <code>LocalDate, LocalTime, LocalDateTime</code> 등등의 클래스에 있는 static 메서드인 now 메서드로 현재 시간을 구한다.<br>아래와 같이 말이다.  </p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 테스트 하기 어렵게 하기 위해서 일부러 메소드가 메소드를 계속해서 호출하는 형태로 작성함.</span></span><br><span class="line">    <span class="comment">// 현재 시간이 오전인지 알아내는 메소드</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isAM</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> method();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> method2();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> method3();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">method3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> LocalTime.now().isBefore(LocalTime.of(<span class="number">12</span>, <span class="number">0</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/03/30/mock-time-with-time-machine/#more" rel="contents">
-                더 읽어보기 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </section>
 
   
@@ -1564,7 +1573,7 @@
         
           <a href="/archives">
         
-          <span class="site-state-item-count">183</span>
+          <span class="site-state-item-count">184</span>
           <span class="site-state-item-name">포스트</span>
         </a>
       </div>
@@ -2156,7 +2165,9 @@
         
           
         
-        <span class="site-state-item-count">236</span>
+          
+        
+        <span class="site-state-item-count">237</span>
         <span class="site-state-item-name">태그</span>
         </a>
       </div>
@@ -2221,7 +2232,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
